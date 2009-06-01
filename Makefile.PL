@@ -9,13 +9,18 @@ all_from        'lib/CatalystX/I18N.pm';
 perl_version    '5.000';
 
 # Specific dependencies
-requires        'Catalyst::Runtime'         => '5.800';
+requires        'Catalyst::Runtime'         => '5.80004';
+
 requires        'Locale::Maketext::Lexicon' => 0;
 requires        'Locale::Maketext'          => 0;
+requires        'Locale::Geocode'           => 0;
+
 requires        'DateTime'                  => 0;
 requires        'DateTime::Locale'          => 0;
 requires        'DateTime::Format::CLDR'    => 0;
+
 requires        'IP::Country::Fast'         => 0;
+
 build_requires  'Test::Pod'                 => 0;
 build_requires  'Test::Pod::Coverage'       => 0;
 

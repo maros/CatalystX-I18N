@@ -64,23 +64,23 @@ sub BUILD {
     my ( $self, $c, @args ) = @_;
     $self = $self->next::method( $c, @args );
 
-    $c->config->{'Model::L10N'} //= {};
+    $c->config->{'L10N'} //= {};
 
-    $c->config->{'Model::L10N'}{class} //= $c . '::L10N';
-    $c->config->{'Model::L10N'}{path}  //= '/opt/revdev/share/l10n';
-    $c->config->{'Model::L10N'}{lexicon}  //= 'gettext';
+    $c->config->{'L10N'}{class} //= ref($c) . '::L10N';
+    $c->config->{'L10N'}{path}  //= '/opt/revdev/share/l10n';
+    $c->config->{'L10N'}{lexicon}  //= 'gettext';
 
-    $self->{lexicon} = $c->config->{'Model::L10N'}{class};
-    $self->{path}  = $c->config->{'Model::L10N'}{path};
-    $self->{lexicon}  = $c->config->{'Model::L10N'}{lexicon};
+    $self->{l10nclass} = $c->config->{'L10N'}{class};
+    $self->{path}  = $c->config->{'L10N'}{path};
+    $self->{lexicon}  = $c->config->{'L10N'}{lexicon};
 
     eval( "use " . $self->{l10nclass} );
     die $@ if $@;
 
-    foreach my $locale ( keys %{ $c->config->{locales} } ) {
+    foreach my $locale ( keys %{ $c->config->{I18N}{locales} } ) {
         $self->{l10nclass}->load_po_file( 
             locale  => $locale, 
-            dir     => $self->{l10npath},
+            dir     => $self->{path},
             type    => 
         );
     }

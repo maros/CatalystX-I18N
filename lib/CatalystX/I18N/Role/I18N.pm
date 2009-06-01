@@ -1,5 +1,5 @@
 # ============================================================================
-package CatalystX::I18N::Plugin::I18N;
+package CatalystX::I18N::Role::I18N;
 # ============================================================================
 
 use strict;
@@ -7,7 +7,7 @@ use warnings;
 use utf8;
 use 5.010;
  
-use Moose;
+use Moose::Role;
 use Moose::Util::TypeConstraints;
 
 use POSIX qw(locale_h);
@@ -19,7 +19,6 @@ use DateTime::Locale;
 
 use Number::Format;
 
-use IP::Country::Fast;
 
 subtype 'Locale'
     => as 'Str'
@@ -29,13 +28,7 @@ subtype 'Locale'
 
 subtype 'DateTimeTimezone' => as class_type('DateTime::TimeZone');
 
-subtype 'DateTimeLocale' => as class_type('DateTime::Locale::Base');
-
-subtype 'Locale'
-    => as 'Str'
-    => where {
-        m/^[a-z]{2}[_-][A-Z]{2}/
-    };
+#subtype 'DateTimeLocale' => as class_type('DateTime::Locale::Base');
 
 coerce 'DateTimeTimezone'
     => from 'Str'
@@ -43,17 +36,15 @@ coerce 'DateTimeTimezone'
             DateTime::TimeZone->new( name => $_ ) 
         };
  
-coerce 'DateTimeLocale'
-    => from 'Str'
-        => via { 
-            DateTime::Locale->load( $_ ) 
-        };
+#coerce 'DateTimeLocale'
+#    => from 'Str'
+#        => via { 
+#            DateTime::Locale->load( $_ ) 
+#        };
 
 has 'timezone' => (
     is => 'rw', 
     isa => 'DateTimeTimezone',
-    trigger => \&_set_timezone,
-    coerce => 1,
 );
 
 has 'locale' => (
@@ -74,9 +65,8 @@ has 'territory' => (
 );
 
 has 'datetime_locale' => (
-    is => 'rw', 
-    isa => 'DateTimeLocale',
-    coerce => 1,
+    is => 'ro', 
+    isa => 'DateTime::Locale::Base',
 );
 
 has 'datetime_format_date' => (
@@ -99,7 +89,63 @@ has 'l10nhandle' => (
     isa => 'Locale::Maketext::Lexicon'
 );
 
+=head2 ACCESSORS
 
+=head3 locale
+
+Get/set the current locale. Changing the locale alters the following
+accessors:
+
+=over
+
+=item * timezone
+
+=item * language
+
+=item * territory
+
+=item * datetime_locale
+
+=item * datetime_format_datetime
+
+=item * datetime_format_date
+
+=item * numberformat
+
+=item * l10nhandle
+
+=back
+
+=head3 timezone
+
+C<DateTime::TimeZone> object for the current locale
+
+=head3 timezone
+
+C<DateTime::TimeZone> object for the current locale
+
+=head3 timezone
+
+
+=head2 METHODS
+
+=head3 territory
+
+The current territory as an uppercase 3166-1 alpha-2 code. (eg. UK)
+
+=head3 language
+
+The current language as a lowercase alpha-2 code. (eg. en)
+
+=head3 today
+ 
+ my $dt = $c->today
+ say $dt->dmy;
+ 
+Returns the current timestamp as a C<DateTime> object with the current 
+timezone and locale set.
+ 
+=cut
  
 sub now {
     my ($c) = @_;
@@ -110,67 +156,59 @@ sub now {
     );
 }
 
+=head3 today
+ 
+ my $dt = $c->today
+ say $dt->dmy;
+ 
+Returns a C<DateTime> with todays date, the current timezone and locale set.
+ 
+=cut
+
 sub today {
     my ($c) = @_;
     return $c->now->truncate( to => 'day' );
 }
 
-sub _set_datetime_format {
-    my ($c,$params) = @_;
-    
-    $params ||= {};
-    
-    my $timezone =
-        $params->{timezone} ||
-        $c->timezone || 
-        DateTime::TimeZone->new( name => 'UTC' );
-        
-    my $datetime_locale = 
-        $params->{datetime_locale} ||
-        $c->datetime_locale || 
-        DateTime::Locale->load('en');
-    
-    $c->datetime_format_date(
-        new DateTime::Format::CLDR(
-            locale      => $datetime_locale,
-            time_zone   => $timezone,
-            pattern     => $datetime_locale->date_format_medium
-        )
-    );
-    
-    $c->datetime_format_datetime(
-        new DateTime::Format::CLDR(
-            locale      => $datetime_locale,
-            time_zone   => $timezone,
-            pattern     => $datetime_locale->date_format_medium.' '.$datetime_locale->time_format_short
-        )
-    );
-}
+=head3 geodcode
+ 
+ my $lgt = $c->geodcode
+ say $lgt->name;
+ 
+Returns a C<Locale::Geocode::Territory> object for the current territory
+ 
+=cut
 
-sub _set_timezone {
-    my ($c,$value) = @_;
+sub geocode {
+    my ($c) = @_;
     
-    $c->_set_datetime_format(
-        {
-            timezone    => $value,
-        }
-    );
-}
+    my $territory = $c->territory;
+    
+    return 
+        unless $territory;
+    
+    require Locale::Geocode;
+    
+    my $lc = new Locale::Geocode;
+    return $lc->lookup($territory);
+} 
 
 sub _set_locale {
     my ($c,$value) = @_;
     
-    my ($language,$territory) =
-        $c->check_locale($value);
+    return 
+        unless $value =~ /^(?<language>[A-Za-z]{2})[_-](?<territory>[A-Za-z]{2})/;
         
-    return
-        unless ($language && $territory);   
-    
+    my $language = lc($+{language});
+    my $territory = uc($+{territory});
     my $locale = $language.'_'.$territory;
+
+    return 
+        unless exists $c->config->{I18N}{locales}{$locale};
     
     # Set language and territory
-    $c->language($language);
-    $c->territory($territory);
+    $c->{language} = $language;
+    $c->{territory} = $territory;
     
     # Store to session
     $c->session->{locale} = $locale
@@ -211,31 +249,45 @@ sub _set_locale {
 
     # Set datetime locale
     my $datetime_locale = DateTime::Locale->load( $locale );
-    $c->datetime_locale($datetime_locale);
+    $c->{datetime_locale} = $datetime_locale;
     
-    # Set DateTime::Format::CLDR
-    $c->_set_datetime_format(
-        {
-            datetime_locale => $datetime_locale,
-        }
+    # Set timezone
+    my $timezone = DateTime::TimeZone->new( name => $c->config->{I18N}{locales}{$locale}{timezone} )
+        || DateTime::TimeZone->new( name => 'UTC' );
+    $c->{timezone} = $timezone;
+
+    # Set datetime_format_date
+    my $datetime_format_date =
+        $c->config->{I18N}{locales}{$locale}{datetime_format_date} ||
+        $datetime_locale->date_format_medium;
+        
+    # Set datetime_format_datetime
+    my $datetime_format_datetime =
+        $c->config->{I18N}{locales}{$locale}{datetime_format_datetime} ||
+        $datetime_locale->date_format_medium.' '.$datetime_locale->time_format_short;
+    
+    $c->datetime_format_date(
+        new DateTime::Format::CLDR(
+            locale      => $datetime_locale,
+            time_zone   => $timezone,
+            pattern     => $datetime_format_date
+        )
+    );
+    
+    $c->datetime_format_datetime(
+        new DateTime::Format::CLDR(
+            locale      => $datetime_locale,
+            time_zone   => $timezone,
+            pattern     => $datetime_format_datetime
+        )
+    );
+    
+    # L10N Handle
+    $c->l10nhandle(
+        $c->model('Model::L10N')
     );
 }
 
-sub check_locale {
-    my ( $c, $value ) = @_;
-
-    return 
-        unless $value =~ /^(?<language>[a-z]{2})[_-](?<territory>[A-Z]{2})/;
-        
-    my $language = $+{language};
-    my $territory = $+{territory};
-    my $locale = $language.'_'.$territory;
-
-    return 
-        unless exists $c->config->{I18N}{locales}{$locale};
-
-    retrun ($language,$territory);
-}
 
 __PACKAGE__->meta->make_immutable();
 

@@ -5,10 +5,6 @@ package CatalystX::I18N::Role::L10N;
 use Moose::Role;
 requires 'l10nhandle';
 
-use strict;
-use warnings;
-use 5.010;
- 
 =head3 maketext
 
  my $msgstr_localized = $c->maketext($msgid[,@parameters]);
@@ -42,7 +38,8 @@ sub maketext {
         
     $msgstr = $msgid;
     $msgstr =~s{%(\d+)}{ $args[$1-1] // 'missing value %'.$1 }eg;
-    $msgstr =~s/%(\w+)\(([^)]+)\)/$replacesub->($1,$2)/eg;    
+    $msgstr =~s/%(\w+)\(([^)]+)\)/$replacesub->($1,$2)/eg;
+    
     return $msgstr;
 }
 

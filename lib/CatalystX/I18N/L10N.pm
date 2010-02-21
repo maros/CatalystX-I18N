@@ -1,5 +1,5 @@
 # ============================================================================
-package CatalystX::L10N;
+package CatalystX::I18N::L10N;
 # ============================================================================
 
 use strict;
@@ -12,13 +12,21 @@ use Locale::Maketext::Lexicon;
 use Path::Class;
 
 sub load_po_file {
-    my ( $class, $locale, $dir ) = @_;
+    my ( $class, %params ) = @_;
+
+    my $path = $params{path};
+    my $locale = $params{path};
 
     die "Invalid locale"
-        unless $locale =~ /^([a-z]{2})(_[A-Z]{2})?$/;
+        unless defined $locale
+        && $locale =~ /^([a-z]{2})(_[A-Z]{2})?$/;
 
-    die "Cannot read $dir in load_po_file" unless ( -r $dir );
-    my $po_file = Path::Class::File->new( $dir, "$locale.po" )->stringify;
+    die "Cannot read ".$path." in load_po_file" 
+        unless defined $path
+        &&  ( -r $path );
+
+
+    my $po_file = Path::Class::File->new( $path, $locale.".po" )->stringify;
 
     eval qq[
         package $class;
@@ -71,7 +79,7 @@ C<$locale> has to be a valid locale string (eg 'de_AT', 'de').
 
 =head1 SEE ALSO
 
-L<Babilu>, L<Locale::Maketext> and <Locale::Maketext::Lexicon>
+L<Locale::Maketext> and <Locale::Maketext::Lexicon>
 
 =head1 AUTHOR
 

@@ -1,43 +1,27 @@
 # ============================================================================
 package CatalystX::I18N::Model::L10N;
 # ============================================================================
-use strict;
-use warnings;
 
 use Moose;
 extends 'Catalyst::Model';
 
-use Params::Coerce;
 use Moose::Util::TypeConstraints;
 
-enum 'Lexicon' => qw(auto gettext msgcat tie);
-
-subtype 'Path' => as class_type('Path::Class::Dir');
-
-coerce 'Path'
-    => from 'Str'
-        => via { 
-            Path::Class::Dir->new( $_ ) 
-        }
-    => from 'ArrayRef[Str]'
-        => via { 
-            Path::Class::Dir->new( @{$_} ) 
-        };
-        
 has 'class' => (
-    is => 'rw', 
-    isa => 'Lexicon',
+    is          => 'rw', 
+    isa         => 'Str',
 );
 
 has 'path' => (
-    is => 'rw', 
-    isa => 'Path',
-    coerce => 1,
+    is          => 'rw', 
+    isa         => 'Path::Class::Dir',
+    coerce      => 1,
 );
 
 has 'lexicon' => (
-    is => 'rw', 
-    default => 'gettext',
+    is          => 'rw', 
+    isa         => 'Lexicon',
+    default     => 'gettext',
 );
 
 =head1 NAME
@@ -62,28 +46,23 @@ Initializes the model object. Loads po files for all used languages/locales.
 
 sub BUILD {
     my ( $self, $c, @args ) = @_;
+    
     $self = $self->next::method( $c, @args );
-
-    $c->config->{'L10N'} //= {};
-
-    $c->config->{'L10N'}{class} //= ref($c) . '::L10N';
-    $c->config->{'L10N'}{path}  //= '/opt/revdev/share/l10n';
-    $c->config->{'L10N'}{lexicon}  //= 'gettext';
-
-    $self->{l10nclass} = $c->config->{'L10N'}{class};
-    $self->{path}  = $c->config->{'L10N'}{path};
-    $self->{lexicon}  = $c->config->{'L10N'}{lexicon};
-
-    eval( "use " . $self->{l10nclass} );
-    die $@ if $@;
-
+    
+    my $class = $self->class() || ref($c) . '::L10N';
+    $self->class($class);
+    
+    Class::MOP::load_class($class);
+    
+    # Load all avaliable po files
     foreach my $locale ( keys %{ $c->config->{I18N}{locales} } ) {
-        $self->{l10nclass}->load_po_file( 
+        $class->load_po_file( 
             locale  => $locale, 
-            dir     => $self->{path},
-            type    => 
+            dir     => $self->path,
+            type    => $self->lexicon,
         );
     }
+    
     return $self;
 }
 
@@ -95,22 +74,21 @@ Does the glueing! Setting the locale from the Session
 
 sub ACCEPT_CONTEXT {
     my ( $self, $c ) = @_;
-
-    my $l10nclass = $self->{l10nclass};
-
+    
     # set locale and fallback
-    my $handle = $l10nclass->get_handle( $c->locale );
-
+    my $handle = $self->class->get_handle( $c->locale );
+    
     # Catch error
     Catalyst::Exception->throw(
               "Could not fetch lanuage handle: PO files for <"
             . $c->locale
             . "> might be missing or corrupt in path " . "<"
-            . $c->config->{'Model::L10N'}{path}
+            . $c->path
             . ">" )
         unless ( scalar $handle );
-
+    
     $handle->fail_with( sub { } );
+    
     return $handle;
 }
 

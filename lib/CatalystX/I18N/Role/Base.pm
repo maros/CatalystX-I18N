@@ -1,14 +1,10 @@
 # ============================================================================
-package CatalystX::I18N::Role::I18N;
+package CatalystX::I18N::Role::Base;
 # ============================================================================
 
-use strict;
-use warnings;
-use utf8;
-use 5.010;
- 
 use Moose::Role;
-use Moose::Util::TypeConstraints;
+
+use CatalystX::I18N::TypeConstraints;
 
 use POSIX qw(locale_h);
 
@@ -19,74 +15,42 @@ use DateTime::Locale;
 
 use Number::Format;
 
-
-subtype 'Locale'
-    => as 'Str'
-    => where {
-        m/^[a-z]{2}[_-][A-Z]{2}/
-    };
-
-subtype 'DateTimeTimezone' => as class_type('DateTime::TimeZone');
-
-#subtype 'DateTimeLocale' => as class_type('DateTime::Locale::Base');
-
-coerce 'DateTimeTimezone'
-    => from 'Str'
-        => via { 
-            DateTime::TimeZone->new( name => $_ ) 
-        };
- 
-#coerce 'DateTimeLocale'
-#    => from 'Str'
-#        => via { 
-#            DateTime::Locale->load( $_ ) 
-#        };
-
 has 'timezone' => (
     is => 'rw', 
     isa => 'DateTimeTimezone',
 );
 
 has 'locale' => (
-    is => 'rw', 
-    isa => 'Locale',
+    is      => 'rw', 
+    isa     => 'Locale',
     default => 'en_US.UTF-8',
     trigger => \&_set_locale,
-);
-
-has 'language' => (
-    is => 'ro', 
-    isa => 'Str'
-);
-
-has 'territory' => (
-    is => 'ro', 
-    isa => 'Str'
+    predicate   => 'has_locale'
 );
 
 has 'datetime_locale' => (
-    is => 'ro', 
-    isa => 'DateTime::Locale::Base',
+    is      => 'ro', 
+    isa     => 'DateTimeLocale',
 );
 
 has 'datetime_format_date' => (
-    is => 'rw', 
-    isa => 'DateTime::Format::CLDR'
+    is      => 'rw', 
+    isa     => 'DateTime::Format::CLDR'
 );
 
 has 'datetime_format_datetime' => (
-    is => 'rw', 
-    isa => 'DateTime::Format::CLDR'
+    is      => 'rw', 
+    isa     => 'DateTime::Format::CLDR'
 );
 
 has 'numberformat' => (
-    is => 'rw', 
-    isa => 'Number::Format'
+    is      => 'rw', 
+    isa     => 'Number::Format'
 );
 
 has 'l10nhandle' => (
-    is => 'rw', 
-    isa => 'Locale::Maketext::Lexicon'
+    is      => 'rw', 
+    isa     => 'L10NHandle'
 );
 
 =head2 ACCESSORS
@@ -151,8 +115,8 @@ sub now {
     my ($c) = @_;
     return DateTime->from_epoch(
         epoch     => time(),
-        time_zone => $c->timezone,
-        locale    => $c->datetime_locale
+        time_zone => $c->timezone || 'Floating',
+        locale    => $c->datetime_locale || 'en',
     );
 }
 
@@ -187,17 +151,41 @@ sub geocode {
     return 
         unless $territory;
     
-    require Locale::Geocode;
+    Class::MOP::load_class('Locale::Geocode');
     
     my $lc = new Locale::Geocode;
     return $lc->lookup($territory);
 } 
 
+sub language {
+    my ($self) = @_;
+    
+    return 
+        unless $self->has_locale();
+    
+    return 
+        unless $self->locale =~ /^(?<language>[a-z]{2})_(?<territory>[A-Z]{2})(\..+)/;
+    
+    return lc($+{language});
+}
+
+sub territory {
+    my ($self) = @_;
+    
+    return 
+        unless $self->has_locale();
+    
+    return 
+        unless $self->locale =~ /^(?<language>[a-z]{2})_(?<territory>[A-Z]{2})(\..+)/;
+    
+    return lc($+{territory});
+}
+
 sub _set_locale {
     my ($c,$value) = @_;
     
     return 
-        unless $value =~ /^(?<language>[A-Za-z]{2})[_-](?<territory>[A-Za-z]{2})/;
+        unless $value =~ /^(?<language>[a-z]{2})_(?<territory>[A-Z]{2})(\..+)/;
         
     my $language = lc($+{language});
     my $territory = uc($+{territory});
@@ -206,14 +194,6 @@ sub _set_locale {
     return 
         unless exists $c->config->{I18N}{locales}{$locale};
     
-    # Set language and territory
-    $c->{language} = $language;
-    $c->{territory} = $territory;
-    
-    # Store to session
-    $c->session->{locale} = $locale
-        if $c->can('session');
-        
     # Set posix locale
     setlocale( LC_CTYPE, $locale.'.UTF-8' );
     my $lconv = POSIX::localeconv();
@@ -249,12 +229,12 @@ sub _set_locale {
 
     # Set datetime locale
     my $datetime_locale = DateTime::Locale->load( $locale );
-    $c->{datetime_locale} = $datetime_locale;
+    $c->datetime_locale($datetime_locale);
     
     # Set timezone
     my $timezone = DateTime::TimeZone->new( name => $c->config->{I18N}{locales}{$locale}{timezone} )
         || DateTime::TimeZone->new( name => 'UTC' );
-    $c->{timezone} = $timezone;
+    $c->timezone($timezone);
 
     # Set datetime_format_date
     my $datetime_format_date =
@@ -282,14 +262,18 @@ sub _set_locale {
         )
     );
     
+    # Set content language header
+    $c->response->content_language($language)
+        if $c->response->can('content_language');
+    
+    # Save locale in session
+    $c->session->{i18n_locale} = $locale
+        if ($c->can('session'));
+    
     # L10N Handle
     $c->l10nhandle(
         $c->model('Model::L10N')
     );
 }
-
-
-__PACKAGE__->meta->make_immutable();
-
 
 1;

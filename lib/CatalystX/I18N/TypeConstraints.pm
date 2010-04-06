@@ -16,7 +16,7 @@ subtype 'Territory'
 
 subtype 'Locale'
     => as 'Str'
-    => where { m/^[a-z]{2}-[A-Z]{2}$/ };
+    => where { m/^[a-z]{2}_[A-Z]{2}$/ };
 
 subtype 'Language'
     => as 'Str'

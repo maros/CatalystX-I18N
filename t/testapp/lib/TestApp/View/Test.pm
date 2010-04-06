@@ -4,17 +4,13 @@ use strict;
 use warnings;
 
 use parent 'Catalyst::View';
+use JSON::Any;
 
 sub process {
-    my ( $self, $c ) = @_;
+    my ( $self, $c, $response) = @_;
 
-    my $output = '';
-    foreach my $keys (keys %{$c->stash}) {
-        $output .= $key.':'.$c->stash->{$key}."\n";
-    }
-
-    $c->response->content_type('text/plain; charset=utf-8');
-    $c->response->body($output);
+    $c->response->content_type('application/json; charset=utf-8');
+    $c->response->body(JSON::Any->objToJson($response || $c->stash));
     
     return;
 }

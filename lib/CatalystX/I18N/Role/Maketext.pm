@@ -1,9 +1,9 @@
 # ============================================================================
-package CatalystX::I18N::Role::L10N;
+package CatalystX::I18N::Role::Maketext;
 # ============================================================================
 
 use Moose::Role;
-requires 'l10nhandle';
+#requires 'l10nhandle';
 
 =head3 maketext
 

@@ -11,11 +11,13 @@ use parent qw(Locale::Maketext);
 use Locale::Maketext::Lexicon;
 use Path::Class;
 
-sub load_po_file {
+sub load_lexicon {
     my ( $class, %params ) = @_;
 
     my $path = $params{path};
-    my $locale = $params{path};
+    my $locale = $params{locale};
+    my $options = $params{options};
+    my $type = $params{type};
 
     die "Invalid locale"
         unless defined $locale

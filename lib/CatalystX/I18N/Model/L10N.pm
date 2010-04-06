@@ -5,7 +5,7 @@ package CatalystX::I18N::Model::L10N;
 use Moose;
 extends 'Catalyst::Model';
 
-use Moose::Util::TypeConstraints;
+use CatalystX::I18N::TypeConstraints;
 
 has 'class' => (
     is          => 'rw', 
@@ -22,6 +22,12 @@ has 'lexicon' => (
     is          => 'rw', 
     isa         => 'Lexicon',
     default     => 'gettext',
+);
+
+has 'options' => (
+    is          => 'rw', 
+    isa         => 'HashRef',
+    default     => sub { return {} },
 );
 
 =head1 NAME
@@ -44,27 +50,32 @@ Initializes the model object. Loads po files for all used languages/locales.
 
 =cut
 
-sub BUILD {
-    my ( $self, $c, @args ) = @_;
+sub new {
+    my ( $self,$app,$config ) = @_;
     
-    $self = $self->next::method( $c, @args );
+    $self = $self->next::method( $config );
     
-    my $class = $self->class() || ref($c) . '::L10N';
+    my $class = $self->class() || $app .'::L10N';
     $self->class($class);
+    
+    my $path = $self->path() || Path::Class::Dir->new($app->config->{home},'l10n');
+    $self->path($path);
     
     Class::MOP::load_class($class);
     
     # Load all avaliable po files
-    foreach my $locale ( keys %{ $c->config->{I18N}{locales} } ) {
-        $class->load_po_file( 
+    foreach my $locale ( keys %{ $app->config->{I18N}{locales} } ) {
+        $class->load_lexicon( 
             locale  => $locale, 
-            dir     => $self->path,
+            path    => $path,
             type    => $self->lexicon,
+            options => $self->options,
         );
     }
     
     return $self;
 }
+
 
 =head3 ACCEPT_CONTEXT
 
@@ -92,7 +103,7 @@ sub ACCEPT_CONTEXT {
     return $handle;
 }
 
-__PACKAGE__->meta->make_immutable();
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 
 1;
 

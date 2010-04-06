@@ -21,7 +21,7 @@ requires        'DateTime::Locale'          => 0;
 requires        'DateTime::Format::CLDR'    => 0;
 
 requires        'IP::Country::Fast'         => 0;
-requires        'HTTP::BrowserDetect'       => 0;
+requires        'HTTP::BrowserDetect'       => '1.09';
 
 build_requires  'Test::Pod'                 => 0;
 build_requires  'Test::Pod::Coverage'       => 0;

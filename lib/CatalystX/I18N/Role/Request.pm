@@ -3,16 +3,6 @@ package CatalystX::I18N::Role::Request;
 # ============================================================================
 
 use Moose::Role;
-
-sub init_meta {
-    Catalyst::Request->meta->add_role('CatalystX::I18N::Role::_Request');
-}
-
-# ============================================================================
-package CatalystX::I18N::Role::_Request;
-# ============================================================================
-
-use Moose::Role;
 use HTTP::BrowserDetect;
 use IP::Country::Fast;
 
@@ -91,15 +81,14 @@ sub _build_browser_territory {
     
     my $territory = uc($self->browser_detect()->country());
     
-    return
-        unless $territory;
+    return undef
+        if ! $territory || $territory eq '**';
     
     return lc($territory);
 }
 
 sub _build_browser_detect {
     my ($self) = @_;
-    
     
     return new HTTP::BrowserDetect($self->user_agent);
 }
@@ -114,7 +103,10 @@ sub _build_client_country {
     
     my $ip_country = IP::Country::Fast->new();
 
-    return $ip_country->inet_atocc($ip_address);
+    my $country = $ip_country->inet_atocc($ip_address);
+    
+    return undef
+        if ! $country || $country eq '**';
 }
 
 1;

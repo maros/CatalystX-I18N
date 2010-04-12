@@ -116,14 +116,14 @@ package [% app %]::[% name %];
 
 use strict;
 use warnings;
-use base 'Locale::Maketext';
+use parent 'Locale::Maketext';
 
 __modelclass__
 package [% class %];
 
 use strict;
 use warnings;
-use base 'Catalyst::Model::L10N';
+use parent 'Catalyst::Model::L10N';
 
 __PACKAGE__->config(
     l10nclass   => '[% app %]::[% name %]',

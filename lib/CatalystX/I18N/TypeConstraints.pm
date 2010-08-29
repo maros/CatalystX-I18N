@@ -10,45 +10,45 @@ use Params::Coerce;
 
 enum 'Lexicon' => qw(auto gettext msgcat tie);
 
-subtype 'Territory'
+subtype 'CatalystX::I18N::Type::Territory'
     => as 'Str'
     => where { m/^[A-Z]{2}$/ };
 
-subtype 'Locale'
+subtype 'CatalystX::I18N::Type::Locale'
     => as 'Str'
     => where { m/^[a-z]{2}_[A-Z]{2}$/ };
 
-subtype 'Language'
+subtype 'CatalystX::I18N::Type::Language'
     => as 'Str'
     => where { m/^[a-z]{2}$/ };
 
-subtype 'Languages'
-    => as 'ArrayRef[Language]';
+subtype 'CatalystX::I18N::Type::Languages'
+    => as 'ArrayRef[CatalystX::I18N::Type::Language]';
 
-coerce  'Languages'
+coerce  'CatalystX::I18N::Type::Languages'
     => from 'Str'
     => via { return [ $_ ] };
 
 
-subtype 'DateTimeTimezone' 
+subtype 'CatalystX::I18N::Type::DateTimeTimezone' 
     => as class_type('DateTime::TimeZone');
 
-subtype 'DateTimeLocale' 
+subtype 'CatalystX::I18N::Type::DateTimeLocale' 
     => as class_type('DateTime::Locale::Base');
 
-coerce 'DateTimeTimezone'
+coerce 'CatalystX::I18N::Type::DateTimeTimezone'
     => from 'Str'
     => via { 
         DateTime::TimeZone->new( name => $_ ) 
     };
     
-coerce 'DateTimeLocale'
+coerce 'CatalystX::I18N::Type::DateTimeLocale'
     => from 'Str'
     => via { 
         DateTime::Locale->load( $_ ) 
     };
 
-subtype 'L10NHandle'
+subtype 'CatalystX::I18N::Type::L10NHandle'
     => as duck_type(qw(maketext));
 
 1;

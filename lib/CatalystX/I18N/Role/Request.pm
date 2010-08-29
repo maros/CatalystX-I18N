@@ -9,25 +9,25 @@ use IP::Country::Fast;
 use CatalystX::I18N::TypeConstraints;
 
 has 'accept_language'   => (
-    isa         => 'Maybe[Languages]',
+    isa         => 'Maybe[CatalystX::I18N::Type::Languages]',
     is          => 'rw',
     lazy_build  => 1,
 );
 
 has 'browser_language'   => (
-    isa         => 'Maybe[Language]',
+    isa         => 'Maybe[CatalystX::I18N::Type::Language]',
     is          => 'rw',
     lazy_build  => 1,
 );
 
 has 'browser_territory'   => (
-    isa         => 'Maybe[Territory]',
+    isa         => 'Maybe[CatalystX::I18N::Type::Territory]',
     is          => 'rw',
     lazy_build  => 1,
 );
 
 has 'client_country'   => (
-    isa         => 'Maybe[Territory]',
+    isa         => 'Maybe[CatalystX::I18N::Type::Territory]',
     is          => 'rw',
     lazy_build  => 1,
 );

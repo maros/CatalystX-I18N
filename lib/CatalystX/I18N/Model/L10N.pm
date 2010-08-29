@@ -20,7 +20,7 @@ has 'path' => (
 
 has 'lexicon' => (
     is          => 'rw', 
-    isa         => 'Lexicon',
+    isa         => 'CatalystX::I18N::Type::Lexicon',
     default     => 'gettext',
 );
 

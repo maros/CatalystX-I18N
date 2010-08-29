@@ -17,7 +17,7 @@ use Number::Format;
 
 has 'timezone' => (
     is => 'rw', 
-    isa => 'DateTimeTimezone',
+    isa => 'CatalystX::I18N::Type::DateTimeTimezone',
 );
 
 has 'locale' => (
@@ -30,7 +30,7 @@ has 'locale' => (
 
 has 'datetime_locale' => (
     is      => 'rw',
-    isa     => 'DateTimeLocale',
+    isa     => 'CatalystX::I18N::Type::DateTimeLocale',
 );
 
 has 'datetime_format_date' => (

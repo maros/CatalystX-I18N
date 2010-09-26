@@ -11,31 +11,36 @@ use CatalystX::I18N::TypeConstraints;
 has 'accept_language'   => (
     isa         => 'Maybe[CatalystX::I18N::Type::Languages]',
     is          => 'rw',
-    lazy_build  => 1,
+    lazy        => 1,
+    builder     => '_build_accept_language',
 );
 
 has 'browser_language'   => (
     isa         => 'Maybe[CatalystX::I18N::Type::Language]',
     is          => 'rw',
-    lazy_build  => 1,
+    lazy        => 1,
+    builder     => '_build_browser_language',
 );
 
 has 'browser_territory'   => (
     isa         => 'Maybe[CatalystX::I18N::Type::Territory]',
     is          => 'rw',
-    lazy_build  => 1,
+    lazy        => 1,
+    builder     => '_build_browser_territory',
 );
 
 has 'client_country'   => (
     isa         => 'Maybe[CatalystX::I18N::Type::Territory]',
     is          => 'rw',
-    lazy_build  => 1,
+    lazy        => 1,
+    builder     => '_build_client_country',
 );
 
 has 'browser_detect'   => (
     isa         => 'HTTP::BrowserDetect',
     is          => 'rw',
-    lazy_build  => 1,
+    lazy        => 1,
+    builder     => '_build_browser_detect',
 );
 
 sub _build_accept_language {

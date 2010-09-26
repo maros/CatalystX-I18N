@@ -5,6 +5,8 @@ package CatalystX::I18N::Model::L10N;
 use Moose;
 extends 'Catalyst::Model';
 
+use 5.010;
+
 use CatalystX::I18N::TypeConstraints;
 
 has 'class' => (
@@ -12,22 +14,16 @@ has 'class' => (
     isa         => 'Str',
 );
 
-has 'path' => (
+has 'gettext_style' => (
+    is          => 'rw', 
+    isa         => 'Bool',
+    default     => 1,
+);
+
+has 'directory' => (
     is          => 'rw', 
     isa         => 'Path::Class::Dir',
     coerce      => 1,
-);
-
-has 'lexicon' => (
-    is          => 'rw', 
-    isa         => 'CatalystX::I18N::Type::Lexicon',
-    default     => 'gettext',
-);
-
-has 'options' => (
-    is          => 'rw', 
-    isa         => 'HashRef',
-    default     => sub { return {} },
 );
 
 =head1 NAME
@@ -58,18 +54,22 @@ sub new {
     my $class = $self->class() || $app .'::L10N';
     $self->class($class);
     
-    my $path = $self->path() || Path::Class::Dir->new($app->config->{home},'l10n');
-    $self->path($path);
+    unless ($self->directory) {
+        my $calldir = $app;
+        $calldir =~ s{::}{/}g;
+        my $file = "$calldir.pm";
+        my $path = $INC{$file};
+        $path =~ s{\.pm$}{/I18N};
+        $self->directory(Path::Class::Dir->new($path));
+    }
     
     Class::MOP::load_class($class);
     
-    # Load all avaliable po files
-    foreach my $locale ( keys %{ $app->config->{I18N}{locales} } ) {
+    if ($class->can('load_lexicon')) {
         $class->load_lexicon( 
-            locale  => $locale, 
-            path    => $path,
-            type    => $self->lexicon,
-            options => $self->options,
+            locales             => [ keys %{ $app->config->{I18N}{locales} } ], 
+            directory           => $self->directory,
+            gettext_style       => $self->gettext_style,
         );
     }
     
@@ -90,12 +90,7 @@ sub ACCEPT_CONTEXT {
     my $handle = $self->class->get_handle( $c->locale );
     
     # Catch error
-    Catalyst::Exception->throw(
-              "Could not fetch lanuage handle: PO files for <"
-            . $c->locale
-            . "> might be missing or corrupt in path " . "<"
-            . $c->path
-            . ">" )
+    Catalyst::Exception->throw(sprintf("Could not fetch lanuage handle for locale '%s'",$c->locale))
         unless ( scalar $handle );
     
     $handle->fail_with( sub { } );

@@ -18,7 +18,7 @@ sub test1 : Local Args(0) {
 sub test2 : Local Args(0) {
     my ($self,$c) = @_;
     
-    my $locale = $c->forward('/getlocale/get_locale');
+    my $locale = $c->get_locale();
     
     $c->detach('TestApp::View::Test',[
         {
@@ -30,15 +30,11 @@ sub test2 : Local Args(0) {
 sub test3 : Local Args(0) {
     my ($self,$c) = @_;
     
-    my $session = $c->forward('/getlocale/get_locale_from_session') || undef;
-    my $user = $c->forward('/getlocale/get_locale_from_user') || undef;
-    my $browser = $c->forward('/getlocale/get_locale_from_browser') || undef;
-    
     $c->detach('TestApp::View::Test',[
         {
-            session     => $session,
-            user        => $user,
-            browser     => $browser,
+            session     => $c->get_locale_from_session() || undef,
+            user        => $c->get_locale_from_user() || undef,
+            browser     => $c->get_locale_from_browser() || undef,
         }
     ]);
 }
@@ -46,7 +42,7 @@ sub test3 : Local Args(0) {
 sub test4 : Local Args(0) {
     my ($self,$c) = @_;
     
-    my $locale = $c->forward('/getlocale/get_locale');
+    my $locale = $c->get_locale();
     my $request = $c->request;
     
     $c->detach('TestApp::View::Test',[

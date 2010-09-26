@@ -1,17 +1,18 @@
 # ============================================================================
-package CatalystX::I18N::Controller::GetLocale;
+package CatalystX::I18N::Role::GetLocale;
 # ============================================================================
 
-BEGIN {
-    use Moose;
-    extends qw(Catalyst::Controller);
-}
+use Moose::Role;
 
-sub check_locale : Private {
-    my ($self,$c,$locale) = @_;
+use CatalystX::I18N::TypeConstraints;
+
+sub check_locale {
+    my ($c,$locale) = @_;
+    
     
     return
-        unless $locale =~ /^(?<language>[a-z]{2})_(?<territory>[A-Z]{2})/;
+        unless defined $locale
+        && $locale =~ /^(?<language>[a-zA-Z]{2})_(?<territory>[a-zA-Z]{2})/;
     
     my $language = lc($+{language});
     my $territory = uc($+{territory});
@@ -22,30 +23,30 @@ sub check_locale : Private {
     return $locale;
 }
 
-sub get_locale_from_session : Private {
-    my ($self,$c) = @_;
+sub get_locale_from_session {
+    my ($c) = @_;
     
     if ($c->can('session')) {
-        return $self->check_locale($c,$c->session->{i18n_locale});
+        return $c->check_locale($c->session->{i18n_locale});
     }
     
     return;
 }
 
-sub get_locale_from_user : Private {
-    my ($self,$c) = @_;
+sub get_locale_from_user {
+    my ($c) = @_;
     
     if ($c->can('user')
         && defined $c->user
         && $c->user->can('locale')) {
-        return $self->check_locale($c,$c->user->locale);
+        return $c->check_locale($c->user->locale);
     }
     
     return;
 }
 
-sub get_locale_from_browser : Private {
-    my ($self,$c) = @_;
+sub get_locale_from_browser  {
+    my ($c) = @_;
     
     my ($languages,$territory);
     
@@ -53,16 +54,18 @@ sub get_locale_from_browser : Private {
     if ($c->request->can('accept_languages')) {
         $languages = $c->request->accept_languages;
     }
+    
     if ($c->request->can('browser_language')) {
         my $language = $c->request->browser_language;
         if (defined $languages
             && ref $languages eq 'ARRAY') {
             unshift(@$languages,$language)
                 unless grep { $language eq $_ } @$languages
-        } else {
-            $languages = [ $c->request->browser_language ];
+        } elsif ($language) {
+            $languages = [ $language ];
         }
     }
+    
     if ($c->request->can('browser_territory')) {
         $territory = $c->request->browser_territory;
     }
@@ -71,7 +74,6 @@ sub get_locale_from_browser : Private {
     }
     
     my $locale_config = $c->config->{I18N}{locales};
-    
     
     # Guess locale from language AND country/territory
     if (defined $languages && defined $territory) {
@@ -89,6 +91,8 @@ sub get_locale_from_browser : Private {
             }
         }
     }
+    
+
     # Guess locale from language
     if (defined $languages) {
         foreach my $language (@$languages) {
@@ -103,14 +107,15 @@ sub get_locale_from_browser : Private {
     return;
 }
 
-sub get_locale : Private {
-    my ($self,$c) = @_;
+sub get_locale {
+    my ($c) = @_;
     
     my ($locale,$languages,$territory);
+    my $locale_config = $c->config->{I18N}{locales};
     
-    $locale = $self->get_locale_from_session($c);
-    $locale ||= $self->get_locale_from_user($c);
-    $locale ||= $self->get_locale_from_browser($c);
+    $locale = $c->get_locale_from_session();
+    $locale ||= $c->get_locale_from_user();
+    $locale ||= $c->get_locale_from_browser();
     
     # Default locale
     $locale ||= $c->config->{I18N}{default_locale};

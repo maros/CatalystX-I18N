@@ -9,6 +9,7 @@ use Catalyst qw/
     +CatalystX::I18N::Role::Base
     +CatalystX::I18N::Role::DateTime
     +CatalystX::I18N::Role::Maketext
+    +CatalystX::I18N::Role::GetLocale
 /;
 use CatalystX::RoleApplicator;
 

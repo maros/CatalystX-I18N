@@ -2,36 +2,118 @@
 package CatalystX::I18N;
 # ============================================================================
 
-use strict;
-use warnings;
+use Moose;
 use 5.010;
 
+use version;
 our $VERSION = version->new('1.00');
+our $AUTHORITY = 'cpan:MAROS';
+
+sub init_meta {
+    Class::MOP::load_class('Catalyst::Response');
+    Class::MOP::load_class('Catalyst::Request');
+    
+    Catalyst::Response->meta->add_role('CatalystX::I18N::Role::Response');
+    Catalyst::Request->meta->add_role('CatalystX::I18N::Role::Request');
+}
+
+
 
 =head1 NAME
 
 CatalystX::I18N - Catalyst internationalisation (I18N) framework
+
+=head1 SYNOPSIS
+
+ package MyApp;
+ use strict;
+ use Catalyst qw/
+     +CatalystX::I18N::Role::Base
+     +CatalystX::I18N::Role::GetLocale
+     +CatalystX::I18N::Role::DateTime
+     +CatalystX::I18N::Role::Maketext
+ /;
+ use CatalystX::RoleApplicator;
+ __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::Role::Request/);
+ __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::Role::Response/);
+ 
+ __PACKAGE__->config( 
+     name    => 'MyApp', 
+     I18N    => {
+         default_locale          => 'de_AT',
+         locales                 => {
+             'de_AT'                 => {
+                 timezone                => 'Europe/Vienna',
+                 datetime_format_date    => 'dd.MM.yyyy',
+                 datetime_format_datetime=> 'dd.MM.yyyy uma HH:mm',
+             },
+             'de_DE'                 => {
+                 timezone                => 'Europe/Berlin',
+             },
+         }
+     },
+ );
+ 
+ package MyApp::Controller::Main;
+ use parent qw/Catalyst::Controller/;
+ 
+ sub auto : Private {
+     my ($self,$c) = @_;
+     $c->get_locale(); 
+     # Tries to fetch the locale from the folloing sources in the given order
+     # 1. Session
+     # 2. User settings
+     # 3. Browser settings
+     # 4. Client address
+     # 5. Default locale from config
+ }
+ 
+ sub action : Local {
+     my ($self,$c) = @_;
+     
+     $c->stash->{title} = $c->maketext('Hello world!');
+     $c->stash->{location} = $c->geocode->name;
+     $c->stash->{language} = $c->language;
+     $c->stash->{localtime} = $c->datetime_format_datetime->format_datetime(DateTime->now);
+ }
 
 =head1 DESCRIPTION
 
 CatalystX::I18N provides a comprehensive toolset for internationalisation 
 (I18N) and localisation (L10N) of catalyst applications. This distribution 
 consists of several modules that are designed to integrate seamlessly, but
-can be replaced easily if necessarry.
+can be run idependently or replaced easily if necessarry.
 
 =over
 
-=item * L<CatalystX::I18N::Role::I18N> 
+=item * L<CatalystX::I18N::Role::Base> 
 
-Provides 
+Basic I18N role that glues everything toghether.
 
-=item * L<CatalystX::I18N::Role::L10N> 
+=item * L<CatalystX::I18N::Role::Maketext> 
 
-Adds a maketext method to C<$c>
+Adds a maketext capability to a Catalyst application.
 
-=item * L<CatalystX::I18N::Model::Locale>
+=item * L<CatalystX::I18N::Role::DateTime>
 
-Tries to determine/guess the locale for a request
+Methods for localizing date and time informations.
+
+=item * L<CatalystX::I18N::Role::NumberFormat>
+
+Methods for localizing numbers.
+
+=item * L<CatalystX::I18N::Role::Request>
+
+Extends a L<Catalyst::Request> with usefull methods to help dealing with
+various I18N related information in HTTP requests.
+
+=item * L<CatalystX::I18N::Role::Response>
+
+Adds a C<Content-Language> response header.
+
+=item * L<CatalystX::I18N::Role::GetLocale> 
+
+Tries best to determine the request locale.
 
 =item * L<CatalystX::I18N::Model::L10N>
 
@@ -39,7 +121,7 @@ Provides access to L<Locale::Maketext> classes
 
 =item * L<CatalystX::I18N::L10N>
 
-Wrapper arround L<Locale::Maketext>
+Wrapper arround L<Locale::Maketext>. Can also be used outside of Catalyst.
 
 =back
 
@@ -47,7 +129,7 @@ Wrapper arround L<Locale::Maketext>
 
 L<Locale::Maketext>, <Locale::Maketext::Lexicon>,
 L<Number::Format>, L<DateTime::Locale>, L<DateTime::Format::CLDR>, 
-L<DateTime::TimeZone>, and L<Locale::Geocode>
+L<DateTime::TimeZone>, L<HTTP::BrowserDetect> and L<Locale::Geocode>
 
 =head1 SUPPORT
 
@@ -72,7 +154,7 @@ software company I run with Koki and Domm (L<http://search.cpan.org/~domm/>).
 
 =head1 COPYRIGHT
 
-CatalystX::I18N is Copyright (c) 2009 Maroš Kollár 
+CatalystX::I18N is Copyright (c) 2010 Maroš Kollár 
 - L<http://www.revdev.at>
 
 This program is free software; you can redistribute it and/or modify it under 

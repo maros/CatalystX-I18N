@@ -20,7 +20,7 @@ sub maketext {
             (ref $arg eq 'ARRAY') ? @$arg : $arg;
     }
 
-    my $handle = $c->l10nhandle;
+    my $handle = $c->model('L10N');
     my $msgstr = $handle->maketext( $msgid, @args_expand );
     
     return $msgstr
@@ -43,6 +43,7 @@ sub maketext {
     return $msgstr;
 }
 
+no warnings 'once';
 *localize = \&maketext;
 
 

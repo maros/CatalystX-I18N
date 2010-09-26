@@ -17,10 +17,6 @@ has 'locale' => (
 );
 
 
-has 'l10nhandle' => (
-    is      => 'rw',
-    #isa     => 'L10NHandle'
-);
 
 =head2 ACCESSORS
 
@@ -147,13 +143,6 @@ sub set_locale {
     $c->session->{i18n_locale} = $locale
         if ($c->can('session'));
     
-    # Set L10N Handle
-    my $l10nhandle = $c->model('L10N');
-    
-    # L10N Handle
-    $c->l10nhandle(
-        $l10nhandle
-    );
     # Set locale
     $c->meta->get_attribute('locale')->set_value($locale)
         unless $c->locale eq $locale;

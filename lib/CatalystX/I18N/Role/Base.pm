@@ -22,7 +22,7 @@ has 'timezone' => (
 
 has 'locale' => (
     is      => 'rw',
-    isa     => 'Locale',
+    isa     => 'CatalystX::I18N::Type::Locale',
     default => 'en_US',
     trigger => \&_set_locale,
     predicate   => 'has_locale'
@@ -277,10 +277,8 @@ sub _set_locale {
     $c->session->{i18n_locale} = $locale
         if ($c->can('session'));
     
-    
+    # Set L10N Handle
     my $l10nhandle = $c->model('L10N');
-    
-    warn('CAN maketext:'.$l10nhandle->can('maketext'));
     
     # L10N Handle
     $c->l10nhandle(

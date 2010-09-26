@@ -7,6 +7,7 @@ use Catalyst qw/
     Session::State::Cookie
     
     +CatalystX::I18N::Role::Base
+    +CatalystX::I18N::Role::DateTime
     +CatalystX::I18N::Role::Maketext
 /;
 use CatalystX::RoleApplicator;

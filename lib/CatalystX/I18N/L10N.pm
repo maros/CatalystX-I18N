@@ -15,9 +15,11 @@ sub load_lexicon {
     my ( $class, %params ) = @_;
 
     my $locales = $params{locales} || [];
-    my $directory = $params{directory};
+    my $directories = $params{directory};
     my $gettext_style = $params{gettext_style} // 1;
     
+    $directories = [ $directories ]
+        unless ref $directories eq 'ARRAY';
     $locales = [ $locales ]
         unless ref $locales eq 'ARRAY';
     
@@ -32,11 +34,8 @@ sub load_lexicon {
     $lexicondata->{_style} = 'gettext'
         if $gettext_style;
     
-    unless (defined $directory) {
-        foreach my $locale (@$locales) {
-            $lexicondata->{$locale} = ['Auto'];
-        }
-    } else {
+    # Loop all directories
+    foreach my $directory (@$directories) {
         $directory = Path::Class::Dir->new($directory)
             unless ref $directory eq 'Path::Class::Dir';
         my @directory_content =  $directory->children();
@@ -62,10 +61,14 @@ sub load_lexicon {
                     }
                 }
             }
-            push(@locale_lexicon,'Auto')
-                unless scalar @locale_lexicon;
-            $lexicondata->{$locale} = \@locale_lexicon;
+            $lexicondata->{$locale} = \@locale_lexicon
+                if scalar @locale_lexicon;
         }
+    }
+    
+    # Fallback lexicon
+    foreach my $locale (@$locales) {
+        $lexicondata->{$locale} ||= ['Auto'];
     }
     
     eval qq[

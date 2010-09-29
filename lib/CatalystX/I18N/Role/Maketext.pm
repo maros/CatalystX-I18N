@@ -13,13 +13,14 @@ use Moose::Role;
 
 sub maketext {
     my ($c,$msgid,@args) = @_;
-
+    
     my @args_expand;
     foreach my $arg (@args) {
         push @args_expand,
             (ref $arg eq 'ARRAY') ? @$arg : $arg;
     }
-
+    
+    # TODO: Check if L10N model is available
     my $handle = $c->model('L10N');
     my $msgstr = $handle->maketext( $msgid, @args_expand );
     

@@ -20,10 +20,11 @@ has 'gettext_style' => (
     default     => 1,
 );
 
-has 'directory' => (
+has 'directories' => (
     is          => 'rw', 
-    isa         => 'Path::Class::Dir',
+    isa         => 'CatalystX::I18N::Type::DirList',
     coerce      => 1,
+    default     => sub { [] },
 );
 
 sub new {
@@ -34,23 +35,35 @@ sub new {
     my $class = $self->class() || $app .'::L10N';
     $self->class($class);
     
-    unless ($self->directory) {
+    unless (scalar @{$self->directories}) {
+        #warn('HOME:'.$self->config->{home} || '');
         my $calldir = $app;
         $calldir =~ s{::}{/}g;
         my $file = "$calldir.pm";
         my $path = $INC{$file};
-        $path =~ s{\.pm$}{/I18N};
-        $self->directory(Path::Class::Dir->new($path));
+        $path =~ s{\.pm$}{/L10N};
+        $self->directories([ Path::Class::Dir->new($path) ]);
     }
     
-    Class::MOP::load_class($class);
+    eval {
+        Class::MOP::load_class($class);
+        return 1;
+    } or Catalyst::Exception->throw(sprintf("Could not load '%s' : %s",$class,$@));
+    
+    Catalyst::Exception->throw(sprintf("Could initialize '%s' because is is not a 'Locale::Maketext' class",$class))
+        unless $class->isa('Locale::Maketext');
     
     if ($class->can('load_lexicon')) {
         $class->load_lexicon( 
             locales             => [ keys %{ $app->config->{I18N}{locales} } ], 
-            directory           => $self->directory,
+            directories         => $self->directories,
             gettext_style       => $self->gettext_style,
+            inheritance         => {
+                
+            }
         );
+    } else {
+        $self->log->warn(sprintf("'%s' does not implement a 'load_lexicon' method",$class))
     }
     
     return $self;

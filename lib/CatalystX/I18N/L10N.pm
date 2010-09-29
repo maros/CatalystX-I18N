@@ -15,11 +15,14 @@ sub load_lexicon {
     my ( $class, %params ) = @_;
 
     my $locales = $params{locales} || [];
-    my $directories = $params{directory};
+    my $directories = $params{directories};
     my $gettext_style = $params{gettext_style} // 1;
+    my $inheritance = $params{inheritance} // {};
     
     $directories = [ $directories ]
-        unless ref $directories eq 'ARRAY';
+        if defined $directories
+        && ref $directories ne 'ARRAY';
+    $directories ||= [];
     $locales = [ $locales ]
         unless ref $locales eq 'ARRAY';
     
@@ -36,8 +39,15 @@ sub load_lexicon {
     
     # Loop all directories
     foreach my $directory (@$directories) {
+        next 
+            unless defined $directory;
+        
         $directory = Path::Class::Dir->new($directory)
             unless ref $directory eq 'Path::Class::Dir';
+        
+        next
+            unless -d $directory->stringify && -e _ && -r _;
+        
         my @directory_content =  $directory->children();
         
         # Load all avaliable po files

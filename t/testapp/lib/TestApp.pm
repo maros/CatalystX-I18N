@@ -29,8 +29,8 @@ TestApp->config(
         locales                 => {
             'de_AT'                 => {
                 timezone                => 'Europe/Vienna',
-                datetime_format_date    => 'dd.MM.yyyy',
-                datetime_format_datetime=> 'dd.MM.yyyy uma HH:mm',
+                format_date             => 'dd.MM.yyyy',
+                format_datetime         => 'dd.MM.yyyy uma HH:mm',
                 positive_sign           => '+',
             },
             'de_DE'                 => {

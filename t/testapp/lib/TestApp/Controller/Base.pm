@@ -52,10 +52,10 @@ sub test4 : Local Args(0) {
             territory       => $c->territory,
             language        => $c->language,
             datetime        => {
-                date            => $c->now->dmy,
-                locale          => $c->now->locale->name,
-                time            => $c->now->hms,
-                timezone        => $c->now->time_zone_long_name,
+                date            => $c->i18n_datetime_now->dmy,
+                locale          => $c->i18n_datetime_now->locale->name,
+                time            => $c->i18n_datetime_now->hms,
+                timezone        => $c->i18n_datetime_now->time_zone_long_name,
             },
             request         => {
                 accept_language     => $request->accept_language,

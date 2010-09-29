@@ -148,7 +148,6 @@ CatalystX::I18N::Role::DateTime - Support for I18N datetime
 
  package MyApp::Catalyst;
  
- use CatalystX::RoleApplicator;
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::DateTime/;

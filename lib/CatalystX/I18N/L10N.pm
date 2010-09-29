@@ -112,14 +112,16 @@ You need to subclass this package in your project in order to use it.
 =head3 load_lexicon
 
  MyApp::L10N->load_lexicon(
-     locales         => ['de','de_AT'],
-     directory       => '/path/to/your/l10/files', 
-     # you can also supply multiple directories by adding an array ref
-     gettext_style   => 0, # Default 1
+     locales        => ['de','de_AT'],              # Required
+     directories    => ['/path/to/your/l10/files'], # Required
+     gettext_styl   => 0,                           # Optional, Default 1
+     inherit        => {                            # Optional
+         de_AT          => 'de',
+     },
  );
 
 This method will search the given directories and load all available L10N
-files via
+files for the requested locales via
 
 =over
 
@@ -144,6 +146,34 @@ for sub directories
 
 If no translation files can be found for a given locale then 
 L<Locale::Maketext::Lexicon::Auto> will be loaded.
+
+The folowing parameters are recognized/required
+
+=over
+
+=item * locales
+
+Array reference of locales. 
+
+Required
+
+=item * directories
+
+Array reference of directories. Also accepts L<Path::Class::Dir> objects
+and single values.
+
+Required
+
+=item * gettext_style
+
+Enable gettext style. L<%quant(%1,document,documents)> instead of 
+L<[quant,_1,document,documents]>
+
+Optional, Default TRUE
+
+=item * inherit
+
+=back
 
 =head1 SEE ALSO
 

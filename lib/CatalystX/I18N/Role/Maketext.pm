@@ -57,7 +57,6 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
 
  package MyApp::Catalyst;
  
- use CatalystX::RoleApplicator;
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::Maketext/;

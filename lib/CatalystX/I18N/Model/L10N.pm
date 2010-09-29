@@ -26,26 +26,6 @@ has 'directory' => (
     coerce      => 1,
 );
 
-=head1 NAME
-
-CatalystX::I18N::Model::L10N - Model Interface to Maketext class
-
-=head1 SYNOPSIS
-
-    my $l10n = $c->model('L10N');
-
-=head1 DESCRIPTION
-
-Glue  into Catalyst.
-
-=head1 METHODS
-
-=head2 new 
-
-Initializes the model object. Loads po files for all used languages/locales.
-
-=cut
-
 sub new {
     my ( $self,$app,$config ) = @_;
     
@@ -76,13 +56,6 @@ sub new {
     return $self;
 }
 
-
-=head3 ACCEPT_CONTEXT
-
-Does the glueing! Setting the locale from the Session
-
-=cut
-
 sub ACCEPT_CONTEXT {
     my ( $self, $c ) = @_;
     
@@ -99,18 +72,74 @@ sub ACCEPT_CONTEXT {
 }
 
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
-
+no Moose;
 1;
 
-__END__
+=head1 NAME
 
+CatalystX::I18N::Model::L10N - Glues CatalystX::I18N::L10N into Catalyst
+
+=head1 SYNOPSIS
+
+ package MyApp::Catalyst;
+ use Catalyst qw/CatalystX::I18N::Role::Base/;
+ 
+ __PACKAGE__->config( 
+    'Model::L10N' => {
+        directory       => '/path/to/l10n/files', # optional
+    },
+ );
+ 
+ 
+ package MyApp::Model::L10N;
+ use parent qw/CatalystX::I18N::Model::L10N/;
+ 
+ 
+ package MyApp::Controller::Main;
+ use parent qw/Catalyst::Controller/;
+ 
+ sub action : Local {
+     my ($self,$c) = @_;
+     
+     $c->stash->{title} = $c->model('L10N')->maketext('Hello world');
+     # See CatalystX::I18N::Role::Maketext for a convinient wrapper
+ }
+
+=head1 DESCRIPTION
+
+This model glues a L<CatalystX::I18N::L10N> class (or any other 
+L<Locale::Maketext> class) with Catalyst. 
+
+=head1 CONFIGURATION
+
+=head3 class
+
+Set the L<Locale::Maketext> class you want to use from this model.
+
+Defaults to $APPNAME::L10N
+
+=head3 gettext_style
+
+Enable gettext style. L<%quant(%1,document,documents)> instead of 
+L<[quant,_1,document,documents]>
+
+Default TRUE
+
+=head3 directory
+
+List of directories to be searched for L10N files.
+
+See L<CatalystX::I18N::L10N> for more details on the C<directory> parameter
+
+=head1 SEE ALSO
+
+L<CatalystX::I18N::L10N>, L<Locale::Maketext>, L<Locale::Maketext::Lexicon>
+and L<CatalystX::I18N::Role::Maketext>
 
 =head1 AUTHOR
 
-REVDEV, C<< we@revdev.at >>
-
-=head1 COPYRIGHT
-
-Copyright 2008 REVDEV. All rights reserved.
-
-=cut
+    Maroš Kollár
+    CPAN ID: MAROS
+    maros [at] k-1.com
+    
+    L<http://www.revdev.at>

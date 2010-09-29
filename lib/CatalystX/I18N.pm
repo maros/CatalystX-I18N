@@ -44,15 +44,20 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
  __PACKAGE__->config( 
      name    => 'MyApp', 
      I18N    => {
-         default_locale          => 'de_AT',
-         locales                 => {
-             'de_AT'                 => {
-                 timezone                => 'Europe/Vienna',
-                 datetime_format_date    => 'dd.MM.yyyy',
-                 datetime_format_datetime=> 'dd.MM.yyyy uma HH:mm',
+         default_locale     => 'de_AT',
+         locales            => {
+             'de'               => {
+                 format_date        => 'dd.MM.yyyy',
+                 format_datetime    => 'dd.MM.yyyy HH:mm',
              },
-             'de_DE'                 => {
-                 timezone                => 'Europe/Berlin',
+             'de_AT'            => {
+                 inherits           => 'de',
+                 timezone           => 'Europe/Vienna',
+                 format_datetime    => 'dd.MM.yyyy uma HH\'e\'',
+             },
+             'de_DE'             => {
+                 inherits            => 'de',
+                 timezone            => 'Europe/Berlin',
              },
          }
      },

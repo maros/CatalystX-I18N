@@ -103,7 +103,6 @@ CatalystX::I18N::Role::Base - Basic catalyst I18N support
 
  package MyApp::Catalyst;
  
- use CatalystX::RoleApplicator;
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base/;
  
@@ -154,7 +153,7 @@ Returns the territory part of the current locale (if any)
 
 =head3 i18n_config
 
-Returns the I18N config hash for the current locale.
+Returns the (cloned) I18N config hash for the current locale.
 
 =head3 i18n_geocode
 

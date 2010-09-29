@@ -27,19 +27,31 @@ TestApp->config(
     I18N    => {
         default_locale          => 'de_AT',
         locales                 => {
-            'de_AT'                 => {
-                timezone                => 'Europe/Vienna',
+            'de'                    => {
+                inactive                => 1,
                 format_date             => 'dd.MM.yyyy',
+                format_datetime         => 'dd.MM.yyyy HH:mm',
+                positive_sign           => '++',
+            },
+            'fr'                    => {
+                inactive                => 1,
+                format_date             => 'd MMM y',
+                format_datetime         => 'd MMM y a HH:mm',
+            },
+            'de_AT'                 => {
+                inherits                => 'de',
                 format_datetime         => 'dd.MM.yyyy uma HH:mm',
-                positive_sign           => '+',
             },
             'de_DE'                 => {
+                inherits                => 'de',
                 timezone                => 'Europe/Berlin',
             },
             'de_CH'                 => {
+                inherits                => 'de',
                 timezone                => 'Europe/Zurich',
             },
             'fr_CH'                 => {
+                inherits                => 'fr',
                 timezone                => 'Europe/Zurich',
             },
         }

@@ -17,7 +17,8 @@ sub check_locale {
     my $territory = uc($+{territory});
     
     return 
-        unless exists $c->config->{I18N}{locales}{$locale};
+        if not exists $c->config->{I18N}{locales}{$locale}
+        || $c->config->{I18N}{locales}{$locale}{inactive} == 1;
     
     return $locale;
 }

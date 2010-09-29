@@ -5,7 +5,7 @@ package CatalystX::I18N::Role::Base;
 use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
-
+use Clone qw(clone);
 use POSIX qw(locale_h);
 
 has 'locale' => (
@@ -20,9 +20,12 @@ sub i18n_config {
     my ($c) = @_;
     
     return {}
-        unless $c->has_locale;
+        unless defined $c->config->{I18N}{locales}{$c->locale};
     
-    return $c->config->{I18N}{locales}{$c->locale} || {};
+    my $config = clone($c->config->{I18N}{locales}{$c->locale});
+    $config->{locale} = $c->locale;
+    
+    return $config;
 }
 
 sub i18n_geocode {
@@ -91,6 +94,45 @@ sub set_locale {
     $c->meta->get_attribute('locale')->set_value($locale)
         unless $c->locale eq $locale;
 }
+
+after setup_finalize => sub {
+    my ($app) = @_;
+    
+    $app->config->{I18N} ||= {};
+    my $config = $app->config->{I18N};
+    my $locales = $config->{locales} ||= {};
+    
+    # Build inheritance tree
+    my (%tree,$changed);
+    $changed = 1;
+    while ($changed) {
+        $changed = 0;
+        foreach my $locale (keys %$locales) {
+            next
+                if exists $tree{$locale};
+            my $locale_config = $locales->{$locale};
+            $locale_config->{inactive} //= 0;
+            unless (exists $locale_config->{inherits}) {
+                $locale_config->{_inherits} = [];
+                $tree{$locale} = $locale_config;
+                $changed = 1;
+            } elsif (exists $tree{$locale_config->{inherits}}) {
+                my $inactive = $locale_config->{inactive};
+                my @inheritance = (@{$tree{$locale_config->{inherits}}->{_inherits}},$locale_config->{inherits});
+                $tree{$locale} = $locales->{$locale} = $locale_config = Catalyst::Utils::merge_hashes($tree{$locale_config->{inherits}}, $locale_config);
+                $locale_config->{_inherits} = \@inheritance;
+                $locale_config->{inactive} = $inactive;
+                $changed = 1;
+            }
+        }
+    }
+    foreach my $locale (keys %$locales) {
+        my $locale_config = $locales->{$locale};
+        unless (exists $locale_config->{_inherits}) {
+            Catalyst::Exception->throw(sprintf("Circular I18N inheritance detected between '%s' and '%s'",$locale,$locale_config->{inherits}))
+        }
+    }
+};
 
 no Moose::Role;
 1;

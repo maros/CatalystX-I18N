@@ -68,9 +68,6 @@ after 'set_locale' => sub {
 sub _build_i18n_datetime_timezone {
     my ($c) = @_;
     
-    return DateTime::TimeZone->new( 'floating' )
-        unless $c->has_locale;
-    
     my $config = $c->i18n_config;
     
     $c->_clear_i18n_datetime_format_date();
@@ -94,9 +91,6 @@ sub _build_i18n_datetime_locale {
 sub _build_i18n_datetime_format_date {
     my ($c) = @_;
     
-    carp('No locale set')
-        unless $c->has_locale;
-    
     my $config = $c->i18n_config;
     
     my $datetime_locale = $c->i18n_datetime_locale;
@@ -116,9 +110,6 @@ sub _build_i18n_datetime_format_date {
 
 sub _build_i18n_datetime_format_datetime {
     my ($c) = @_;
-    
-    carp('No locale set')
-        unless $c->has_locale;
     
     my $config = $c->i18n_config;
     

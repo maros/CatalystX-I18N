@@ -19,9 +19,6 @@ has 'i18n_numberformat' => (
 sub _build_i18n_numberformat {
     my ($c) = @_;
     
-    carp('No locale set')
-        unless $c->has_locale;
-    
     my $locale = $c->locale;
     my $config = $c->i18n_config;
     

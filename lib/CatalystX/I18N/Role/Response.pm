@@ -15,4 +15,44 @@ sub content_language {
     }
 }
 
+no Moose::Role;
 1;
+
+=head1 NAME
+
+CatalystX::I18N::Role::Response - Adds the Content-Language header to a Catalyst::Respose object
+
+=head1 SYNOPSIS
+
+ package MyApp::Catalyst;
+ 
+ use CatalystX::RoleApplicator;
+ use Catalyst qw/MyPlugins 
+    CatalystX::I18N::Role::Base/;
+ 
+ __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::Role::Response/);
+
+=head1 DESCRIPTION
+
+This role simply adds the 'Content-Language' header to your response.
+
+=head1 MEDTHODS
+
+=head3 content_language
+
+ $c->response->content_language('de_AT','en');
+
+Accepts a list of languages. This header will be automatically set
+if you use it in conjunction with the L<CatalystX::I18N::Role::Base> role.
+
+=head1 SEE ALSO
+
+L<Catalyst::Respone>
+
+=head1 AUTHOR
+
+    Maroš Kollár
+    CPAN ID: MAROS
+    maros [at] k-1.com
+    
+    L<http://www.revdev.at>

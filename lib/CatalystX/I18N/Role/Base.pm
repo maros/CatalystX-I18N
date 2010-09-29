@@ -16,72 +16,16 @@ has 'locale' => (
     predicate   => 'has_locale'
 );
 
-
-
-=head2 ACCESSORS
-
-=head3 locale
-
-Get/set the current locale. Changing the locale alters the following
-accessors:
-
-=over
-
-=item * timezone
-
-=item * language
-
-=item * territory
-
-=item * datetime_locale
-
-=item * datetime_format_datetime
-
-=item * datetime_format_date
-
-=item * numberformat
-
-=back
-
-=head3 timezone
-
-C<DateTime::TimeZone> object for the current locale
-
-=head3 timezone
-
-C<DateTime::TimeZone> object for the current locale
-
-=head3 timezone
-
-
-=head2 METHODS
-
-=head3 territory
-
-The current territory as an uppercase 3166-1 alpha-2 code. (eg. UK)
-
-=head3 language
-
-The current language as a lowercase alpha-2 code. (eg. en)
-
-
-
-sub locale_config {
+sub i18n_config {
     my ($c) = @_;
     
-    return $c->config->{$c->locale} || {};
+    return {}
+        unless $c->has_locale;
+    
+    return $c->config->{I18N}{locales}{$c->locale} || {};
 }
 
-=head3 geodcode
- 
- my $lgt = $c->geodcode
- say $lgt->name;
- 
-Returns a C<Locale::Geocode::Territory> object for the current territory
- 
-=cut
-
-sub geocode {
+sub i18n_geocode {
     my ($c) = @_;
     
     my $territory = $c->territory;
@@ -133,7 +77,7 @@ sub set_locale {
         unless exists $c->config->{I18N}{locales}{$locale};
     
     # Set posix locale
-    setlocale( LC_CTYPE, $locale.'.UTF-8' );
+    setlocale( &POSIX::LC_ALL, $locale );
     
     # Set content language header
     $c->response->content_language($language)
@@ -148,4 +92,85 @@ sub set_locale {
         unless $c->locale eq $locale;
 }
 
+no Moose::Role;
 1;
+
+=head1 NAME
+
+CatalystX::I18N::Role::Base - Basic catalyst I18N support
+
+=head1 SYNOPSIS
+
+ package MyApp::Catalyst;
+ 
+ use CatalystX::RoleApplicator;
+ use Catalyst qw/MyPlugins 
+    CatalystX::I18N::Role::Base/;
+ 
+ 
+ package MyApp::Catalyst::Controller::Main;
+ use strict;
+ use warnings;
+ use parent qw/Catalyst::Controller/;
+ 
+ sub action : Local {
+     my ($self,$c) = @_;
+     
+     $c->locale('de_AT');
+ }
+
+=head1 DESCRIPTION
+
+This role is needed by all other roles and provides basic I18N support for
+Catalyst.
+
+=head1 MEDTHODS
+
+=head3 locale
+
+ $c->locale('de_AT');
+ OR
+ my $locale  = $c->locale();
+
+Get/set the current locale. Changing this value has some side-effects:
+
+=over
+
+=item * Sets program locale via L<POSIX::setlocale>
+
+=item * Stores the locale in the current session (if any)
+
+=item * Sets the 'Content-Language' response header (if L<CatalystX::I18N::Role::Response> has been loaded)
+
+=back
+
+=head3 language
+
+Returns the language part of the current locale
+
+=head3 territory
+
+Returns the territory part of the current locale (if any)
+
+=head3 i18n_config
+
+Returns the I18N config hash for the current locale.
+
+=head3 i18n_geocode
+
+ my $lgt = $c->i18n_geodcode
+ say $lgt->name;
+
+Returns a L<Locale::Geocode::Territory> object for the current territory.
+
+=head1 SEE ALSO
+
+L<POSIX>, L<Locale::Geocode>
+
+=head1 AUTHOR
+
+    Maroš Kollár
+    CPAN ID: MAROS
+    maros [at] k-1.com
+    
+    L<http://www.revdev.at>

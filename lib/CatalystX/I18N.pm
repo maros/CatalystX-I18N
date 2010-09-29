@@ -25,18 +25,22 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
 
 =head1 SYNOPSIS
 
- package MyApp;
+ package MyApp::Catalyst;
  use strict;
+ use warnings;
  use Catalyst qw/
      +CatalystX::I18N::Role::Base
      +CatalystX::I18N::Role::GetLocale
      +CatalystX::I18N::Role::DateTime
      +CatalystX::I18N::Role::Maketext
- /;
+ /; # Choose only the roles you need
+ 
+ # Optionally also load request and response roles
  use CatalystX::RoleApplicator;
  __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::Role::Request/);
  __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::Role::Response/);
  
+ # Add some I18N configuration
  __PACKAGE__->config( 
      name    => 'MyApp', 
      I18N    => {
@@ -54,7 +58,10 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
      },
  );
  
- package MyApp::Controller::Main;
+ 
+ package MyApp::Catalyst::Controller::Main;
+ use strict;
+ use warnings;
  use parent qw/Catalyst::Controller/;
  
  sub auto : Private {
@@ -109,7 +116,7 @@ various I18N related information in HTTP requests.
 
 =item * L<CatalystX::I18N::Role::Response>
 
-Adds a C<Content-Language> response header.
+Adds a C<Content-Language> header to the response.
 
 =item * L<CatalystX::I18N::Role::GetLocale> 
 
@@ -117,7 +124,7 @@ Tries best to determine the request locale.
 
 =item * L<CatalystX::I18N::Model::L10N>
 
-Provides access to L<Locale::Maketext> classes
+Provides access to L<Locale::Maketext> classes via Catalyst models.
 
 =item * L<CatalystX::I18N::L10N>
 
@@ -149,18 +156,18 @@ on your report as I make changes.
 
 =head1 ACKNOWLEDGEMENTS 
 
-This module was written for Revdev L<http://www.revdev.at>, a nice litte
-software company I run with Koki and Domm (L<http://search.cpan.org/~domm/>).
+This module was partially written for Revdev L<http://www.revdev.at>, a nice 
+litte software company I run with Koki and Domm 
+(L<http://search.cpan.org/~domm/>).
 
 =head1 COPYRIGHT
 
 CatalystX::I18N is Copyright (c) 2010 Maroš Kollár 
 - L<http://www.revdev.at>
 
-This program is free software; you can redistribute it and/or modify it under 
-the same terms as Perl itself.
+=head1 LICENSE
 
-The full text of the license can be found in the
-LICENSE file included with this module.
+This library is free software, you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut

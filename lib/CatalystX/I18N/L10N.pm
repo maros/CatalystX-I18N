@@ -89,23 +89,58 @@ sub set_lexicon {
 
 =head1 NAME
 
-RevDev::Catalyst::L10N - Localisation base class
+CatalystX::I18N::L10N - Wrapper around Locale::Maketext
+
+=head1 SYNOPSIS
+
+ package MyApp::L10N;
+ use parent qw(CatalystX::I18N::L10N);
 
 =head1 DESCRIPTION
 
-This is the base L10N base class. It implements 
-general localisation methods. It has no user maintainable parts inside.
+This class can be used as your L10N base-class. It is a simple wrapper around
+L<Locale::Maketext> and provides methods for auto-loading lexicon files.
+It is designed to work toghether with L<CatalystX::Model::L10N>.
+
+You need to subclass this package in your project in order to use it.
 
 =head1 MEDTHODS
 
-=head3 load_po_file
+=head3 load_lexicon
 
-    RevDev::Catalyst::L10N->load_po_file( $locale, $dir );
+ MyApp::L10N->load_lexicon(
+     locales         => ['de','de_AT'],
+     directory       => '/path/to/your/l10/files', 
+     # you can also supply multiple directories by adding an array ref
+     gettext_style   => 0, # Default 1
+ );
 
-Reloads a po file.
+This method will search the given directories and load all available L10N
+files via
 
-C<$locale> has to be a valid locale string (eg 'de_AT', 'de').
+=over
 
+=item * Locale::Maketext::Lexicon::Gettext 
+
+for *.mo and *.po files
+
+=item * Locale::Maketext::Lexicon::Tie 
+
+for *.db files. The files will be tied to you L10N class, thus you need to
+implement the necessary tie methods in your class.
+
+=item * Locale::Maketext::Lexicon::Msgcat 
+
+for *.m files
+
+=item * Locale::Maketext::Lexicon::Slurp 
+
+for sub directories
+
+=back
+
+If no translation files can be found for a given locale then 
+L<Locale::Maketext::Lexicon::Auto> will be loaded.
 
 =head1 SEE ALSO
 
@@ -113,13 +148,9 @@ L<Locale::Maketext> and <Locale::Maketext::Lexicon>
 
 =head1 AUTHOR
 
-REVDEV, C<< we@revdev.at >>
+    Maroš Kollár
+    CPAN ID: MAROS
+    maros [at] k-1.com
+    
+    L<http://www.revdev.at>
 
-=head1 COPYRIGHT
-
-Copyright 2008 REVDEV. All rights reserved.
-
-=head1 LICENSE
-
-This library is free software, you can redistribute it and/or modify
-it under the same terms as Perl itself.

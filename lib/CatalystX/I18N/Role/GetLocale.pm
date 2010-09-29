@@ -9,7 +9,6 @@ use CatalystX::I18N::TypeConstraints;
 sub check_locale {
     my ($c,$locale) = @_;
     
-    
     return
         unless defined $locale
         && $locale =~ /^(?<language>[a-zA-Z]{2})_(?<territory>[a-zA-Z]{2})/;

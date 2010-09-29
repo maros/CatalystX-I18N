@@ -125,6 +125,7 @@ CatalystX::I18N::Role::Request - Adds various I18N methods to a Catalyst::Reques
 
  package MyApp::Catalyst;
  
+ use CatalystX::RoleApplicator;
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base/;
  

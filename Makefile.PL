@@ -12,6 +12,10 @@ perl_version    '5.000';
 requires        'Catalyst::Runtime'         => '5.80004';
 requires        'Moose'                     => 0;
 
+requires        'Clone'                     => 0;
+requires        'MooseX::Types::Path::Class'=> 0; 
+requires        'CatalystX::RoleApplicator' => 0;
+
 requires        'Locale::Maketext::Lexicon' => 0;
 requires        'Locale::Maketext'          => 0;
 requires        'Locale::Geocode'           => 0;
@@ -19,12 +23,10 @@ requires        'Locale::Geocode'           => 0;
 requires        'DateTime'                  => 0;
 requires        'DateTime::Locale'          => 0;
 requires        'DateTime::Format::CLDR'    => 0;
+requires        'DateTime::TimeZone'        => 0;
 
 requires        'IP::Country::Fast'         => 0;
 requires        'HTTP::BrowserDetect'       => '1.09';
-
-build_requires  'Test::Pod'                 => 0;
-build_requires  'Test::Pod::Coverage'       => 0;
 
 repository 'git://github.com/maros/CatalystX-I18N.git';
 

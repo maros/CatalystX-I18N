@@ -3,10 +3,10 @@ package CatalystX::I18N::TypeConstraints;
 # ============================================================================
 
 use Moose::Util::TypeConstraints;
-use MooseX::Types::Path::Class;
 use DateTime::TimeZone;
 use DateTime::Locale;
-use Params::Coerce;
+use MooseX::Types::Path::Class;
+#use Params::Coerce;
 
 enum 'Lexicon' => qw(auto gettext msgcat tie);
 
@@ -29,6 +29,15 @@ coerce  'CatalystX::I18N::Type::Languages'
     => from 'Str'
     => via { return [ $_ ] };
 
+subtype 'CatalystX::I18N::Type::DirList'
+    => as 'ArrayRef[Path::Class::Dir]';
+    
+coerce 'CatalystX::I18N::Type::DirList'
+    => from 'Path::Class::Dir'
+    => via { 
+        [ $_ ]
+    };
+    
 
 subtype 'CatalystX::I18N::Type::DateTimeTimezone' 
     => as class_type('DateTime::TimeZone');

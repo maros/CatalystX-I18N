@@ -54,17 +54,24 @@ sub new {
         unless $class->isa('Locale::Maketext');
     
     if ($class->can('load_lexicon')) {
+        my (@locales,%inhertiance,$config);
+        $config = $app->config->{I18N}{locales};
+        foreach my $locale (keys %$config) {
+            push(@locales,$locale);
+            $inhertiance{$locale} = $config->{$locale}{inherit}
+                if defined $config->{$locale}{inherit};
+        }
         $class->load_lexicon( 
-            locales             => [ keys %{ $app->config->{I18N}{locales} } ], 
+            locales             => \@locales, 
             directories         => $self->directories,
             gettext_style       => $self->gettext_style,
-            inheritance         => {
-                
-            }
+            inheritance         => \%inhertiance,
         );
     } else {
         $self->log->warn(sprintf("'%s' does not implement a 'load_lexicon' method",$class))
     }
+    
+
     
     return $self;
 }

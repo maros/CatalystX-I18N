@@ -9,6 +9,7 @@ use 5.010;
 use parent qw(Locale::Maketext);
 
 use Locale::Maketext::Lexicon;
+#use Locale::Maketext::Lexicon::Gettext;
 use Path::Class;
 
 sub load_lexicon {
@@ -37,6 +38,8 @@ sub load_lexicon {
     $lexicondata->{_style} = 'gettext'
         if $gettext_style;
     
+    my %locale_loaded;
+    
     # Loop all directories
     foreach my $directory (@$directories) {
         next 
@@ -59,14 +62,20 @@ sub load_lexicon {
                         if $content->basename eq $locale;
                 } else {
                     given ($content->basename) {
-                        when(m/^$locale\.(mo|po)$/) {
+                        when(m/^$locale\.(mo|po)$/i) {
                             push(@locale_lexicon,'Gettext',$content->stringify);
                         }
-                        when(m/^$locale\.m$/) {
+                        when(m/^$locale\.m$/i) {
                             push(@locale_lexicon,'Msgcat',$content->stringify);
                         }
-                        when(m/^$locale\.db$/) {
+                        when(m/^$locale\.db$/i) {
                             push(@locale_lexicon,'Tie',[ $class, $content->stringify ]);
+                        }
+                        when(m/^$locale\.pm$/i) {
+                            $locale_loaded{$locale} = 1;
+                            require $content->stringify;
+                            # TODO transform maketext -> gettext syntax if flag is set
+                            # Locale::Maketext::Lexicon::Gettext::_gettext_to_maketext
                         }
                     }
                 }
@@ -78,6 +87,10 @@ sub load_lexicon {
     
     # Fallback lexicon
     foreach my $locale (@$locales) {
+        next
+            if exists $inheritance->{$locale};
+        next
+            if exists $locale_loaded{$locale};
         $lexicondata->{$locale} ||= ['Auto'];
     }
     
@@ -85,6 +98,18 @@ sub load_lexicon {
         package $class;
         Locale::Maketext::Lexicon->import(\$lexicondata)
     ];
+    
+    while (my ($locale,$inherit) = each %$inheritance) {
+        my $locale_class = lc($locale);
+        my $inherit_class = lc($inherit);
+        $locale_class =~ s/-/_/g;
+        $inherit_class =~ s/-/_/g;
+        $locale_class = $class.'::'.$locale_class;
+        $inherit_class = $class.'::'.$inherit_class;
+        no strict 'refs';
+        push(@{$locale_class.'::ISA'},$inherit_class);
+    }
+    
     die("Could not load Locale::Maketext::Lexicon") if $@;
     return;
 }
@@ -92,10 +117,12 @@ sub load_lexicon {
 sub set_lexicon {
     my ( $class, $locale, $lexicon ) = @_;
     
-    my $variable = $class .'::'.$locale.'::Lexicon';
+    $locale = lc($locale);
+    $locale =~ s/-/_/g;
+        
     no strict 'refs';
-    ${$variable} = $lexicon;
-    return
+    %{$class .'::'.$locale.'::Lexicon'} = %{$lexicon};
+    return;
 }
 
 1;

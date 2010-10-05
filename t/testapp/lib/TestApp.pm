@@ -10,6 +10,7 @@ use Catalyst qw/
     +CatalystX::I18N::Role::DateTime
     +CatalystX::I18N::Role::Maketext
     +CatalystX::I18N::Role::GetLocale
+    +CatalystX::I18N::Role::NumberFormat
 /;
 use CatalystX::RoleApplicator;
 
@@ -39,6 +40,7 @@ TestApp->config(
                 format_datetime         => 'd MMM y a HH:mm',
             },
             'de_AT'                 => {
+                timezone                => 'Europe/Vienna',
                 inherits                => 'de',
                 format_datetime         => 'dd.MM.yyyy uma HH:mm',
             },

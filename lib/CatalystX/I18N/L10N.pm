@@ -55,6 +55,8 @@ sub load_lexicon {
         
         # Load all avaliable po files
         foreach my $locale (@$locales) {
+            my $lc_locale = lc($locale);
+            $lc_locale =~ s/-/_/g;
             my @locale_lexicon;
             foreach my $content (@directory_content) {
                 if ($content->is_dir) {
@@ -71,7 +73,7 @@ sub load_lexicon {
                         when(m/^$locale\.db$/i) {
                             push(@locale_lexicon,'Tie',[ $class, $content->stringify ]);
                         }
-                        when(m/^$locale\.pm$/i) {
+                        when(m/^$lc_locale\.pm$/) {
                             $locale_loaded{$locale} = 1;
                             require $content->stringify;
                             # TODO transform maketext -> gettext syntax if flag is set
@@ -138,7 +140,7 @@ CatalystX::I18N::L10N - Wrapper around Locale::Maketext
 
 =head1 DESCRIPTION
 
-This class can be used as your L10N base-class. It is a simple wrapper around
+This class can be used as your L10N base-class. It is a wrapper around
 L<Locale::Maketext> and provides methods for auto-loading lexicon files.
 It is designed to work toghether with L<CatalystX::Model::L10N>.
 
@@ -151,8 +153,8 @@ You need to subclass this package in your project in order to use it.
  MyApp::L10N->load_lexicon(
      locales        => ['de','de_AT'],              # Required
      directories    => ['/path/to/your/l10/files'], # Required
-     gettext_styl   => 0,                           # Optional, Default 1
-     inherit        => {                            # Optional
+     gettext_style  => 0,                           # Optional, Default 1
+     inheritance    => {                            # Optional
          de_AT          => 'de',
      },
  );

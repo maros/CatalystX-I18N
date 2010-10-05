@@ -1,5 +1,5 @@
 # ============================================================================
-package CatalystX::I18N::Role::Request;
+package CatalystX::I18N::TraitFor::Request;
 # ============================================================================
 
 use Moose::Role;
@@ -119,7 +119,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::Role::Request - Adds various I18N methods to a Catalyst::Request object
+CatalystX::I18N::TraitFor::Request - Adds various I18N methods to a Catalyst::Request object
 
 =head1 SYNOPSIS
 
@@ -129,7 +129,7 @@ CatalystX::I18N::Role::Request - Adds various I18N methods to a Catalyst::Reques
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base/;
  
- __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::Role::Request/);
+ __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
 
 =head1 DESCRIPTION
 

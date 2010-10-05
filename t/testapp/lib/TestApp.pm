@@ -14,8 +14,8 @@ use Catalyst qw/
 /;
 use CatalystX::RoleApplicator;
 
-__PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::Role::Request/);
-__PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::Role::Response/);
+__PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
+__PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
 
 our $VERSION = '0.01';
 

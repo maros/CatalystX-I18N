@@ -181,7 +181,7 @@ Get/set the current locale. Changing this value has some side-effects:
 
 =item * Stores the locale in the current session (if any)
 
-=item * Sets the 'Content-Language' response header (if L<CatalystX::I18N::Role::Response> has been loaded)
+=item * Sets the 'Content-Language' response header (if L<CatalystX::I18N::TraitFor::Response> has been loaded)
 
 =back
 

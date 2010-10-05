@@ -9,14 +9,6 @@ use version;
 our $VERSION = version->new('1.00');
 our $AUTHORITY = 'cpan:MAROS';
 
-sub init_meta {
-    Class::MOP::load_class('Catalyst::Response');
-    Class::MOP::load_class('Catalyst::Request');
-    
-    Catalyst::Response->meta->add_role('CatalystX::I18N::Role::Response');
-    Catalyst::Request->meta->add_role('CatalystX::I18N::Role::Request');
-}
-
 
 
 =head1 NAME
@@ -37,8 +29,8 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
  
  # Optionally also load request and response roles
  use CatalystX::RoleApplicator;
- __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::Role::Request/);
- __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::Role::Response/);
+ __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
+ __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
  
  # Add some I18N configuration
  __PACKAGE__->config( 
@@ -114,12 +106,12 @@ Methods for localizing date and time informations.
 
 Methods for localizing numbers.
 
-=item * L<CatalystX::I18N::Role::Request>
+=item * L<CatalystX::I18N::TraitFor::Request>
 
 Extends a L<Catalyst::Request> with usefull methods to help dealing with
 various I18N related information in HTTP requests.
 
-=item * L<CatalystX::I18N::Role::Response>
+=item * L<CatalystX::I18N::TraitFor::Response>
 
 Adds a C<Content-Language> header to the response.
 

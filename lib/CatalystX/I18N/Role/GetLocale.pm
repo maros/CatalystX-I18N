@@ -151,7 +151,7 @@ CatalystX::I18N::Role::GetLocale - Tries to determine the current users locale
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::GetLocale/;
  
- __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::Role::Request/);
+ __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
  
  package MyApp::Catalyst::Controller::Main;
  use strict;

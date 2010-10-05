@@ -1,5 +1,5 @@
 # ============================================================================
-package CatalystX::I18N::Role::Response;
+package CatalystX::I18N::TraitFor::Response;
 # ============================================================================
 
 use Moose::Role;
@@ -20,7 +20,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::Role::Response - Adds the Content-Language header to a Catalyst::Respose object
+CatalystX::I18N::TraitFor::Response - Adds the Content-Language header to a Catalyst::Respose object
 
 =head1 SYNOPSIS
 
@@ -30,7 +30,7 @@ CatalystX::I18N::Role::Response - Adds the Content-Language header to a Catalyst
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base/;
  
- __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::Role::Response/);
+ __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
 
 =head1 DESCRIPTION
 

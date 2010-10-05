@@ -58,8 +58,8 @@ sub new {
         $config = $app->config->{I18N}{locales};
         foreach my $locale (keys %$config) {
             push(@locales,$locale);
-            $inhertiance{$locale} = $config->{$locale}{inherit}
-                if defined $config->{$locale}{inherit};
+            $inhertiance{$locale} = $config->{$locale}{inherits}
+                if defined $config->{$locale}{inherits};
         }
         $class->load_lexicon( 
             locales             => \@locales, 

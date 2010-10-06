@@ -2,11 +2,15 @@
 use strict;
 use inc::Module::Install;
 
+my $from = 'lib/CatalystX/I18N.pm';
+
 # Define metadata
 name            'CatalystX-I18N';
-all_from        'lib/CatalystX/I18N.pm';
+all_from        $from;
+readme_from     $from;
+readme_markdown_from $from;
 
-perl_version    '5.000';
+perl_version    '5.010';
 
 # Specific dependencies
 requires        'Catalyst::Runtime'         => '5.80004';
@@ -27,6 +31,14 @@ requires        'DateTime::TimeZone'        => 0;
 
 requires        'IP::Country::Fast'         => 0;
 requires        'HTTP::BrowserDetect'       => '1.09';
+
+build_requires  'Test::Most'                => 0;
+
+author_requires 'Test::Pod'                 => '1.14';
+author_requires 'Test::Pod::Coverage'       => '1.04';
+author_requires 'Test::Perl::Critic'        => 0;
+author_requires 'Module::Install::ReadmeMarkdownFromPod'=> 0;
+author_requires 'Module::Install::ReadmeFromPod'        => 0;
 
 repository 'git://github.com/maros/CatalystX-I18N.git';
 

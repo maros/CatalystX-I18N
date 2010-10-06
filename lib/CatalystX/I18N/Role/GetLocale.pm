@@ -62,7 +62,6 @@ sub get_locale_from_browser  {
             my $element = $_;
             $element =~ s/_[A-Za-z]{2}//; 
             lc($element);
-            $element 
         } @$languages ];
     }
     

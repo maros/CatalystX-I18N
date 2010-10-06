@@ -1,5 +1,5 @@
 # ============================================================================
-package Catalyst::Helper::Model::L10N;
+package CatalystX::I18N::Helper::Model::L10N;
 # ============================================================================
 
 use strict;
@@ -116,25 +116,18 @@ package [% app %]::[% name %];
 
 use strict;
 use warnings;
-use parent 'Locale::Maketext';
+use parent qw(CatalystX::I18N::L10N);
+
+1;
 
 __modelclass__
 package [% class %];
 
 use strict;
 use warnings;
-use parent 'Catalyst::Model::L10N';
+use parent qw(CatalystX::I18N::Model::L10N);
 
-__PACKAGE__->config(
-    l10nclass   => '[% app %]::[% name %]',
-    options     => {
-        _decode         => 1,
-        #_use_fuzzy     => 1,
-        #_allow_empty   => 0,
-        #_style         => 'gettext',
-        #_auto          => 1,
-    },
-);
+1;
 
 =head1 NAME
 
@@ -163,7 +156,8 @@ it under the same terms as Perl itself.
 __modeltest__
 use strict;
 use warnings;
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 use_ok('Catalyst::Test', '[% app %]');
 use_ok('[% class %]');
+use_ok('[% app %]::[% name %]');

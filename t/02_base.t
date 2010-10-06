@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>40;
+use Test::Most tests=>41;
 
 use lib qw(t/);
 use testlib;
@@ -42,6 +42,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{locale},'de_AT','Locale');
     is($response->{locale_from_c},'de_AT','Locale from $c');
     is($response->{request}{browser_language},'fr','Browser language');
+    is($response->{number_format},'++EUR  27,03','Browser language');
 }
 
 # Test 5a

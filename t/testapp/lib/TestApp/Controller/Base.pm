@@ -63,7 +63,8 @@ sub test4 : Local Args(0) {
                 browser_territory   => $request->browser_territory,
                 client_country      => $request->client_country,
                 browser_detect      => ref($request->browser_detect),
-            }
+            },
+            number_format   => $c->i18n_numberformat->format_price(27.03),
         }
     ]);
 }

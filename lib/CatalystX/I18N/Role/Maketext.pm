@@ -76,7 +76,7 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
 
 =head1 DESCRIPTION
 
-This role adds support for L<Locale::Maketext> localization via the
+This role adds support for L<Locale::Maketext> localisation via the
 L<CatalystX::I18N::Model::L10N> model.
 
 =head1 METHODS

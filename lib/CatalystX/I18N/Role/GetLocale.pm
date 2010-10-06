@@ -182,15 +182,15 @@ Tries to determine the users locale in the given order
 
 =over
 
-=item # Session (via C<get_locale_from_session>)
+=item 1. Session (via C<get_locale_from_session>)
 
-=item # User (via C<get_locale_from_user>)
+=item 2. User (via C<get_locale_from_user>)
 
-=item # Browser (via C<get_locale_from_browser>)
+=item 3. Browser (via C<get_locale_from_browser>)
 
-=item # Default locale from config (via C<$c-E<gt>config-E<gt>{I18N}{default_locale}>)
+=item 4. Default locale from config (via C<$c-E<gt>config-E<gt>{I18N}{default_locale}>)
 
-=item # Random locale
+=item 5. Random locale
 
 =back
 

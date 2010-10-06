@@ -206,7 +206,7 @@ Get/set the current locale. Changing this value has some side-effects:
 
 =head3 set_locale
 
-Same as C<$c-E<GT>locale($locale);>.
+Same as C<$c-E<gt>locale($locale);>.
 
 =head3 language
 

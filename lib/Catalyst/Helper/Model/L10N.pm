@@ -55,20 +55,6 @@ Helper for the L<Catalyst> L10N model.
 
 You need to sepecify the C<model_name> (the name of the model).
 
-=cut
-
-=head1 SEE ALSO
-
-=over 4
-
-=item * L<Catalyst::Manual>
-
-=item * L<Catalyst::Test>
-
-=item * L<Catalyst::Helper>
-
-=back
-
 =head1 AUTHOR
 
     Maroš Kollár

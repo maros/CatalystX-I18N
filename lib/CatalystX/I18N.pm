@@ -76,9 +76,9 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
      my ($self,$c) = @_;
      
      $c->stash->{title} = $c->maketext('Hello world!');
-     $c->stash->{location} = $c->geocode->name;
+     $c->stash->{location} = $c->i18n_geocode->name;
      $c->stash->{language} = $c->language;
-     $c->stash->{localtime} = $c->datetime_format_datetime->format_datetime(DateTime->now);
+     $c->stash->{localtime} = $c->i18n_datetime_format_date->format_datetime(DateTime->now);
  }
 
 =head1 DESCRIPTION

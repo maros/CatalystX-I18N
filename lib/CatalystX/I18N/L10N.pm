@@ -32,6 +32,16 @@ sub load_lexicon {
         && scalar @$locales > 0
         && ! grep {  $_ !~ /^([a-z]{2})(_[A-Z]{2})?$/ } @$locales;
     
+    {
+        no strict 'refs';
+        my $lexicon_loaded = ${$class.'::LEXICON_LOADED'};
+        if (defined $lexicon_loaded
+            && $lexicon_loaded == 1) {
+            warn "Lexicon has already been loaded for $class";
+            return;
+        }
+    }
+    
     my $lexicondata = {
         _decode => 1,
     };
@@ -98,6 +108,7 @@ sub load_lexicon {
     
     eval qq[
         package $class;
+        our \$LEXICON_LOADED = 1;
         Locale::Maketext::Lexicon->import(\$lexicondata)
     ];
     

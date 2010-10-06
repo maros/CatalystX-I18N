@@ -96,6 +96,8 @@ __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 no Moose;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::Model::L10N - Glues CatalystX::I18N::L10N into Catalyst

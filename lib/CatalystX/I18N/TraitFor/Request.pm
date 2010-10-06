@@ -117,6 +117,8 @@ sub _build_client_country {
 no Moose::Role;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::TraitFor::Request - Adds various I18N methods to a Catalyst::Request object

@@ -140,6 +140,8 @@ sub load_lexicon {
 
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::L10N - Wrapper around Locale::Maketext

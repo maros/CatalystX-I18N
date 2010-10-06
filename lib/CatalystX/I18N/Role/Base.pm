@@ -154,6 +154,8 @@ after setup_finalize => sub {
 no Moose::Role;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::Role::Base - Basic catalyst I18N support

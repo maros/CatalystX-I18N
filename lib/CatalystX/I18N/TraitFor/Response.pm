@@ -18,6 +18,8 @@ sub content_language {
 no Moose::Role;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::TraitFor::Response - Adds the Content-Language header to a Catalyst::Respose object

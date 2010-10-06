@@ -62,6 +62,8 @@ after 'set_locale' => sub {
 no Moose::Role;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::Role::NumberFormat - Support for I18N number formating

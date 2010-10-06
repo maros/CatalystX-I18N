@@ -35,6 +35,8 @@ sub mk_comptest {
     $helper->render_file('modeltest', $helper->{test});
 }
 
+=encoding utf8
+
 =head1 NAME
 
 Catalyst::Helper::Model::L10N - Helper for L10N models

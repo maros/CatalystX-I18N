@@ -11,6 +11,8 @@ our $AUTHORITY = 'cpan:MAROS';
 
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N - Catalyst internationalisation (I18N) framework

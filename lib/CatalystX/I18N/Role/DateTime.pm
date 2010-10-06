@@ -131,6 +131,8 @@ sub _build_i18n_datetime_format_datetime {
 no Moose::Role;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::Role::DateTime - Support for I18N datetime

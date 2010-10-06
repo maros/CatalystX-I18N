@@ -142,6 +142,8 @@ sub get_locale {
 no Moose::Role;
 1;
 
+=encoding utf8
+
 =head1 NAME
 
 CatalystX::I18N::Role::GetLocale - Tries to determine the current users locale

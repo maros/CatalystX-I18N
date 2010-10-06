@@ -15,7 +15,7 @@ foreach (all_pod_files()) {
     push @files,$_;
 }
 
-my @required_heads=qw(NAME SYNOPSIS DESCRIPTION METHODS AUTHOR LICENSE COPYRIGHT);
+my @required_heads=qw(NAME SYNOPSIS DESCRIPTION METHODS AUTHOR);
 
 plan tests => scalar @files * scalar @required_heads;
 

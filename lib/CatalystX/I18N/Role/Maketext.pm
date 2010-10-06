@@ -3,13 +3,6 @@ package CatalystX::I18N::Role::Maketext;
 # ============================================================================
 
 use Moose::Role;
-#requires 'l10nhandle';
-
-=head3 maketext
-
- my $msgstr_localized = $c->maketext($msgid[,@parameters]);
-
-=cut
 
 sub maketext {
     my ($c,$msgid,@args) = @_;
@@ -36,7 +29,8 @@ sub maketext {
         }
         return $method;
     };
-        
+    
+    # TODO: use gettext/maketext style
     $msgstr = $msgid;
     $msgstr =~s{%(\d+)}{ $args[$1-1] // 'missing value %'.$1 }eg;
     $msgstr =~s/%(\w+)\(([^)]+)\)/$replacesub->($1,$2)/eg;

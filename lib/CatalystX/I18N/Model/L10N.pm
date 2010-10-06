@@ -74,8 +74,6 @@ sub new {
         $self->log->warn(sprintf("'%s' does not implement a 'load_lexicon' method",$class))
     }
     
-
-    
     return $self;
 }
 

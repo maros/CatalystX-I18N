@@ -129,6 +129,62 @@ Wrapper arround L<Locale::Maketext>. Can also be used outside of Catalyst.
 
 =back
 
+=head1 CONFIGURATION
+
+In order to work properly, CatalystX::I18N will need find some values in your
+Catalyst configuration
+
+ __PACKAGE__->config( 
+     name    => 'MyApp', 
+     I18N    => {
+         default_locale     => 'de_AT',
+         locales            => {
+             'de'               => {
+                 inactive           => 1,
+                 # Mark this locale as inactive. 
+                 ...
+                 # Arbitrary configuration parameters
+             },
+             'de_AT'            => {
+                 inherits           => 'de',
+                 # Inherit all settings form locale 'de'
+                 ...
+             },
+         }
+     },
+ );
+
+The configuration must be stored under the key C<I18N>. It should contain
+a hash of C<locales> and optionally a default locale (C<default_locale>).
+
+Locales can be marked as C<inactive>. Inactive locales will not be selected
+by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
+
+Locales can inherit from other locales (C<inherits>). All configuration values
+from inherited locales will be copied, and add if you use 
+L<CatalystX::I18N::Model::L10N> together with L<CatalystX::I18N::L10N> the
+generated lexicons will also inherit in the given order.
+
+Additional configuration values are defined by the various 
+CatalystX::I18N::Role::Maketext::* plugins.
+
+=head1 EXTENDING
+
+Extending the functionality of the CatalystX::I18N distribution is easy.
+
+E.g. writing a new plugin that does some processing when the locale changes
+
+ package CatalystX::MyI18N::Plugin;
+ use Moose::Role;
+ 
+ after 'set_locale' => sub {
+     my ($c,$locale) = @_;
+     $c->do_someting($locale);
+ };
+ 
+ no Moose::Role;
+ 1;
+
 =head1 SEE ALSO
 
 L<Locale::Maketext>, <Locale::Maketext::Lexicon>,

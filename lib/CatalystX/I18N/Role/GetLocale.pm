@@ -158,7 +158,7 @@ CatalystX::I18N::Role::GetLocale - Tries to determine the current users locale
  use warnings;
  use parent qw/Catalyst::Controller/;
  
- sub auto : Privat { # Auto method will always be called first
+ sub auto : Private { # Auto method will always be called first
      my ($self,$c) = @_;
      $c->get_locale();
  }
@@ -195,7 +195,6 @@ L<CatalystX::I18N::Role::Base> is loaded.
 Tries to fetch the locale from the user object (via 
 L<$c-E<gt>user-E<gt>locale>)
 
-
 =head3 get_locale_from_session
 
 Tries to fetch the locale from the current session.
@@ -203,7 +202,7 @@ Tries to fetch the locale from the current session.
 =head3 get_locale_from_user
 
 Tries to fetch the locale from the user object (via 
-L<$c-E<gt>user-E<gt>locale>)
+L<$c-E<gt>user-E<gt>locale>).
 
 =head3 check_locale
 

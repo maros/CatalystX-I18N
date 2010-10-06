@@ -171,26 +171,31 @@ You need to subclass this package in your project in order to use it.
  );
 
 This method will search the given directories and load all available L10N
-files for the requested locales via
+files for the requested locales
 
 =over
 
-=item * Locale::Maketext::Lexicon::Gettext 
+=item * *.mo, *.po
 
-for *.mo and *.po files
+via L<Locale::Maketext::Lexicon::Gettext>
 
-=item * Locale::Maketext::Lexicon::Tie 
+=item * *.db
 
-for *.db files. The files will be tied to you L10N class, thus you need to
-implement the necessary tie methods in your class.
+via L<Locale::Maketext::Lexicon::Tie> The files will be tied to you L10N 
+class, thus you need to implement the necessary tie methods in your class.
 
-=item * Locale::Maketext::Lexicon::Msgcat 
+=item * *.m
 
-for *.m files
+via L<Locale::Maketext::Lexicon::Msgcat>
 
-=item * Locale::Maketext::Lexicon::Slurp 
+=item * Directories
 
-for sub directories
+via L<Locale::Maketext::Lexicon::Slurp>
+
+=item * Perl Packages
+
+Will be loaded (only lowercase locale names e.g. locale 'de_AT' will only 
+load 'de_at.pm'). The packages must have a C<%Lexion> variable. 
 
 =back
 
@@ -203,7 +208,7 @@ The folowing parameters are recognized/required
 
 =item * locales
 
-Array reference of locales. 
+Array reference of locales.
 
 Required
 
@@ -221,7 +226,9 @@ L<[quant,_1,document,documents]>
 
 Optional, Default TRUE
 
-=item * inherit
+=item * inheritance
+
+Set inheritance (e.g. 'en_US' inherits from 'en')
 
 =back
 

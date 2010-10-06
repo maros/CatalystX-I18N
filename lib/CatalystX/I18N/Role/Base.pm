@@ -208,7 +208,7 @@ Returns the language part of the current locale
 
 =head3 territory
 
-Returns the territory part of the current locale (if any)
+Returns the territory part of the current locale
 
 =head3 i18n_config
 
@@ -216,7 +216,7 @@ Returns the (cloned) I18N config hash for the current locale.
 
 =head3 i18n_geocode
 
- my $lgt = $c->i18n_geodcode
+ my $lgt = $c->i18n_geocode
  say $lgt->name;
 
 Returns a L<Locale::Geocode::Territory> object for the current territory.

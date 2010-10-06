@@ -36,7 +36,7 @@ CatalystX::I18N::TraitFor::Response - Adds the Content-Language header to a Cata
 
 This role simply adds the 'Content-Language' header to your response.
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 content_language
 

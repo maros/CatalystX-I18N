@@ -127,16 +127,16 @@ sub load_lexicon {
     return;
 }
 
-sub set_lexicon {
-    my ( $class, $locale, $lexicon ) = @_;
-    
-    $locale = lc($locale);
-    $locale =~ s/-/_/g;
-        
-    no strict 'refs';
-    %{$class .'::'.$locale.'::Lexicon'} = %{$lexicon};
-    return;
-}
+#sub set_lexicon {
+#    my ( $class, $locale, $lexicon ) = @_;
+#    
+#    $locale = lc($locale);
+#    $locale =~ s/-/_/g;
+#        
+#    no strict 'refs';
+#    %{$class .'::'.$locale.'::Lexicon'} = %{$lexicon};
+#    return;
+#}
 
 1;
 

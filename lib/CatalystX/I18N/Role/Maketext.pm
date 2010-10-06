@@ -71,12 +71,13 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
      
      $c->stash->{results} = $c->maketext('Your search found %quant(%1,result,results)',$count);
  }
+
 =head1 DESCRIPTION
 
 This role adds support for L<Locale::Maketext> localization via the
 L<CatalystX::I18N::Model::L10N> model.
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 maketext
 

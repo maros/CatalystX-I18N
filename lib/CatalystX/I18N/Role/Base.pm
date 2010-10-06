@@ -182,7 +182,7 @@ CatalystX::I18N::Role::Base - Basic catalyst I18N support
 This role is needed by all other roles and provides basic I18N support for
 Catalyst.
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 locale
 
@@ -201,6 +201,10 @@ Get/set the current locale. Changing this value has some side-effects:
 =item * Sets the 'Content-Language' response header (if L<CatalystX::I18N::TraitFor::Response> has been loaded)
 
 =back
+
+=head3 set_locale
+
+Same as C<$c-E<GT>locale($locale);>.
 
 =head3 language
 

@@ -58,7 +58,12 @@ sub get_locale_from_browser  {
                 if $c->check_locale($locale);
         }
         # Strip territory/variant part
-        $languages = [ map { s/_[A-Za-z]{2}//; lc($_) } @$languages ];
+        $languages = [ map { 
+            my $element = $_;
+            $element =~ s/_[A-Za-z]{2}//; 
+            lc($element);
+            $element 
+        } @$languages ];
     }
     
     $languages ||= [];
@@ -102,7 +107,7 @@ sub get_locale_from_browser  {
     if (defined $languages) {
         foreach my $language (@$languages) {
             foreach my $locale (keys %$locale_config) {
-                if ($locale =~ /^${language}_[A-Z]{2}/) {
+                if ($locale =~ m/^${language}_[A-Z]{2}/) {
                     return $locale;
                 }
             }
@@ -162,12 +167,13 @@ CatalystX::I18N::Role::GetLocale - Tries to determine the current users locale
      my ($self,$c) = @_;
      $c->get_locale();
  }
+
 =head1 DESCRIPTION
 
 This role provides many methods to retrieve/guess the best locale for the
 current user.
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 get_locale
 

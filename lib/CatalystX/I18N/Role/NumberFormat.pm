@@ -85,6 +85,7 @@ CatalystX::I18N::Role::NumberFormat - Support for I18N number formating
      
      $c->stash->{total} = $c->i18n_numberformat->format_price(102.34);
  }
+
 =head1 DESCRIPTION
 
 This role add support for localized numbers to your Catalyst application.
@@ -92,7 +93,7 @@ This role add support for localized numbers to your Catalyst application.
 All methods are lazy. This means that the values will be only calculated
 upon the first call of the method.
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 i18n_numberformat
 

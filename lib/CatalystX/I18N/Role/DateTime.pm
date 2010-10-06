@@ -154,6 +154,7 @@ CatalystX::I18N::Role::DateTime - Support for I18N datetime
      
      $c->stash->{timestamp} = $c->datetime_format_date->format_datetime($datetime);
  }
+
 =head1 DESCRIPTION
 
 This role add support for localized datetime to your Catalyst application.
@@ -179,7 +180,7 @@ can be overdriven in your Catalyst I18N configuration:
      },
  );
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 i18n_datetime_today
 

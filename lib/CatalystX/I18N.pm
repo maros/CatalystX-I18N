@@ -9,7 +9,7 @@ use version;
 our $VERSION = version->new('1.00');
 our $AUTHORITY = 'cpan:MAROS';
 
-
+1;
 
 =head1 NAME
 

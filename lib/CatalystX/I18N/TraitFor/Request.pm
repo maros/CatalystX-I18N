@@ -86,7 +86,7 @@ sub _build_browser_territory {
     
     my $territory = uc($self->browser_detect()->country());
     
-    return undef
+    return
         if ! $territory || $territory eq '**';
     
     return lc($territory);
@@ -110,7 +110,7 @@ sub _build_client_country {
 
     my $country = $ip_country->inet_atocc($ip_address);
     
-    return undef
+    return
         if ! $country || $country eq '**';
 }
 
@@ -139,7 +139,7 @@ a users language and locale.
 All methods are lazy. This means that the values will be only calculated
 upon the first call of the method.
 
-=head1 MEDTHODS
+=head1 METHODS
 
 =head3 accept_language
 

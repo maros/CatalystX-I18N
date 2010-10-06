@@ -102,6 +102,11 @@ after setup_finalize => sub {
     my $config = $app->config->{I18N};
     my $locales = $config->{locales} ||= {};
     
+    my $locale_type_constraint = $app
+        ->meta
+        ->get_attribute('locale')
+        ->type_constraint;
+    
     # Build inheritance tree
     my (%tree,$changed);
     $changed = 1;
@@ -111,7 +116,13 @@ after setup_finalize => sub {
             next
                 if exists $tree{$locale};
             my $locale_config = $locales->{$locale};
+            my $locale_inactive = $locale_type_constraint->check($locale) ? 0:1;
             $locale_config->{inactive} //= 0;
+            if ($locale_config->{inactive} != $locale_inactive) {
+                $app->log->warn(sprintf("Locale '%s' has been set inactive because it does not match '[a-z]{2}_[A-Z]{2}'",$locale));
+                $locale_config->{inactive} = 1;
+            }
+            
             unless (exists $locale_config->{inherits}) {
                 $locale_config->{_inherits} = [];
                 $tree{$locale} = $locale_config;

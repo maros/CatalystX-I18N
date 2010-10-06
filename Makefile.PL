@@ -31,6 +31,7 @@ requires        'DateTime::TimeZone'                    => 0;
 
 requires        'IP::Country::Fast'                     => 0;
 requires        'HTTP::BrowserDetect'                   => '1.09';
+requires        'Number::Format'                        => 0;
 
 build_requires  'Test::Most'                            => 0;
 build_requires  'Test::WWW::Mechanize::Catalyst'        => 0;

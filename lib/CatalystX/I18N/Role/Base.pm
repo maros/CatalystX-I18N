@@ -107,6 +107,12 @@ after setup_finalize => sub {
         ->get_attribute('locale')
         ->type_constraint;
     
+    my $default_locale = $config->{default_locale};
+    if (defined $default_locale
+        && ! $locale_type_constraint->check($default_locale)) {
+        Catalyst::Exception->throw(sprintf("Default locale '%s' does not match '[a-z]{2}_[A-Z]{2}'",$default_locale));
+    }
+    
     # Build inheritance tree
     my (%tree,$changed);
     $changed = 1;

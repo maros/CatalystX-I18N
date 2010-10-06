@@ -55,7 +55,7 @@ sub test4 : Local Args(0) {
                 date            => $c->i18n_datetime_now->dmy,
                 locale          => $c->i18n_datetime_now->locale->name,
                 time            => $c->i18n_datetime_now->hms,
-                timezone        => $c->i18n_datetime_now->time_zone_long_name,
+                timezone        => $c->i18n_timezone->name,
             },
             request         => {
                 accept_language     => $request->accept_language,
@@ -85,5 +85,26 @@ sub test5 : Local Args(1) {
         }
     ]);
 }
+
+sub test6 : Local Args(0) {
+    my ($self,$c) = @_;
+    
+    my $response = {};
+    my $locale_config = $c->config->{I18N}{locales};
+    while (my ($locale,$config) = each %$locale_config) {
+        next
+            if $config->{inactive} == 1;
+        $c->locale($locale);
+        $response->{$locale} = {
+            timezone    => $c->i18n_timezone->name,
+        };
+    }
+    
+    
+    $c->detach('TestApp::View::Test',[
+        $response
+    ]);
+}
+
 1;
 

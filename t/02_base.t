@@ -2,7 +2,8 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>41;
+use Test::Most tests=>44+1;
+use Test::NoWarnings;
 
 use lib qw(t/);
 use testlib;
@@ -73,4 +74,23 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{4},'string4 fr_CH 4 lapins','String 4 for fr_CH ok');
     is($response->{translation}{5},'string5','String 5 for fr_CH ok');
     is($response->{translation}{6},'string6','String 6 for fr_CH ok');
+}
+
+# Test 6
+{
+    my $response = request($mech,'/base/test6');
+    cmp_deeply($response,{
+       'de_AT' => {
+         'timezone' => 'Europe/Vienna'
+       },
+       'de_CH' => {
+         'timezone' => 'Europe/Zurich'
+       },
+       'de_DE' => {
+         'timezone' => 'Europe/Berlin'
+       },
+       'fr_CH' => {
+         'timezone' => 'Europe/Zurich'
+       }
+    },'Multiple locales ok');
 }

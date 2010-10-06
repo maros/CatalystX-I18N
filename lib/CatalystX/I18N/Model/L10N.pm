@@ -60,7 +60,9 @@ sub new {
             push(@locales,$locale);
             $inhertiance{$locale} = $config->{$locale}{inherits}
                 if defined $config->{$locale}{inherits};
+            
         }
+        $app->log->debug(sprintf("Loading L10N lexicons for locales %s",join(',',@locales)));
         $class->load_lexicon( 
             locales             => \@locales, 
             directories         => $self->directories,

@@ -1,4 +1,9 @@
 Revision history for Perl module CatalystX::I18N
 
+1.01 Wed Oct 06 2010
+    - Added missing dependencies
+    - Better handling of default locales
+    - Language-only locales are also accepted
+
 1.00 Wed Oct 06 2010
     - original version

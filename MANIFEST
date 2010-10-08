@@ -15,6 +15,7 @@ lib/Catalyst/Helper/Model/L10N.pm
 lib/CatalystX/I18N.pm
 lib/CatalystX/I18N/L10N.pm
 lib/CatalystX/I18N/Model/L10N.pm
+lib/CatalystX/I18N/Role/All.pm
 lib/CatalystX/I18N/Role/Base.pm
 lib/CatalystX/I18N/Role/DateTime.pm
 lib/CatalystX/I18N/Role/GetLocale.pm

@@ -25,7 +25,7 @@ requires        'Locale::Maketext'                      => 0;
 requires        'Locale::Geocode'                       => 0;
 
 requires        'DateTime'                              => 0;
-requires        'DateTime::Locale'                      => 0;
+requires        'DateTime::Locale'                      => '0.40';
 requires        'DateTime::Format::CLDR'                => 0;
 requires        'DateTime::TimeZone'                    => 0;
 

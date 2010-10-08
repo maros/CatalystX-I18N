@@ -6,7 +6,7 @@ use Moose;
 use 5.010;
 
 use version;
-our $VERSION = version->new('1.00');
+our $VERSION = version->new('1.01');
 our $AUTHORITY = 'cpan:MAROS';
 
 1;

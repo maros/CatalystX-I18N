@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>44+1;
+use Test::Most tests=>48+1;
 use Test::NoWarnings;
 
 use lib qw(t/);
@@ -15,29 +15,24 @@ $mech->{catalyst_debug} = 1;
 # Test 1
 {
     my $response = request($mech,'/base/test1');
-    is($response->{locale},'en_US','Default locale');
-    is($response->{locale},'en_US','Default locale');
+    is($response->{default_locale},'de_AT','Default locale');
+    is($response->{locale},'de_CH','Current locale');
+    
 }
 
 # Test 2
 {
+    $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
     my $response = request($mech,'/base/test2');
-    is($response->{locale},'de_AT','Session locale');
+    is($response->{browser},'fr_CH','Browser locale');
+    is($response->{session},'de_CH','Session locale');
+    is($response->{user},undef,'User locale');
 }
 
 # Test 3
 {
     $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
     my $response = request($mech,'/base/test3');
-    is($response->{browser},'fr_CH','Browser locale');
-    is($response->{session},'de_AT','Session locale');
-    is($response->{user},undef,'User locale');
-}
-
-# Test 4
-{
-    $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
-    my $response = request($mech,'/base/test4');
     is($response->{datetime}{locale},'German Austria','DateTime locale');
     is($response->{datetime}{timezone},'Europe/Vienna','DateTime timezone');
     is($response->{locale},'de_AT','Locale');
@@ -46,9 +41,9 @@ $mech->{catalyst_debug} = 1;
     is($response->{number_format},'++EUR  27,03','Browser language');
 }
 
-# Test 5a
+# Test 4a
 {
-    my $response = request($mech,'/base/test5/de_AT');
+    my $response = request($mech,'/base/test4/de_AT');
     is($response->{locale},'de_AT','Locale');
     is($response->{translation}{1},'string1 de_AT','String 1 for de_AT ok');
     is($response->{translation}{4},'string4 de_AT 4 hasen','String 4 for de_AT ok');
@@ -56,9 +51,9 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for de_AT ok');
 }
 
-# Test 5b
+# Test 4b
 {
-    my $response = request($mech,'/base/test5/de_CH');
+    my $response = request($mech,'/base/test4/de_CH');
     is($response->{locale},'de_CH','Locale');
     is($response->{translation}{1},'string1 de','String 1 for de_CH ok');
     is($response->{translation}{4},'string4 de 4 hasen','String 4 for de_CH ok');
@@ -66,9 +61,9 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for de_CH ok');
 }
 
-# Test 5c
+# Test 4c
 {
-    my $response = request($mech,'/base/test5/fr_CH');
+    my $response = request($mech,'/base/test4/fr_CH');
     is($response->{locale},'fr_CH','Locale');
     is($response->{translation}{1},'string1 fr_CH','String 1 for fr_CH ok');
     is($response->{translation}{4},'string4 fr_CH 4 lapins','String 4 for fr_CH ok');
@@ -76,9 +71,19 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for fr_CH ok');
 }
 
-# Test 6
+# Test 4d
 {
-    my $response = request($mech,'/base/test6');
+    my $response = request($mech,'/base/test4/fr');
+    is($response->{locale},'fr','Locale');
+    is($response->{translation}{1},'string1','String 1 for fr ok');
+    is($response->{translation}{4},'string4','String 4 for fr ok');
+    is($response->{translation}{5},'string5','String 5 for fr ok');
+    is($response->{translation}{6},'string6','String 6 for fr ok');
+}
+
+# Test 5
+{
+    my $response = request($mech,'/base/test5');
     cmp_deeply($response,{
        'de_AT' => {
          'timezone' => 'Europe/Vienna'
@@ -91,6 +96,9 @@ $mech->{catalyst_debug} = 1;
        },
        'fr_CH' => {
          'timezone' => 'Europe/Zurich'
+       },
+       'fr' => {
+         'timezone' => 'floating',
        }
     },'Multiple locales ok');
 }

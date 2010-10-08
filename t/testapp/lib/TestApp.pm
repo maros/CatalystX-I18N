@@ -35,7 +35,6 @@ TestApp->config(
                 positive_sign           => '++',
             },
             'fr'                    => {
-                inactive                => 1,
                 format_date             => 'd MMM y',
                 format_datetime         => 'd MMM y a HH:mm',
             },

@@ -8,26 +8,21 @@ use parent qw/Catalyst::Controller/;
 sub test1 : Local Args(0) {
     my ($self,$c) = @_;
     
+    # Clear session from last test-run
+    delete $c->session->{i18n_locale};
+    
+    my $default_locale = $c->locale;
+    $c->locale('de_CH');
+    
     $c->detach('TestApp::View::Test',[
         {
-            locale  => $c->locale,
+            default_locale  => $default_locale,
+            locale          => $c->locale,
         }
     ]);
 }
 
 sub test2 : Local Args(0) {
-    my ($self,$c) = @_;
-    
-    my $locale = $c->get_locale();
-    
-    $c->detach('TestApp::View::Test',[
-        {
-            locale      => $locale,
-        }
-    ]);
-}
-
-sub test3 : Local Args(0) {
     my ($self,$c) = @_;
     
     $c->detach('TestApp::View::Test',[
@@ -39,15 +34,17 @@ sub test3 : Local Args(0) {
     ]);
 }
 
-sub test4 : Local Args(0) {
+sub test3 : Local Args(0) {
     my ($self,$c) = @_;
     
     my $locale = $c->get_locale();
+    $c->set_locale('de_AT');
     my $request = $c->request;
     
     $c->detach('TestApp::View::Test',[
         {
-            locale          => $locale,
+            get_locale      => 'de_CH',
+            locale          => 'de_AT',
             locale_from_c   => $c->locale,
             territory       => $c->territory,
             language        => $c->language,
@@ -69,7 +66,7 @@ sub test4 : Local Args(0) {
     ]);
 }
 
-sub test5 : Local Args(1) {
+sub test4 : Local Args(1) {
     my ($self,$c,$locale) = @_;
     
     $c->locale($locale);
@@ -86,7 +83,7 @@ sub test5 : Local Args(1) {
     ]);
 }
 
-sub test6 : Local Args(0) {
+sub test5 : Local Args(0) {
     my ($self,$c) = @_;
     
     my $response = {};

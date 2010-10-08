@@ -79,9 +79,6 @@ sub _build_i18n_datetime_timezone {
 sub _build_i18n_datetime_locale {
     my ($c) = @_;
     
-    carp('No locale set')
-        unless $c->has_locale;
-    
     $c->_clear_i18n_datetime_format_date();
     $c->_clear_i18n_datetime_format_datetime();
     

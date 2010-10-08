@@ -16,7 +16,7 @@ subtype 'CatalystX::I18N::Type::Territory'
 
 subtype 'CatalystX::I18N::Type::Locale'
     => as 'Str'
-    => where { m/^[a-z]{2}_[A-Z]{2}$/ };
+    => where { m/^[a-z]{2}(_[A-Z]{2})?$/ };
 
 subtype 'CatalystX::I18N::Type::Language'
     => as 'Str'
@@ -37,7 +37,6 @@ coerce 'CatalystX::I18N::Type::DirList'
     => via { 
         [ $_ ]
     };
-    
 
 subtype 'CatalystX::I18N::Type::DateTimeTimezone' 
     => as class_type('DateTime::TimeZone');

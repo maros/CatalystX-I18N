@@ -8,13 +8,30 @@ use CatalystX::I18N::TypeConstraints;
 use Clone qw(clone);
 use POSIX qw(locale_h);
 
+our $LOCALE_RE = qr/^(?<language>[a-z]{2})(_(?<territory>[A-Z]{2}))?$/;
+
 has 'locale' => (
     is          => 'rw',
     isa         => 'CatalystX::I18N::Type::Locale',
-    default     => 'en_US',
+    lazy_build  => 1,
+    builder     => '_build_default_locale',
+    predicate   => 'has_locale',
     trigger     => sub { shift->set_locale(@_) },
-    predicate   => 'has_locale'
 );
+
+sub _build_default_locale {
+    my ($c) = @_;
+    
+    my $locale;
+    if (defined $c->config->{I18N}{default_locale}) {
+        $locale = $c->config->{I18N}{default_locale}
+    } else {
+        $locale = 'en';
+    }
+    $c->set_locale($locale);
+    
+    return $locale;
+}
 
 sub i18n_config {
     my ($c) = @_;
@@ -49,7 +66,7 @@ sub language {
         unless $self->has_locale();
     
     return 
-        unless $self->locale =~ /^(?<language>[a-z]{2})_(?<territory>[A-Z]{2})(\..+)/;
+        unless $self->locale =~ $LOCALE_RE;
     
     return lc($+{language});
 }
@@ -61,7 +78,10 @@ sub territory {
         unless $self->has_locale();
     
     return 
-        unless $self->locale =~ /^(?<language>[a-z]{2})_(?<territory>[A-Z]{2})(\..+)/;
+        unless $self->locale =~ $LOCALE_RE;
+    
+    return
+        unless $+{territory};
     
     return lc($+{territory});
 }
@@ -70,14 +90,16 @@ sub set_locale {
     my ($c,$value) = @_;
     
     return 
-        unless $value =~ /^(?<language>[a-zA-Z]{2})_(?<territory>[a-zA-Z]{2})(\..+)?/;
-        
+        unless $value =~ $LOCALE_RE;
+    
     my $language = lc($+{language});
     my $territory = uc($+{territory});
-    my $locale = $language.'_'.$territory;
+    my $locale = lc($language);
+    $locale .= '_'.uc($territory)
+        if defined $territory && $territory ne '';
     
-    return 
-        unless exists $c->config->{I18N}{locales}{$locale};
+    #return 
+    #    unless exists $c->config->{I18N}{locales}{$locale};
     
     # Set posix locale
     setlocale( &POSIX::LC_ALL, $locale );
@@ -87,12 +109,15 @@ sub set_locale {
         if $c->response->can('content_language');
     
     # Save locale in session
-    $c->session->{i18n_locale} = $locale
-        if ($c->can('session'));
+    if ($c->can('session')) {
+        $c->session->{i18n_locale} = $locale
+    }
     
     # Set locale
-    $c->meta->get_attribute('locale')->set_value($locale)
-        unless $c->locale eq $locale;
+    my $meta_attribute = $c->meta->get_attribute('locale');
+    $meta_attribute->set_raw_value($c,$locale)
+        if ! $meta_attribute->has_value($c)
+        || $meta_attribute->get_raw_value($c) ne $locale;
 }
 
 after setup_finalize => sub {
@@ -110,7 +135,7 @@ after setup_finalize => sub {
     my $default_locale = $config->{default_locale};
     if (defined $default_locale
         && ! $locale_type_constraint->check($default_locale)) {
-        Catalyst::Exception->throw(sprintf("Default locale '%s' does not match '[a-z]{2}_[A-Z]{2}'",$default_locale));
+        Catalyst::Exception->throw(sprintf("Default locale '%s' does not match %s",$default_locale,$LOCALE_RE));
     }
     
     # Build inheritance tree
@@ -124,8 +149,9 @@ after setup_finalize => sub {
             my $locale_config = $locales->{$locale};
             my $locale_inactive = $locale_type_constraint->check($locale) ? 0:1;
             $locale_config->{inactive} //= 0;
-            if ($locale_config->{inactive} != $locale_inactive) {
-                $app->log->warn(sprintf("Locale '%s' has been set inactive because it does not match '[a-z]{2}_[A-Z]{2}'",$locale));
+            if ($locale_config->{inactive} == 0
+                && $locale_config->{inactive} != $locale_inactive) {
+                $app->log->warn(sprintf("Locale '%s' has been set inactive because it does not match %s",$locale,$LOCALE_RE));
                 $locale_config->{inactive} = 1;
             }
             

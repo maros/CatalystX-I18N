@@ -38,7 +38,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{locale},'de_AT','Locale');
     is($response->{locale_from_c},'de_AT','Locale from $c');
     is($response->{request}{browser_language},'fr','Browser language');
-    is($response->{number_format},'++EUR  27,03','Browser language');
+    like($response->{number_format},qr/^\+\+EUR\s+27,03$/,'Browser language');
 }
 
 # Test 4a

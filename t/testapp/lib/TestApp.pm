@@ -42,6 +42,7 @@ TestApp->config(
                 timezone                => 'Europe/Vienna',
                 inherits                => 'de',
                 format_datetime         => 'dd.MM.yyyy uma HH:mm',
+                mon_decimal_point       => ',',
             },
             'de_DE'                 => {
                 inherits                => 'de',

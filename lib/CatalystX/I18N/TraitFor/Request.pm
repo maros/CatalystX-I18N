@@ -58,7 +58,7 @@ sub _build_accept_language {
         sort { $b->[1] <=> $a->[1] }
         map {
             my @tmp = split( /;\s*q=/, $_ );
-            $tmp[1] //= 1;
+            $tmp[1] ||= 1;
             \@tmp;
             
         } @accepted_languages;

@@ -4,7 +4,6 @@ package CatalystX::I18N::L10N;
 
 use strict;
 use warnings;
-use 5.010;
 
 use parent qw(Locale::Maketext);
 
@@ -17,8 +16,8 @@ sub load_lexicon {
 
     my $locales = $params{locales} || [];
     my $directories = $params{directories};
-    my $gettext_style = $params{gettext_style} // 1;
-    my $inheritance = $params{inheritance} // {};
+    my $gettext_style = defined $params{gettext_style} ? $params{gettext_style} : 1;
+    my $inheritance = $params{inheritance} || {};
     
     $directories = [ $directories ]
         if defined $directories
@@ -73,22 +72,18 @@ sub load_lexicon {
                     push(@locale_lexicon,'Slurp',$content->stringify)
                         if $content->basename eq $locale;
                 } else {
-                    given ($content->basename) {
-                        when(m/^$locale\.(mo|po)$/i) {
-                            push(@locale_lexicon,'Gettext',$content->stringify);
-                        }
-                        when(m/^$locale\.m$/i) {
-                            push(@locale_lexicon,'Msgcat',$content->stringify);
-                        }
-                        when(m/^$locale\.db$/i) {
-                            push(@locale_lexicon,'Tie',[ $class, $content->stringify ]);
-                        }
-                        when(m/^$lc_locale\.pm$/) {
-                            $locale_loaded{$locale} = 1;
-                            require $content->stringify;
-                            # TODO transform maketext -> gettext syntax if flag is set
-                            # Locale::Maketext::Lexicon::Gettext::_gettext_to_maketext
-                        }
+                    my $filename = $content->basename;
+                    if ($filename =~ m/^$locale\.(mo|po)$/i) {
+                        push(@locale_lexicon,'Gettext',$content->stringify);
+                    } elsif ($filename =~ m/^$locale\.m$/i) {
+                        push(@locale_lexicon,'Msgcat',$content->stringify);
+                    } elsif($filename =~ m/^$locale\.db$/i) {
+                        push(@locale_lexicon,'Tie',[ $class, $content->stringify ]);
+                    } elsif ($filename =~ m/^$lc_locale\.pm$/) {
+                        $locale_loaded{$locale} = 1;
+                        require $content->stringify;
+                        # TODO transform maketext -> gettext syntax if flag is set
+                        # Locale::Maketext::Lexicon::Gettext::_gettext_to_maketext
                     }
                 }
             }

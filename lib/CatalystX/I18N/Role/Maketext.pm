@@ -32,7 +32,7 @@ sub maketext {
     
     # TODO: use gettext/maketext style
     $msgstr = $msgid;
-    $msgstr =~s{%(\d+)}{ $args[$1-1] // 'missing value %'.$1 }eg;
+    $msgstr =~s{%(\d+)}{ $args[$1-1] || 'missing value %'.$1 }eg;
     $msgstr =~s/%(\w+)\(([^)]+)\)/$replacesub->($1,$2)/eg;
     
     return $msgstr;

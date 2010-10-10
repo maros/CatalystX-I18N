@@ -10,7 +10,7 @@ all_from        $from;
 readme_from     $from;
 readme_markdown_from $from;
 
-perl_version    '5.010';
+perl_version    '5.008';
 
 # Specific dependencies
 requires        'Catalyst::Runtime'                     => '5.80004';

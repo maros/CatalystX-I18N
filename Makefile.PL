@@ -36,6 +36,9 @@ requires        'Number::Format'                        => 0;
 build_requires  'Test::Most'                            => 0;
 build_requires  'Test::WWW::Mechanize::Catalyst'        => 0;
 build_requires  'JSON::Any'                             => 0;
+build_requires  'Catalyst::Plugin::Session'             => 0;
+build_requires  'Catalyst::Plugin::Session::State::Cookie'=> 0;
+build_requires  'Catalyst::Plugin::Session::Store::File'=> 0;
 
 author_requires 'Test::Pod'                             => '1.14';
 author_requires 'Test::Pod::Coverage'                   => '1.04';

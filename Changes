@@ -1,5 +1,11 @@
 Revision history for Perl module CatalystX::I18N
 
+1.02 Sun Oct 10 2010
+    - Added missing dependencies
+    - Better handling of default locales
+    - 'All' role for loading all available roles and traits
+    - Required perl version 5.010 -> 5.008
+
 1.01 Wed Oct 06 2010
     - Added missing dependencies
     - Better handling of default locales

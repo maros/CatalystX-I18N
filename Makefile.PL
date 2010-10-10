@@ -16,8 +16,9 @@ perl_version    '5.008';
 requires        'Catalyst::Runtime'                     => '5.80004';
 requires        'Moose'                                 => 0;
 
-requires        'Clone'                                 => 0;
+requires        'Path::Class'                           => 0;
 requires        'MooseX::Types::Path::Class'            => 0; 
+requires        'Clone'                                 => 0;
 requires        'CatalystX::RoleApplicator'             => 0;
 
 requires        'Locale::Maketext::Lexicon'             => 0;

@@ -6,6 +6,7 @@ use Moose;
 extends 'Catalyst::Model';
 
 use CatalystX::I18N::TypeConstraints;
+use Path::Class;
 
 has 'class' => (
     is          => 'rw', 

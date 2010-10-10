@@ -3,9 +3,7 @@ package CatalystX::I18N::Meta::Role;
 # ============================================================================
 
 use Moose;
-
 extends 'Moose::Meta::Role';
-use namespace::autoclean;
 
 before 'apply' => sub {
     my ($self,$thing) = @_;
@@ -29,4 +27,6 @@ before 'apply' => sub {
     }
 };
 
+__PACKAGE__->meta->make_immutable();
+no Moose;
 1;

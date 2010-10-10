@@ -1,6 +1,7 @@
 package TestApp;
 
 use strict;
+use warnings;
 use Catalyst qw/
     Session
     Session::Store::File 
@@ -13,7 +14,7 @@ use Catalyst qw/
 #    +CatalystX::I18N::Role::Maketext
 #    +CatalystX::I18N::Role::GetLocale
 #    +CatalystX::I18N::Role::NumberFormat
-use CatalystX::RoleApplicator;
+#use CatalystX::RoleApplicator;
 
 #__PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
 #__PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);

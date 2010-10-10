@@ -22,14 +22,8 @@ has 'locale' => (
 sub _build_default_locale {
     my ($c) = @_;
     
-    my $locale;
-    if (defined $c->config->{I18N}{default_locale}) {
-        $locale = $c->config->{I18N}{default_locale}
-    } else {
-        $locale = 'en';
-    }
+    my $locale = $c->config->{I18N}{default_locale};
     $c->set_locale($locale);
-    
     return $locale;
 }
 
@@ -63,9 +57,6 @@ sub language {
     my ($self) = @_;
     
     return 
-        unless $self->has_locale();
-    
-    return 
         unless $self->locale =~ $LOCALE_RE;
     
     return lc($+{language});
@@ -73,9 +64,6 @@ sub language {
 
 sub territory {
     my ($self) = @_;
-    
-    return 
-        unless $self->has_locale();
     
     return 
         unless $self->locale =~ $LOCALE_RE;
@@ -98,8 +86,9 @@ sub set_locale {
     $locale .= '_'.uc($territory)
         if defined $territory && $territory ne '';
     
-    #return 
-    #    unless exists $c->config->{I18N}{locales}{$locale};
+    # Check for valid locale
+    return 
+        unless exists $c->config->{I18N}{locales}{$locale};
     
     # Set posix locale
     setlocale( &POSIX::LC_ALL, $locale );
@@ -138,6 +127,12 @@ after setup_finalize => sub {
         Catalyst::Exception->throw(sprintf("Default locale '%s' does not match %s",$default_locale,$LOCALE_RE));
     }
     
+    # Default locale fallback
+    $default_locale ||= 'en';
+    
+    # Enable default locale
+    $locales->{$default_locale} ||= {};
+    
     # Build inheritance tree
     my (%tree,$changed);
     $changed = 1;
@@ -148,7 +143,8 @@ after setup_finalize => sub {
                 if exists $tree{$locale};
             my $locale_config = $locales->{$locale};
             my $locale_inactive = $locale_type_constraint->check($locale) ? 0:1;
-            $locale_config->{inactive} //= 0;
+            $locale_config->{inactive} = 0
+                unless defined $locale_config->{inactive};
             if ($locale_config->{inactive} == 0
                 && $locale_config->{inactive} != $locale_inactive) {
                 $app->log->warn(sprintf("Locale '%s' has been set inactive because it does not match %s",$locale,$LOCALE_RE));

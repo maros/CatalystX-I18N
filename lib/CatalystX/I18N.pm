@@ -82,6 +82,16 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
      $c->stash->{localtime} = $c->i18n_datetime_format_date->format_datetime(DateTime->now);
  }
 
+If you want to load all available roles and traits you can use 
+L<CatalystX::I18N::Role::All> as a shortcut.
+
+ package MyApp::Catalyst;
+ use strict;
+ use warnings;
+ use Catalyst qw/
+     +CatalystX::I18N::Role::All
+ /;
+
 =head1 DESCRIPTION
 
 CatalystX::I18N provides a comprehensive toolset for internationalisation 

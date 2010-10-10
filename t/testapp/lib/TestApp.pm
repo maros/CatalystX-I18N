@@ -6,16 +6,17 @@ use Catalyst qw/
     Session::Store::File 
     Session::State::Cookie
     
-    +CatalystX::I18N::Role::Base
-    +CatalystX::I18N::Role::DateTime
-    +CatalystX::I18N::Role::Maketext
-    +CatalystX::I18N::Role::GetLocale
-    +CatalystX::I18N::Role::NumberFormat
+    +CatalystX::I18N::Role::All
 /;
+#    +CatalystX::I18N::Role::Base
+#    +CatalystX::I18N::Role::DateTime
+#    +CatalystX::I18N::Role::Maketext
+#    +CatalystX::I18N::Role::GetLocale
+#    +CatalystX::I18N::Role::NumberFormat
 use CatalystX::RoleApplicator;
 
-__PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
-__PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
+#__PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
+#__PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
 
 our $VERSION = '0.01';
 

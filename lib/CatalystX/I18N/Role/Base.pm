@@ -9,8 +9,6 @@ use CatalystX::I18N::TypeConstraints;
 use Clone qw(clone);
 use POSIX qw(locale_h);
 
-our $LOCALE_RE = qr/^(?<language>[a-z]{2})(_(?<territory>[A-Z]{2}))?$/;
-
 has 'locale' => (
     is          => 'rw',
     isa         => 'CatalystX::I18N::Type::Locale',
@@ -58,31 +56,31 @@ sub language {
     my ($self) = @_;
     
     return 
-        unless $self->locale =~ $LOCALE_RE;
+        unless $self->locale =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
     
-    return lc($+{language});
+    return lc($1);
 }
 
 sub territory {
     my ($self) = @_;
     
     return 
-        unless $self->locale =~ $LOCALE_RE;
+        unless $self->locale =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
     
     return
-        unless $+{territory};
+        unless $2;
     
-    return lc($+{territory});
+    return lc($2);
 }
 
 sub set_locale {
     my ($c,$value) = @_;
     
     return 
-        unless $value =~ $LOCALE_RE;
+        unless $value =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
     
-    my $language = lc($+{language});
-    my $territory = uc($+{territory});
+    my $language = lc($1);
+    my $territory = uc($2);
     my $locale = lc($language);
     $locale .= '_'.uc($territory)
         if defined $territory && $territory ne '';
@@ -125,7 +123,7 @@ after setup_finalize => sub {
     my $default_locale = $config->{default_locale};
     if (defined $default_locale
         && ! $locale_type_constraint->check($default_locale)) {
-        Catalyst::Exception->throw(sprintf("Default locale '%s' does not match %s",$default_locale,$LOCALE_RE));
+        Catalyst::Exception->throw(sprintf("Default locale '%s' does not match %s",$default_locale,$CatalystX::I18N::TypeConstraints::LOCALE_RE));
     }
     
     # Default locale fallback
@@ -148,7 +146,7 @@ after setup_finalize => sub {
                 unless defined $locale_config->{inactive};
             if ($locale_config->{inactive} == 0
                 && $locale_config->{inactive} != $locale_inactive) {
-                $app->log->warn(sprintf("Locale '%s' has been set inactive because it does not match %s",$locale,$LOCALE_RE));
+                $app->log->warn(sprintf("Locale '%s' has been set inactive because it does not match %s",$locale,$CatalystX::I18N::TypeConstraints::LOCALE_RE));
                 $locale_config->{inactive} = 1;
             }
             

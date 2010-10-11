@@ -8,6 +8,8 @@ use DateTime::Locale;
 use MooseX::Types::Path::Class;
 #use Params::Coerce;
 
+our $LOCALE_RE = qr/^([a-z]{2})(?:_([A-Z]{2}))?$/;
+
 enum 'Lexicon' => qw(auto gettext msgcat tie);
 
 subtype 'CatalystX::I18N::Type::Territory'
@@ -16,16 +18,16 @@ subtype 'CatalystX::I18N::Type::Territory'
 
 subtype 'CatalystX::I18N::Type::Locale'
     => as 'Str'
-    => where { m/^[a-z]{2}(_[A-Z]{2})?$/ };
+    => where { $_ =~ $LOCALE_RE };
 
 subtype 'CatalystX::I18N::Type::Language'
     => as 'Str'
     => where { m/^[a-z]{2}$/ };
 
-subtype 'CatalystX::I18N::Type::Languages'
-    => as 'ArrayRef[CatalystX::I18N::Type::Language]';
+subtype 'CatalystX::I18N::Type::Locales'
+    => as 'ArrayRef[CatalystX::I18N::Type::Locale]';
 
-coerce  'CatalystX::I18N::Type::Languages'
+coerce  'CatalystX::I18N::Type::Locales'
     => from 'Str'
     => via { return [ $_ ] };
 

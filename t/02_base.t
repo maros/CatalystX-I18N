@@ -12,7 +12,7 @@ use testlib;
 my $mech = init();
 $mech->{catalyst_debug} = 1;
 
-# Test 1
+# Test 1 - set current locale
 {
     my $response = request($mech,'/base/test1');
     is($response->{default_locale},'de_AT','Default locale');
@@ -20,16 +20,16 @@ $mech->{catalyst_debug} = 1;
     
 }
 
-# Test 2
+# Test 2 - get locale
 {
     $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
     my $response = request($mech,'/base/test2');
-    is($response->{browser},'fr_CH','Browser locale');
+    is($response->{browser},'fr','Browser locale');
     is($response->{session},'de_CH','Session locale');
     is($response->{user},undef,'User locale');
 }
 
-# Test 3
+# Test 3 - get locale again
 {
     $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
     my $response = request($mech,'/base/test3');
@@ -41,7 +41,7 @@ $mech->{catalyst_debug} = 1;
     like($response->{number_format},qr/^\+\+EUR\s+27,03$/,'Browser language');
 }
 
-# Test 4a
+# Test 4a - maketext inheritance
 {
     my $response = request($mech,'/base/test4/de_AT');
     is($response->{locale},'de_AT','Locale');
@@ -51,7 +51,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for de_AT ok');
 }
 
-# Test 4b
+# Test 4b - maketext inheritance
 {
     my $response = request($mech,'/base/test4/de_CH');
     is($response->{locale},'de_CH','Locale');
@@ -61,7 +61,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for de_CH ok');
 }
 
-# Test 4c
+# Test 4c - maketext inheritance
 {
     my $response = request($mech,'/base/test4/fr_CH');
     is($response->{locale},'fr_CH','Locale');
@@ -71,7 +71,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for fr_CH ok');
 }
 
-# Test 4d
+# Test 4d - maketext inheritance
 {
     my $response = request($mech,'/base/test4/fr');
     is($response->{locale},'fr','Locale');
@@ -81,7 +81,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{6},'string6','String 6 for fr ok');
 }
 
-# Test 5
+# Test 5 - locale set
 {
     my $response = request($mech,'/base/test5');
     cmp_deeply($response,{
@@ -102,3 +102,4 @@ $mech->{catalyst_debug} = 1;
        }
     },'Multiple locales ok');
 }
+

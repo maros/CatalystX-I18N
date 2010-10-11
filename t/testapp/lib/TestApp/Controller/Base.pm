@@ -103,5 +103,18 @@ sub test5 : Local Args(0) {
     ]);
 }
 
+sub test6 : Local Args(0) {
+    my ($self,$c) = @_;
+    
+    delete $c->session->{i18n_locale};
+    
+    $c->detach('TestApp::View::Test',[
+        {
+            locale  => $c->locale,
+        }
+    ]);
+}
+
+
 1;
 

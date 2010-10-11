@@ -3,6 +3,8 @@ package CatalystX::I18N::TraitFor::Request;
 # ============================================================================
 
 use Moose::Role;
+requires qw(headers user_agent address);
+
 use HTTP::BrowserDetect;
 use IP::Country::Fast;
 

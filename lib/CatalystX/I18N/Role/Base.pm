@@ -3,6 +3,7 @@ package CatalystX::I18N::Role::Base;
 # ============================================================================
 
 use Moose::Role;
+requires qw(config response log);
 
 use CatalystX::I18N::TypeConstraints;
 use Clone qw(clone);

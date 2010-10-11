@@ -3,6 +3,7 @@ package CatalystX::I18N::TraitFor::Response;
 # ============================================================================
 
 use Moose::Role;
+requires qw(headers);
 
 sub content_language {
     my ($self,@languages) = @_;

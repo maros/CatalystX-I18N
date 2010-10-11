@@ -4,6 +4,7 @@ package CatalystX::I18N::Role::All;
 
 use CatalystX::I18N::Meta::Role;
 use Moose::Role -metaclass => 'CatalystX::I18N::Meta::Role';
+requires qw(response_class request_class);
 
 with qw(
     CatalystX::I18N::Role::Base

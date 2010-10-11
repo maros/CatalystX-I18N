@@ -11,12 +11,14 @@ sub check_locale {
     
     return
         unless defined $locale
-        && $locale =~ /^(?<language>[a-zA-Z]{2})_(?<territory>[a-zA-Z]{2})/;
+        && $locale =~ m/^([a-zA-Z]{2})(?:_([a-zA-Z]{2}))?$/;
     
-    $locale = lc($+{language}).'_'.uc($+{territory});
+    $locale = lc($1);
+    $locale .= '_'.uc($2)
+        if defined $2;
     
     return 
-        if not exists $c->config->{I18N}{locales}{$locale}
+        if ! exists $c->config->{I18N}{locales}{$locale}
         || $c->config->{I18N}{locales}{$locale}{inactive} == 1;
     
     return $locale;
@@ -47,25 +49,24 @@ sub get_locale_from_user {
 sub get_locale_from_browser  {
     my ($c) = @_;
     
-    my ($languages,$territory);
+    my ($languages,$territories) = ([],[]);
     
     # Get Accept-Language
-    if ($c->request->can('accept_languages')) {
-        $languages = [ $c->request->accept_languages ];
+    if ($c->request->can('accept_language')) {
+        my $locales = $c->request->accept_language;
         # Check if Accept-Language matches a locale
-        foreach my $locale (@$languages) {
-            return $locale
-                if $c->check_locale($locale);
+        foreach my $locale (@$locales) {
+            my $checked_locale = $c->check_locale($locale);
+            return $checked_locale
+                if $checked_locale;
+            no warnings 'once';
+            if ($locale =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE) {
+                push(@$languages,$1);
+                push(@$territories,$2)
+                    if $2;
+            }
         }
-        # Strip territory/variant part
-        $languages = [ map { 
-            my $element = $_;
-            $element =~ s/_[A-Za-z]{2}//; 
-            lc($element);
-        } @$languages ];
     }
-    
-    $languages ||= [];
     
     # Get browser language
     if ($c->request->can('browser_language')) {
@@ -76,39 +77,59 @@ sub get_locale_from_browser  {
     
     # Get client country
     if ($c->request->can('client_country')) {
-        $territory = uc($c->request->client_country);
+        my $territory = uc($c->request->client_country);
+        unshift(@$territories,$territory)
+            if $territory;
     }
+    
     # Get browser territory
     if ($c->request->can('browser_territory')) {
-        $territory ||= uc($c->request->browser_territory);
+        my $territory = uc($c->request->browser_territory);
+        unshift(@$territories,$territory)
+            if $territory;
     }
     
     my $locale_config = $c->config->{I18N}{locales};
     
-    # Guess locale from language AND country/territory
-    if (defined $languages && defined $territory) {
+    # Try to find best matching combination
+    foreach my $territory (@$territories) {
         foreach my $language (@$languages) {
-            if (defined $locale_config->{$language.'_'.$territory}) {
-                return $language.'_'.$territory;
+            my $key = $language.'_'.$territory;
+            if (defined $locale_config->{$key}) {
+                return $key;
             }
         }
     }
-    # Guess locale from country/territory
-    if (defined $territory) {
-        foreach my $locale (keys %$locale_config) {
-            if ($locale =~ /^[a-z]{2}_${territory}$/) {
+    
+    # Try to find best matching country
+    foreach my $locale (keys %$locale_config) {
+        next
+            if $locale_config->{$locale}{inactive};
+        foreach my $territory (@$territories) {
+            if ($locale =~ m/^[a-z]{2}_${territory}$/) {
                 return $locale;
             }
         }
     }
     
-    # Guess locale from language
-    if (defined $languages) {
+    # Try to find best matching language
+    foreach my $locale (keys %$locale_config) {
+        next
+            if $locale_config->{$locale}{inactive};
         foreach my $language (@$languages) {
-            foreach my $locale (keys %$locale_config) {
-                if ($locale =~ m/^${language}_[A-Z]{2}/) {
-                    return $locale;
-                }
+            if ($locale =~ m/^${language}$/) {
+                return $locale;
+            }
+        }
+    }
+    
+    # Try to find best matching language
+    foreach my $locale (keys %$locale_config) {
+        next
+            if $locale_config->{$locale}{inactive};
+        foreach my $language (@$languages) {
+            if ($locale =~ m/^${language}_[A-Z]{2}$/) {
+                return $locale;
             }
         }
     }

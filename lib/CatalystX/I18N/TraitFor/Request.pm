@@ -11,7 +11,7 @@ use IP::Country::Fast;
 use CatalystX::I18N::TypeConstraints;
 
 has 'accept_language'   => (
-    isa         => 'Maybe[CatalystX::I18N::Type::Languages]',
+    isa         => 'Maybe[CatalystX::I18N::Type::Locales]',
     is          => 'rw',
     lazy_build  => 1,
     builder     => '_build_accept_language',
@@ -53,21 +53,26 @@ sub _build_accept_language {
     return
         unless $accept_language;
     
-    my @accepted_languages = split( /\s*,\s*/, $accept_language );
-
-    my @sorted_languages = 
-        map { lc($_->[0]) }
-        sort { $b->[1] <=> $a->[1] }
+    my @accepted_languages = 
         map {
             my @tmp = split( /;\s*q=/, $_ );
             $tmp[1] ||= 1;
             \@tmp;
-            
-        } @accepted_languages;
+        } split( /\s*,\s*/, $accept_language );
     
-    return
-        unless scalar @sorted_languages;
+    my @sorted_languages;
     
+    no warnings 'once';
+    foreach my $element (sort { $b->[1] <=> $a->[1] } @accepted_languages) {
+        my ($language,$territory) = split /[_-]/,$element->[0];
+        my $return = lc($language);
+        $return .= '_'.uc($territory)
+            if $territory;
+        next
+            unless $return =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
+        push(@sorted_languages,$return);
+        
+    }
     return \@sorted_languages;
 }
 
@@ -81,7 +86,6 @@ sub _build_browser_language {
     
     return lc($language);
 }
-
 
 sub _build_browser_territory {
     my ($self) = @_;
@@ -114,6 +118,8 @@ sub _build_client_country {
     
     return
         if ! $country || $country eq '**';
+    
+    return $country;
 }
 
 no Moose::Role;

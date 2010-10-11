@@ -35,6 +35,7 @@ requires        'HTTP::BrowserDetect'                   => '1.09';
 requires        'Number::Format'                        => 0;
 
 build_requires  'Test::Most'                            => 0;
+build_requires  'Test::NoWarnings'                      => 0;
 build_requires  'Test::WWW::Mechanize::Catalyst'        => 0;
 build_requires  'JSON::Any'                             => 0;
 build_requires  'Catalyst::Plugin::Session'             => 0;

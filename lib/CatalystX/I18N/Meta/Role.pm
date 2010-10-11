@@ -13,10 +13,16 @@ before 'apply' => sub {
     for my $type (qw(Response Request)) {
         my $accessor_method = lc($type).'_class';
         my $super_class = $class->$accessor_method();
-        my $role_class = 'CatalystX::I18N::TraitFor::'.$type;
         
+        # Get role
+        my $role_class = 'CatalystX::I18N::TraitFor::'.$type;
         Class::MOP::load_class($role_class);
         
+        # Check if role has already been applied
+        next
+            if grep { $_->meta->does_role($role_class) } $super_class->meta->linearized_isa;
+        
+        # Build anon class with our roles
         my $meta = Moose::Meta::Class->create_anon_class(
           superclasses => [$super_class],
           roles        => [$role_class],

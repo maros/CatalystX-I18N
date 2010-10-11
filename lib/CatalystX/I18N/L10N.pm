@@ -199,7 +199,7 @@ load 'de_at.pm'). The packages must have a C<%Lexion> variable.
 If no translation files can be found for a given locale then 
 L<Locale::Maketext::Lexicon::Auto> will be loaded.
 
-The folowing parameters are recognized/required
+The following parameters are recognized/required
 
 =over
 
@@ -218,20 +218,22 @@ Required
 
 =item * gettext_style
 
-Enable gettext style. L<%quant(%1,document,documents)> instead of 
-L<[quant,_1,document,documents]>
+Enable gettext style. C<%quant(%1,document,documents)> instead of 
+C<[quant,_1,document,documents]>
 
 Optional, Default TRUE
 
 =item * inheritance
 
-Set inheritance (e.g. 'en_US' inherits from 'en')
+Set inheritance as as HashRef (e.g. 'en_US' inherits from 'en')
+
+Optional
 
 =back
 
 =head1 SEE ALSO
 
-L<Locale::Maketext> and <Locale::Maketext::Lexicon>
+L<Locale::Maketext> and L<Locale::Maketext::Lexicon>
 
 =head1 AUTHOR
 

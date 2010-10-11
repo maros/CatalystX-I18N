@@ -142,8 +142,8 @@ Defaults to $APPNAME::L10N
 
 =head3 gettext_style
 
-Enable gettext style. L<%quant(%1,document,documents)> instead of 
-L<[quant,_1,document,documents]>
+Enable gettext style. C<%quant(%1,document,documents)> instead of 
+C<[quant,_1,document,documents]>
 
 Default TRUE
 

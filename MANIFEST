@@ -33,6 +33,7 @@ README
 README.mkdn
 t/01_load.t
 t/02_base.t
+t/03_get_locale.t
 t/testapp/lib/TestApp.pm
 t/testapp/lib/TestApp/Controller/Base.pm
 t/testapp/lib/TestApp/L10N.pm

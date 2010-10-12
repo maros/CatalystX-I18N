@@ -1,5 +1,13 @@
 Revision history for Perl module CatalystX::I18N
 
+1.03 Tue Oct 12 2010
+    - Added missing dependencies
+    - Fixed bugs in GetLocale role
+    - Make sure that request/response traits will be applied only once
+    - Documentation typos
+    - Better locale checks
+    - More tests
+
 1.02 Sun Oct 10 2010
     - Added missing dependencies
     - Better handling of default locales

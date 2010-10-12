@@ -5,7 +5,7 @@ package CatalystX::I18N;
 use Moose;
 
 use version;
-our $VERSION = version->new('1.02');
+our $VERSION = version->new('1.03');
 our $AUTHORITY = 'cpan:MAROS';
 
 1;

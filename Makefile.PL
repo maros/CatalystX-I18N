@@ -15,6 +15,7 @@ perl_version    '5.008';
 # Specific dependencies
 requires        'Catalyst::Runtime'                     => '5.80004';
 requires        'Moose'                                 => 0;
+requires        'parent'                                => 0;
 
 requires        'Path::Class'                           => 0;
 requires        'MooseX::Types::Path::Class'            => 0; 

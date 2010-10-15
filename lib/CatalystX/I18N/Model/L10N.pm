@@ -86,7 +86,13 @@ sub ACCEPT_CONTEXT {
     Catalyst::Exception->throw(sprintf("Could not fetch lanuage handle for locale '%s'",$c->locale))
         unless ( scalar $handle );
     
-    $handle->fail_with( sub { } );
+    if ($self->can('fail_with')) {
+        $handle->fail_with( sub { 
+            $self->fail_with($c,@_);
+        } );
+    } else {
+        $handle->fail_with( sub { } );
+    }
     
     return $handle;
 }
@@ -131,6 +137,18 @@ CatalystX::I18N::Model::L10N - Glues CatalystX::I18N::L10N into Catalyst
 
 This model glues a L<CatalystX::I18N::L10N> class (or any other 
 L<Locale::Maketext> class) with Catalyst. 
+
+The method C<fail_with> will be called for each missing msgid if present
+in your model class. 
+
+ package MyApp::Model::L10N;
+ use parent qw/CatalystX::I18N::Model::L10N/;
+ 
+ sub fail_with {
+     my ($self,$c,$language_handle,$msgid,$params) = @_;
+     # Do somenthing clever
+     return $string;
+ }
 
 =head1 CONFIGURATION
 

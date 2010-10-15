@@ -5,6 +5,7 @@ package CatalystX::I18N::Role::NumberFormat;
 use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
+use utf8;
 
 use Number::Format;
 
@@ -126,6 +127,9 @@ can be overdriven in your Catalyst I18N configuration:
          }
      },
  );
+
+Of course fetching the default locale settings via L<POSIX::localeconv> works
+only if you have the requested locales installed.
 
 The following configuration options are available (see L<Number::Format> for
 detailed documentation):

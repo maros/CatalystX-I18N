@@ -70,22 +70,24 @@ sub get_locale_from_browser  {
     
     # Get browser language
     if ($c->request->can('browser_language')) {
-        my $language = lc($c->request->browser_language);
-        unshift(@$languages,$language)
-            unless grep { $language eq $_ } @$languages
+        my $language = $c->request->browser_language;
+        if ($language) {
+            unshift(@$languages,$language)
+                unless grep { $language eq $_ } @$languages
+        }
     }
     
     # Get client country
     if ($c->request->can('client_country')) {
-        my $territory = uc($c->request->client_country);
-        unshift(@$territories,$territory)
-            if $territory;
+        my $territory = $c->request->client_country;
+        unshift(@$territories,uc($territory))
+            if ($territory);
     }
     
     # Get browser territory
     if ($c->request->can('browser_territory')) {
-        my $territory = uc($c->request->browser_territory);
-        unshift(@$territories,$territory)
+        my $territory = $c->request->browser_territory;
+        unshift(@$territories,uc($territory))
             if $territory;
     }
     

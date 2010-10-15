@@ -45,6 +45,7 @@ TestApp->config(
                 inherits                => 'de',
                 format_datetime         => 'dd.MM.yyyy uma HH:mm',
                 mon_decimal_point       => ',',
+                int_curr_symbol         => 'EUR',
             },
             'de_DE'                 => {
                 inherits                => 'de',

@@ -90,12 +90,12 @@ sub _build_browser_language {
 sub _build_browser_territory {
     my ($self) = @_;
     
-    my $territory = uc($self->browser_detect()->country());
+    my $territory = $self->browser_detect()->country();
     
     return
-        if ! $territory || $territory eq '**';
+        if ! defined $territory || ! $territory || $territory eq '**';
     
-    return lc($territory);
+    return uc($territory);
 }
 
 sub _build_browser_detect {

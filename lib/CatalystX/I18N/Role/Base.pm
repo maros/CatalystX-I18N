@@ -6,8 +6,8 @@ use Moose::Role;
 requires qw(config response log);
 
 use CatalystX::I18N::TypeConstraints;
-use Clone qw(clone);
-use POSIX qw(setlocale LC_ALL);
+use Clone qw();
+use POSIX qw();
 
 our $ORIGINAL_LOCALE;
 
@@ -34,7 +34,7 @@ sub i18n_config {
     return {}
         unless defined $c->config->{I18N}{locales}{$c->locale};
     
-    my $config = clone($c->config->{I18N}{locales}{$c->locale});
+    my $config = Clone::clone($c->config->{I18N}{locales}{$c->locale});
     $config->{locale} = $c->locale;
     
     return $config;
@@ -92,14 +92,14 @@ sub set_locale {
         unless exists $c->config->{I18N}{locales}{$locale};
     
     # Save original locale
-    $ORIGINAL_LOCALE ||= setlocale(LC_ALL);
+    $ORIGINAL_LOCALE ||= POSIX::setlocale(POSIX::LC_ALL);
     
     # Set locale
     my $set_locale = $locale.'.UTF-8';
-    my $set_locale_result = setlocale( LC_ALL, $set_locale);
+    my $set_locale_result = POSIX::setlocale( POSIX::LC_ALL, $set_locale);
     unless (defined $set_locale_result
         && $set_locale eq $set_locale_result) {
-        $set_locale_result = setlocale( LC_ALL, $locale);
+        $set_locale_result = POSIX::setlocale( POSIX::LC_ALL, $locale);
         unless (defined $set_locale_result) {
             $c->log->warn(sprintf("Could not setlocale '%s' or '%s' (do you have this locale installed?)",$set_locale,$locale))
                 if $c->debug;
@@ -125,7 +125,7 @@ sub set_locale {
 after finalize => sub {
     my ($c) = @_;
     # Restore original locale
-    setlocale( LC_ALL, $ORIGINAL_LOCALE );
+    POSIX::setlocale( POSIX::LC_ALL, $ORIGINAL_LOCALE );
 };
 
 after setup_finalize => sub {

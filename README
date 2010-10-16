@@ -195,14 +195,9 @@ AUTHOR
     
         L<http://www.revdev.at>
 
-ACKNOWLEDGEMENTS
-    This module was partially written for Revdev <http://www.revdev.at>, a
-    nice litte software company I run with Koki and Domm
-    (<http://search.cpan.org/~domm/>).
-
 COPYRIGHT
     CatalystX::I18N is Copyright (c) 2010 Maroš Kollár -
-    <http://www.revdev.at>
+    <http://www.k-1.com>
 
 LICENSE
     This library is free software, you can redistribute it and/or modify it

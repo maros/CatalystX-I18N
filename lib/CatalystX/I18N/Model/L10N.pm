@@ -26,24 +26,48 @@ has 'directories' => (
     default     => sub { [] },
 );
 
-sub new {
+has '_app' => (
+    is          => 'rw', 
+    isa         => 'Str',
+    required    => 1,
+);
+
+around BUILDARGS => sub {
+    my $orig  = shift;
     my ( $self,$app,$config ) = @_;
     
-    $self = $self->next::method( $config );
+    if (defined $config->{directories}
+        && ref($config->{directories}) ne 'ARRAY') {
+        $config->{directories} = [ $config->{directories} ];
+    }
     
-    my $class = $self->class() || $app .'::L10N';
-    $self->class($class);
-    
-    unless (scalar @{$self->directories}) {
-        #warn('HOME:'.$self->config->{home} || '');
+    # Build default directory path unless configured
+    unless (defined $config->{directories}
+        && scalar @{$config->{directories}} > 0) {
         my $calldir = $app;
         $calldir =~ s{::}{/}g;
         my $file = "$calldir.pm";
         my $path = $INC{$file};
         $path =~ s{\.pm$}{/L10N};
-        $self->directories([ Path::Class::Dir->new($path) ]);
+        $config->{directories} = [ Path::Class::Dir->new($path) ];
     }
     
+    # Get L10N class
+    $config->{class} ||= $app .'::L10N';
+    
+    # Set _app class
+    $config->{_app} = $app;
+    
+    # Call original BUILDARGS
+    return $self->$orig($app,$config);
+};
+
+sub BUILD {
+    my ($self) = @_;
+    
+    my $class = $self->class;
+
+    # Load L10N class
     eval {
         Class::MOP::load_class($class);
         return 1;
@@ -52,6 +76,9 @@ sub new {
     Catalyst::Exception->throw(sprintf("Could initialize '%s' because is is not a 'Locale::Maketext' class",$class))
         unless $class->isa('Locale::Maketext');
     
+    my $app = $self->_app;
+    
+    # Load lexicons in the L10N class if possible
     if ($class->can('load_lexicon')) {
         my (@locales,%inhertiance,$config);
         $config = $app->config->{I18N}{locales};
@@ -70,10 +97,8 @@ sub new {
             inheritance         => \%inhertiance,
         );
     } else {
-        $self->log->warn(sprintf("'%s' does not implement a 'load_lexicon' method",$class))
+        $app->log->warn(sprintf("'%s' does not implement a 'load_lexicon' method",$class))
     }
-    
-    return $self;
 }
 
 sub ACCEPT_CONTEXT {

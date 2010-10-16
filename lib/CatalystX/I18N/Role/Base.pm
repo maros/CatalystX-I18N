@@ -184,6 +184,7 @@ after setup_finalize => sub {
             }
         }
     }
+    # Check inheritance tree for circular references
     foreach my $locale (keys %$locales) {
         my $locale_config = $locales->{$locale};
         unless (exists $locale_config->{_inherits}) {

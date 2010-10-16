@@ -6,6 +6,7 @@ use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
 
+
 sub check_locale {
     my ($c,$locale) = @_;
     
@@ -92,6 +93,8 @@ sub get_locale_from_browser  {
     }
     
     my $locale_config = $c->config->{I18N}{locales};
+    
+    # TODO: Make behaviour/preferences customizeable
     
     # Try to find best matching combination
     foreach my $territory (@$territories) {

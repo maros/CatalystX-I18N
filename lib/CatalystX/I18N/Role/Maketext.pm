@@ -52,6 +52,7 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
 
 =head1 SYNOPSIS
 
+ # In your catalyst base class
  package MyApp::Catalyst;
  
  use Catalyst qw/MyPlugins 
@@ -59,10 +60,17 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
     CatalystX::I18N::Role::Maketext/;
  
  
+ # L10N model class
  package MyApp::Model::L10N;
  use parent qw/CatalystX::I18N::Model::L10N/;
  
  
+ # Create a L10N class (must be a Locale::Maketext class)
+ package MyApp::L10N;
+ use parent qw/CatalystX::I18N::L10N/;
+ 
+ 
+ # In your controller class(es)
  package MyApp::Catalyst::Controller::Main;
  use strict;
  use warnings;
@@ -77,7 +85,12 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
 =head1 DESCRIPTION
 
 This role adds support for L<Locale::Maketext> localisation via the
-L<CatalystX::I18N::Model::L10N> model.
+L<CatalystX::I18N::Model::L10N> model. 
+
+In order to work properly this role needs a model called C<L10N>. A call
+to C<$c-E<gt>model('L10N')> should return a handle for a L10N / 
+L<Locale::Maketext> class. You can either write your own Model and L10N class 
+or use L<CatalystX::I18N::Model::L10N> and L<CatalystX::I18N::L10N>.
 
 =head1 METHODS
 
@@ -87,7 +100,7 @@ L<CatalystX::I18N::Model::L10N> model.
  OR
  my $translated_string = $c->maketext($msgid,\@params);
 
-Translates a string via L<Locale::Maketext>
+Translates a string via L<Locale::Maketext>. 
 
 =head1 SEE ALSO
 

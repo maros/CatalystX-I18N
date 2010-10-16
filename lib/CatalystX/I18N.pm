@@ -218,16 +218,10 @@ on your report as I make changes.
     
     L<http://www.revdev.at>
 
-=head1 ACKNOWLEDGEMENTS 
-
-This module was partially written for Revdev L<http://www.revdev.at>, a nice 
-litte software company I run with Koki and Domm 
-(L<http://search.cpan.org/~domm/>).
-
 =head1 COPYRIGHT
 
 CatalystX::I18N is Copyright (c) 2010 Maroš Kollár 
-- L<http://www.revdev.at>
+- L<http://www.k-1.com>
 
 =head1 LICENSE
 

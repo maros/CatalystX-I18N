@@ -109,6 +109,7 @@ CatalystX::I18N::Model::L10N - Glues CatalystX::I18N::L10N into Catalyst
 
 =head1 SYNOPSIS
 
+ # In your catalyst base class
  package MyApp::Catalyst;
  use Catalyst qw/CatalystX::I18N::Role::Base/;
  
@@ -119,17 +120,25 @@ CatalystX::I18N::Model::L10N - Glues CatalystX::I18N::L10N into Catalyst
  );
  
  
+ # Create a model class
  package MyApp::Model::L10N;
  use parent qw/CatalystX::I18N::Model::L10N/;
  
  
+ # Create a L10N class (must be a Locale::Maketext class)
+ package MyApp::L10N;
+ use parent qw/CatalystX::I18N::L10N/;
+ 
+ 
+ # In your controller class(es)
  package MyApp::Controller::Main;
  use parent qw/Catalyst::Controller/;
  
  sub action : Local {
      my ($self,$c) = @_;
      
-     $c->stash->{title} = $c->model('L10N')->maketext('Hello world');
+     my $model = $c->model('L10N');
+     $c->stash->{title} = $model->maketext('Hello world');
      # See CatalystX::I18N::Role::Maketext for a convinient wrapper
  }
 
@@ -149,6 +158,9 @@ in your model class.
      # Do somenthing clever
      return $string;
  }
+
+See L<Catalyst::Helper::Model::L10N> for gerating an L10N model from the 
+command-line.
 
 =head1 CONFIGURATION
 

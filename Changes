@@ -1,5 +1,12 @@
 Revision history for Perl module CatalystX::I18N
 
+1.04 Sat Oct 16 2010
+    - Added more missing dependencies
+    - Add support for fail_with method in L10N model
+    - Better posix setlocale support (check for return value)
+    - Extend documentation
+    - 
+
 1.03 Tue Oct 12 2010
     - Added missing dependencies
     - Fixed bugs in GetLocale role

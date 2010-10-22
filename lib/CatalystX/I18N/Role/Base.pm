@@ -82,7 +82,7 @@ sub set_locale {
         unless $value =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
     
     my $language = lc($1);
-    my $territory = uc($2);
+    my $territory = $2 && uc($2);
     my $locale = lc($language);
     $locale .= '_'.uc($territory)
         if defined $territory && $territory ne '';

@@ -115,6 +115,11 @@ sub test6 : Local Args(0) {
     ]);
 }
 
+sub test7 : Local Args(0) {
+    my ($self,$c) = @_;
+    $c->locale('de_AT');
+    $c->detach('TestApp::View::TT');
+}
 
 1;
 

@@ -42,6 +42,7 @@ build_requires  'JSON'                                  => '2.17';
 build_requires  'Catalyst::Plugin::Session'             => 0;
 build_requires  'Catalyst::Plugin::Session::State::Cookie'=> 0;
 build_requires  'Catalyst::Plugin::Session::Store::File'=> 0;
+build_requires  'Catalyst::View::TT'                    => 0;
 
 author_requires 'Test::Pod'                             => '1.14';
 author_requires 'Test::Pod::Coverage'                   => '1.04';

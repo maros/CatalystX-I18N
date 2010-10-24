@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests => 13;
+use Test::Most tests => 14;
 
 use_ok( 'CatalystX::I18N' );
 use_ok( 'CatalystX::I18N::L10N' );
@@ -16,5 +16,6 @@ use_ok( 'CatalystX::I18N::TypeConstraints' );
 use_ok( 'CatalystX::I18N::Model::L10N' );
 use_ok( 'CatalystX::I18N::TraitFor::Response' );
 use_ok( 'CatalystX::I18N::TraitFor::Request' );
+use_ok( 'CatalystX::I18N::TraitFor::ViewTT' );
 
 use_ok( 'Catalyst::Helper::Model::L10N' );

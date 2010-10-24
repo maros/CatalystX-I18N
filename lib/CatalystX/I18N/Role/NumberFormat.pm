@@ -27,7 +27,7 @@ sub _build_i18n_numberformat {
     my $lconv = {};
     # Only load localeconv if locale is installed/correctly loaded
     my @current_locale = map { s/\.UTF-8$//i; $_ } split(/\//,POSIX::setlocale(POSIX::LC_ALL));
-    if (grep { $c->locale eq $_ } @current_locale) {
+    if (grep { $locale eq $_ } @current_locale) {
         $lconv = POSIX::localeconv();
     }
     

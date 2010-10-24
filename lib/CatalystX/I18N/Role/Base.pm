@@ -125,7 +125,8 @@ sub set_locale {
 after finalize => sub {
     my ($c) = @_;
     # Restore original locale
-    POSIX::setlocale( POSIX::LC_ALL, $ORIGINAL_LOCALE );
+    POSIX::setlocale( POSIX::LC_ALL, $ORIGINAL_LOCALE )
+        if defined $ORIGINAL_LOCALE;
 };
 
 after setup_finalize => sub {

@@ -58,3 +58,53 @@ sub _i18n_numberformat_factory {
 #}
 
 1;
+
+
+=head1 NAME
+
+CatalystX::I18N::TraitFor::ViewTT - Adds number format filters to a TT view
+
+=head1 SYNOPSIS
+
+ # In your view
+ package MyApp::View::TT; 
+ use Moose;
+ extends qw(Catalyst::View::TT);
+ with qw(CatalystX::I18N::TraitFor::ViewTT);
+ 
+ 
+ # In your TT template
+ [% 22 | number('number') %]
+
+=head1 DESCRIPTION
+
+This role simply adds a number format filter to TT.
+
+The following formats are available 
+
+=over
+
+=item * price
+
+=item * number
+
+=item * bytes
+
+=item * negative
+
+=item * picture
+
+=back 
+
+=head1 SEE ALSO
+
+L<Number::Format>, L<CatalystX::I18N::Role::NumberFormat>, 
+L<Catalyst::View::TT>
+
+=head1 AUTHOR
+
+    Maroš Kollár
+    CPAN ID: MAROS
+    maros [at] k-1.com
+    
+    L<http://www.revdev.at>

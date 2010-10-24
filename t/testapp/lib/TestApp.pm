@@ -21,13 +21,14 @@ use Catalyst qw/
 
 our $VERSION = '0.01';
 
-TestApp->config( 
-    name    => 'TestApp', 
-    session => {
-          
+__PACKAGE__->config( 
+    name            => 'TestApp', 
+    session         => {},
+    'View::TT'      => {
+        INCLUDE_PATH    => [ __PACKAGE__->path_to('root','template') ]
     },
-    'Model::L10N' => {},
-    I18N    => {
+    'Model::L10N'   => {},
+    'I18N'          => {
         default_locale          => 'de_AT',
         locales                 => {
             'de'                    => {
@@ -45,6 +46,8 @@ TestApp->config(
                 inherits                => 'de',
                 format_datetime         => 'dd.MM.yyyy uma HH:mm',
                 mon_decimal_point       => ',',
+                mon_thousands_sep       => '.',
+                decimal_point           => ',',
                 int_curr_symbol         => 'EUR',
             },
             'de_DE'                 => {

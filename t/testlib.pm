@@ -5,7 +5,7 @@ use warnings;
 use strict;
 
 use Test::Most;
-use JSON::Any;
+use JSON;
 use Test::WWW::Mechanize::Catalyst;
 
 
@@ -32,7 +32,7 @@ sub request {
     $mech->get_ok(@_);
     
     my $response = eval {
-        return JSON::Any->jsonToObj($mech->content);
+        return decode_json($mech->content);
     };
     if (! $response || $@) {
         fail('Could not parse JSON: '.$mech->content);

@@ -81,8 +81,8 @@ sub set_locale {
     return 
         unless $value =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
     
-    my $language = lc($1);
-    my $territory = $2 && uc($2);
+    my $language = $1;
+    my $territory = $2;
     my $locale = lc($language);
     $locale .= '_'.uc($territory)
         if defined $territory && $territory ne '';
@@ -125,7 +125,8 @@ sub set_locale {
 after finalize => sub {
     my ($c) = @_;
     # Restore original locale
-    POSIX::setlocale( POSIX::LC_ALL, $ORIGINAL_LOCALE );
+    POSIX::setlocale( POSIX::LC_ALL, $ORIGINAL_LOCALE )
+        if defined $ORIGINAL_LOCALE;
 };
 
 after setup_finalize => sub {

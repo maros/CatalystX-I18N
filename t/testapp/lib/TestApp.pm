@@ -46,6 +46,8 @@ __PACKAGE__->config(
                 inherits                => 'de',
                 format_datetime         => 'dd.MM.yyyy uma HH:mm',
                 mon_decimal_point       => ',',
+                mon_thousands_sep       => '.',
+                decimal_point           => ',',
                 int_curr_symbol         => 'EUR',
             },
             'de_DE'                 => {

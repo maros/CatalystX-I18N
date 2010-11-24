@@ -5,6 +5,8 @@ package CatalystX::I18N::TraitFor::ViewTT;
 use Moose::Role;
 requires qw(template);
 
+use Scalar::Util qw(weaken);
+
 around render => sub {
     my $orig  = shift;
     my ( $self,$c,$template,$args ) = @_;
@@ -40,8 +42,13 @@ around new => sub {
     $config->{CATALYST_VAR} ||= 'c';
     $config->{FILTERS} ||= {};
 
-    $config->{FILTERS}{number} ||= [ \&_i18n_numberformat_factory, 1 ];
-    #$config->{FILTERS}{maketext} ||= [ \&_i18n_maketext_factory, 1 ];
+    if ($app->can('i18n_numberformat')) {
+        $config->{FILTERS}{number} ||= [ \&_i18n_numberformat_factory, 1 ];
+    }
+    
+    if ($app->can('maketext')) {
+        $config->{FILTERS}{maketext} ||= [ \&_i18n_maketext_factory, 1 ];
+    }
     
     # Call original BUILDARGS
     return $self->$orig($app,$config);
@@ -51,6 +58,8 @@ sub _i18n_numberformat_factory {
     my ( $context, $format, @options ) = @_;
     
     my $c = $context->stash->get('c');
+    weaken $c;
+    
     my $number_format = $c->i18n_numberformat;
     if (defined $format) {
         undef $format
@@ -59,7 +68,9 @@ sub _i18n_numberformat_factory {
     
     return sub {
         my $value = shift;
+        
         my $local_format = 'format_'.($format || 'number');
+        
         
         return $c->maketext('n/a')
             unless defined $value;
@@ -68,22 +79,23 @@ sub _i18n_numberformat_factory {
     }
 }
 
-#sub _i18n_maketext_factory {
-#    my ( $context ) = @_;
-#    
-#    my $c = $context->stash->get('c');
-#    
-#    return sub {
-#        my ($msgid,@params) = @_;
-#        
-#        if (scalar @params == 1
-#            && ref($params[0]) eq 'ARRAY') {
-#            @params = @{$params[0]};
-#        }
-#        
-#        return $c->maketext($msgid,@params);
-#    }
-#}
+sub _i18n_maketext_factory {
+    my ( $context ) = @_;
+    
+    my $c = $context->stash->get('c');
+    weaken $c;
+    
+    return sub {
+        my ($msgid,@params) = @_;
+        
+        if (scalar @params == 1
+            && ref($params[0]) eq 'ARRAY') {
+            @params = @{$params[0]};
+        }
+        
+        return $c->maketext($msgid,@params);
+    }
+}
 
 no Moose::Role;
 1;
@@ -91,7 +103,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::TraitFor::ViewTT - Adds number format filters to a TT view
+CatalystX::I18N::TraitFor::ViewTT - Adds I18N filters and vmethods to a TT view
 
 =head1 SYNOPSIS
 
@@ -104,10 +116,17 @@ CatalystX::I18N::TraitFor::ViewTT - Adds number format filters to a TT view
  
  # In your TT template
  [% 22 | number('number') %]
+ 
+ [% mylist.lsort().join(', ') %]
 
 =head1 DESCRIPTION
 
-This role simply adds a number format filter to TT.
+=head2 Filters
+
+=head3 number
+
+Formats a number with the current locale settings. You need to have
+the L<CatalystX::I18N::Role::NumberFormat> role loaded in Catalyst.
 
 The following formats are available 
 
@@ -123,11 +142,19 @@ The following formats are available
 
 =item * picture
 
-=back 
+=back
+
+=head3 VMethods
+
+=head3 lsort
+
+Locale aware collation. You need to have
+the L<CatalystX::I18N::Role::Collate> role loaded in Catalyst.
+
 
 =head1 SEE ALSO
 
-L<Number::Format>, L<CatalystX::I18N::Role::NumberFormat>, 
+L<CatalystX::I18N::Role::NumberFormat>, L<CatalystX::I18N::Role::Collate>, 
 L<Catalyst::View::TT>
 
 =head1 AUTHOR

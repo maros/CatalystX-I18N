@@ -13,6 +13,7 @@ with qw(
     CatalystX::I18N::Role::Maketext
     CatalystX::I18N::Role::GetLocale
     CatalystX::I18N::Role::NumberFormat
+    CatalystX::I18N::Role::Collate
 );
 
 no Moose::Role;

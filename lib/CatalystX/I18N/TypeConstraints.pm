@@ -61,7 +61,7 @@ coerce 'CatalystX::I18N::Type::DateTimeLocale'
         DateTime::Locale->load( $_ ) 
     };
 
-subtype 'CatalystX::I18N::Type::L10NHandle'
+subtype 'CatalystX::I18N::Type::MaketextHandle'
     => as duck_type(qw(maketext));
 
 no Moose::Util::TypeConstraints;

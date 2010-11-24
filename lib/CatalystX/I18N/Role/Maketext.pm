@@ -13,7 +13,7 @@ sub maketext {
             (ref $arg eq 'ARRAY') ? @$arg : $arg;
     }
     
-    # TODO: Check if L10N model is available
+    # TODO: Check if Maketext model is available
     my $handle = $c->model('L10N');
     my $msgstr = $handle->maketext( $msgid, @args_expand );
     
@@ -48,7 +48,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::Role::Maketext - Support for maketext L10N
+CatalystX::I18N::Role::Maketext - Support for maketext
 
 =head1 SYNOPSIS
 
@@ -60,14 +60,14 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
     CatalystX::I18N::Role::Maketext/;
  
  
- # L10N model class
- package MyApp::Model::L10N;
- use parent qw/CatalystX::I18N::Model::L10N/;
+ # Maketext model class
+ package MyApp::Model::Maketext;
+ use parent qw/CatalystX::I18N::Model::Maketext/;
  
  
- # Create a L10N class (must be a Locale::Maketext class)
- package MyApp::L10N;
- use parent qw/CatalystX::I18N::L10N/;
+ # Create a Maketext class (must be a Locale::Maketext class)
+ package MyApp::Maketext;
+ use parent qw/CatalystX::I18N::Maketext/;
  
  
  # In your controller class(es)
@@ -85,12 +85,13 @@ CatalystX::I18N::Role::Maketext - Support for maketext L10N
 =head1 DESCRIPTION
 
 This role adds support for L<Locale::Maketext> localisation via the
-L<CatalystX::I18N::Model::L10N> model. 
+L<CatalystX::I18N::Model::Maketext> model. 
 
-In order to work properly this role needs a model called C<L10N>. A call
-to C<$c-E<gt>model('L10N')> should return a handle for a L10N / 
-L<Locale::Maketext> class. You can either write your own Model and L10N class 
-or use L<CatalystX::I18N::Model::L10N> and L<CatalystX::I18N::L10N>.
+In order to work properly this role needs a model called C<Maketext>. A call
+to C<$c-E<gt>model('Maketext')> should return a handle for a Maketext / 
+L<Locale::Maketext> class. You can either write your own Model and Maketext 
+class or use L<CatalystX::I18N::Model::Maketext> and 
+L<CatalystX::I18N::Maketext>.
 
 =head1 METHODS
 
@@ -104,8 +105,8 @@ Translates a string via L<Locale::Maketext>.
 
 =head1 SEE ALSO
 
-L<Locale::Maketext>, L<CatalystX::I18N::Model::L10N> 
-and L<CatalystX::I18N::L10N>
+L<Locale::Maketext>, L<CatalystX::I18N::Model::Maketext> 
+and L<CatalystX::I18N::Maketext>
 
 =head1 AUTHOR
 

@@ -241,8 +241,8 @@ L<$c-E<gt>user-E<gt>locale>).
 
 =head1 SEE ALSO
 
-L<Locale::Maketext>, L<CatalystX::I18N::Model::L10N> 
-and L<CatalystX::I18N::L10N>
+L<Locale::Maketext>, L<CatalystX::I18N::Model::Maketext> 
+and L<CatalystX::I18N::Maketext>
 
 =head1 AUTHOR
 

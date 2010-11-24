@@ -1,5 +1,5 @@
 # ============================================================================
-package CatalystX::I18N::L10N;
+package CatalystX::I18N::Maketext;
 # ============================================================================
 
 use strict;
@@ -139,18 +139,18 @@ sub load_lexicon {
 
 =head1 NAME
 
-CatalystX::I18N::L10N - Wrapper around Locale::Maketext
+CatalystX::I18N::Maketext - Wrapper around Locale::Maketext
 
 =head1 SYNOPSIS
 
- package MyApp::L10N;
- use parent qw(CatalystX::I18N::L10N);
+ package MyApp::Maketext;
+ use parent qw(CatalystX::I18N::Maketext);
 
 =head1 DESCRIPTION
 
-This class can be used as your L10N base-class. It is a wrapper around
+This class can be used as your Maketext base-class. It is a wrapper around
 L<Locale::Maketext> and provides methods for auto-loading lexicon files.
-It is designed to work toghether with L<CatalystX::Model::L10N>.
+It is designed to work toghether with L<CatalystX::Model::Maketext>.
 
 You need to subclass this package in your project in order to use it.
 
@@ -158,16 +158,16 @@ You need to subclass this package in your project in order to use it.
 
 =head3 load_lexicon
 
- MyApp::L10N->load_lexicon(
+ MyApp::Maketext->load_lexicon(
      locales        => ['de','de_AT'],              # Required
-     directories    => ['/path/to/your/l10/files'], # Required
+     directories    => ['/path/to/your/maketext/files'], # Required
      gettext_style  => 0,                           # Optional, Default 1
      inheritance    => {                            # Optional
          de_AT          => 'de',
      },
  );
 
-This method will search the given directories and load all available L10N
+This method will search the given directories and load all available maketext
 files for the requested locales
 
 =over
@@ -178,7 +178,7 @@ via L<Locale::Maketext::Lexicon::Gettext>
 
 =item * *.db
 
-via L<Locale::Maketext::Lexicon::Tie> The files will be tied to you L10N 
+via L<Locale::Maketext::Lexicon::Tie> The files will be tied to you Maketext 
 class, thus you need to implement the necessary tie methods in your class.
 
 =item * *.m

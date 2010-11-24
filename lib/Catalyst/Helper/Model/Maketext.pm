@@ -1,5 +1,5 @@
 # ============================================================================
-package Catalyst::Helper::Model::L10N;
+package Catalyst::Helper::Model::Maketext;
 # ============================================================================
 
 use strict;
@@ -14,16 +14,16 @@ sub mk_compclass {
     my %args = ();
 
     my $basedir = Path::Class::Dir->new( $FindBin::Bin, '..', 'lib');
-    my $l10nmodule = $helper->{app}.'::'.$helper->{name};
+    my $maketext_module = $helper->{app}.'::'.$helper->{name};
 
-    my @path = split (/\:\:/,$l10nmodule);
+    my @path = split (/\:\:/,$maketext_module);
     my $file = pop @path;
     
-    my $l10ndir = $basedir->subdir( join '/', @path );
-    my $l10nfile = $l10ndir->file($file.'pm');
-    $l10ndir->mkpath();
+    my $maketext_dir = $basedir->subdir( join '/', @path );
+    my $maketext_file = $maketext_dir->file($file.'pm');
+    $maketext_dir->mkpath();
     
-    $helper->render_file('l10nclass', $l10nfile->stringify, \%args);
+    $helper->render_file('maketextclass', $maketext_file->stringify, \%args);
     $helper->render_file('modelclass', $helper->{file}, \%args);
     
     return 1;
@@ -39,19 +39,19 @@ sub mk_comptest {
 
 =head1 NAME
 
-Catalyst::Helper::Model::L10N - Helper for L10N models
+Catalyst::Helper::Model::Maketext - Helper for Maketext models
 
 =head1 SYNOPSIS
 
-    script/myapp_create.pl model L10N L10N
+    script/myapp_create.pl model Maketext Maketext
 
 =head1 DESCRIPTION
 
-Helper for the L<Catalyst> L10N model.
+Helper for the L<Catalyst> MaketextL10N model.
 
 =head1 ARGUMENTS
 
-   ./script/myapp_create.pl model <model_name> L10N
+   ./script/myapp_create.pl model <model_name> Maketext
 
 You need to sepecify the C<model_name> (the name of the model).
 
@@ -75,12 +75,12 @@ __DATA__
 
 =begin pod_to_ignore
 
-__l10nclass__
+__maketextclass__
 package [% app %]::[% name %];
 
 use strict;
 use warnings;
-use parent qw(CatalystX::I18N::L10N);
+use parent qw(CatalystX::I18N::Maketext);
 
 1;
 
@@ -89,13 +89,13 @@ package [% class %];
 
 use strict;
 use warnings;
-use parent qw(CatalystX::I18N::Model::L10N);
+use parent qw(CatalystX::I18N::Model::Maketext);
 
 1;
 
 =head1 NAME
 
-[% class %] - L10N Catalyst model component
+[% class %] - Maketext Catalyst model component
 
 =head1 SYNOPSIS
 
@@ -103,7 +103,7 @@ See L<[% app %]>.
 
 =head1 DESCRIPTION
 
-L10N Catalyst model component.
+Maketext Catalyst model component.
 
 =head1 AUTHOR
 

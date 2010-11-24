@@ -96,7 +96,8 @@ L<CatalystX::I18N::Role::All> as a shortcut.
 =head1 DESCRIPTION
 
 CatalystX::I18N provides a comprehensive toolset for internationalisation 
-(I18N) and localisation (L10N) of catalyst applications. This distribution 
+(I18N) and localisation (
+N) of catalyst applications. This distribution 
 consists of several modules that are designed to integrate seamlessly, but
 can be run idependently or replaced easily if necessarry.
 
@@ -131,11 +132,11 @@ Adds a C<Content-Language> header to the response.
 
 Tries best to determine the request locale.
 
-=item * L<CatalystX::I18N::Model::L10N>
+=item * L<CatalystX::I18N::Model::Maketext>
 
 Provides access to L<Locale::Maketext> classes via Catalyst models.
 
-=item * L<CatalystX::I18N::L10N>
+=item * L<CatalystX::I18N::Maketext>
 
 Wrapper arround L<Locale::Maketext>. Can also be used outside of Catalyst.
 
@@ -174,8 +175,8 @@ by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
 
 Locales can inherit from other locales (C<inherits>). All configuration values
 from inherited locales will be copied, and add if you use 
-L<CatalystX::I18N::Model::L10N> together with L<CatalystX::I18N::L10N> the
-generated lexicons will also inherit in the given order.
+L<CatalystX::I18N::Model::Maketext> together with L<CatalystX::I18N::Maketext>
+the generated lexicons will also inherit in the given order.
 
 Additional configuration values are defined by the various 
 CatalystX::I18N::Role::Maketext::* plugins.

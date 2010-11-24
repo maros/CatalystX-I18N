@@ -18,7 +18,7 @@ has 'i18n_collator' => (
     clearer     => '_clear_i18n_collator',
 );
 
-sub _build_i18n_collate {
+sub _build_i18n_collator {
     my ($c) = @_;
     
     my $language = $c->language;

@@ -5,6 +5,34 @@ package CatalystX::I18N::TraitFor::ViewTT;
 use Moose::Role;
 requires qw(template);
 
+around render => sub {
+    my $orig  = shift;
+    my ( $self,$c,$template,$args ) = @_;
+    
+    no warnings 'once';
+    
+    local $Template::Stash::HASH_OPS;
+    local $Template::Stash::LIST_OPS;
+    
+    if ($c->can('i18n_collator')) {
+        my $collator = $c->i18n_collator;
+        
+        $Template::Stash::HASH_OPS->{'lsort'}  = sub { 
+            my ($hash) = @_;
+            return [ $collator->sort(keys %$hash) ];
+        };
+        
+        $Template::Stash::LIST_OPS->{'lsort'}  = sub { 
+            my ($list) = @_;
+            return $list 
+                unless scalar @$list > 1;
+            return [ $collator->sort(@$list) ];
+        };
+    }
+    
+    return $self->$orig($c,$template,$args);
+};
+
 around new => sub {
     my $orig  = shift;
     my ( $self,$app,$config ) = @_;
@@ -57,6 +85,7 @@ sub _i18n_numberformat_factory {
 #    }
 #}
 
+no Moose::Role;
 1;
 
 

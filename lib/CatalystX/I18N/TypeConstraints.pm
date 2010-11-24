@@ -2,6 +2,9 @@
 package CatalystX::I18N::TypeConstraints;
 # ============================================================================
 
+use strict;
+use warnings;
+
 use Moose::Util::TypeConstraints;
 use DateTime::TimeZone;
 use DateTime::Locale;
@@ -60,5 +63,7 @@ coerce 'CatalystX::I18N::Type::DateTimeLocale'
 
 subtype 'CatalystX::I18N::Type::L10NHandle'
     => as duck_type(qw(maketext));
+
+no Moose::Util::TypeConstraints;
 
 1;

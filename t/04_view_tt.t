@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>8+1;
+use Test::Most tests=>10+1;
 use Test::NoWarnings; 
 
 use lib qw(t/testapp/lib);
@@ -20,4 +20,6 @@ use Catalyst::Test 'TestApp';
     is($lines[5],'<div>++EUR 233.634,23</div>');
     is($lines[6],'<div>-12,2</div>');
     is($lines[7],'<div>-12,200</div>');
+    is($lines[8],'<div>string4 de_AT 4 hasen</div>');
+    is($lines[9],'<div>string4 de_AT 1 hase</div>');
 }

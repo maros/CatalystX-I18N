@@ -27,7 +27,7 @@ __PACKAGE__->config(
     'View::TT'      => {
         INCLUDE_PATH    => [ __PACKAGE__->path_to('root','template') ]
     },
-    'Model::L10N'   => {},
+    'Model::Maketext'   => {},
     'I18N'          => {
         default_locale          => 'de_AT',
         locales                 => {

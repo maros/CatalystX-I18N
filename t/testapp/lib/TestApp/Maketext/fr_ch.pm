@@ -1,4 +1,4 @@
-package TestApp::L10N::fr_ch;
+package TestApp::Maketext::fr_ch;
 
 use strict;
 use warnings;

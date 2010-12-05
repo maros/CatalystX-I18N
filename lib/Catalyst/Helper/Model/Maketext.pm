@@ -47,7 +47,7 @@ Catalyst::Helper::Model::Maketext - Helper for Maketext models
 
 =head1 DESCRIPTION
 
-Helper for the L<Catalyst> MaketextL10N model.
+Helper for the L<Catalyst> Maketext model.
 
 =head1 ARGUMENTS
 

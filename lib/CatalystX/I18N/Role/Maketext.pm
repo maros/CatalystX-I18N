@@ -14,7 +14,7 @@ sub maketext {
     }
     
     # TODO: Check if Maketext model is available
-    my $handle = $c->model('L10N');
+    my $handle = $c->model('Maketext');
     my $msgstr = $handle->maketext( $msgid, @args_expand );
     
     return $msgstr

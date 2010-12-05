@@ -80,14 +80,13 @@ sub _i18n_numberformat_factory {
 }
 
 sub _i18n_maketext_factory {
-    my ( $context ) = @_;
+    my ( $context,@params ) = @_;
     
     my $c = $context->stash->get('c');
     weaken $c;
     
     return sub {
-        my ($msgid,@params) = @_;
-        
+        my ($msgid) = @_;
         if (scalar @params == 1
             && ref($params[0]) eq 'ARRAY') {
             @params = @{$params[0]};

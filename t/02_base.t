@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>48+1;
+use Test::Most tests=>53+1;
 use Test::NoWarnings;
 
 use lib qw(t/);
@@ -101,5 +101,12 @@ $mech->{catalyst_debug} = 1;
          'timezone' => 'floating',
        }
     },'Multiple locales ok');
+}
+
+# Test 5 - locale set
+{
+    my $response = request($mech,'/base/test8');
+    is($response->{sort_collate},'Afghanistan,Ägypten,Albanien,Algerien,Andorra,Äquatorialguinea,Äthiopien,Bahamas,Zypern');
+    is($response->{sort_perl},'Afghanistan,Albanien,Algerien,Andorra,Bahamas,Zypern,Ägypten,Äquatorialguinea,Äthiopien');
 }
 

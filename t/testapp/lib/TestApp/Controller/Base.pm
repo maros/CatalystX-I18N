@@ -121,5 +121,20 @@ sub test7 : Local Args(0) {
     $c->detach('TestApp::View::TT');
 }
 
+sub test8 : Local Args(0) {
+    my ($self,$c) = @_;
+    $c->locale('de_AT');
+    
+    my @list = qw(Ägypten Äquatorialguinea Äthiopien Afghanistan Albanien Algerien Andorra Bahamas Zypern);
+    
+    $c->detach('TestApp::View::Test',[
+        {
+            sort_perl   => join(',',sort @list),
+            sort_collate=> join(',',$c->i18n_sort(@list)),
+        }
+    
+    ]);
+}
+
 1;
 

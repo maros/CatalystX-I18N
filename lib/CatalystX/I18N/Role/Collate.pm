@@ -36,7 +36,7 @@ sub i18n_sort {
     @arguments = @{$arguments[0]}
         if scalar(@arguments) == 0 && ref($arguments[0]) eq 'ARRAY';
     
-    my @results = $c->i18n_collator(@arguments);
+    my @results = $c->i18n_collator->sort(@arguments);
     
     return wantarray ? @results : \@results;
 }

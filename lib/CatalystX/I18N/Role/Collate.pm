@@ -73,7 +73,7 @@ CatalystX::I18N::Role::Collate - Support for localized collation
      my ($self,$c) = @_;
      
      $c->locale('de');
-     @sorted_names = $c->i18n_sort(qw/Äthiopien Armenien Afganistan Argentinien Bolivien Buthan/);
+     @sorted_names = $c->i18n_sort(qw/Buthan Armenien Argentinien Bolivien Äthiopien Afganistan/);
      
      $c->stash->{names} = \@sorted_names;
  }

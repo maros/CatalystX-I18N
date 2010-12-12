@@ -5,6 +5,8 @@ package CatalystX::I18N::TraitFor::ViewTT;
 use Moose::Role;
 requires qw(template);
 
+use Template::Stash;
+
 use Scalar::Util qw(weaken);
 
 around render => sub {
@@ -13,8 +15,8 @@ around render => sub {
     
     no warnings 'once';
     
-    local $Template::Stash::HASH_OPS;
-    local $Template::Stash::LIST_OPS;
+#    local $Template::Stash::HASH_OPS;
+#    local $Template::Stash::LIST_OPS;
     
     if ($c->can('i18n_collator')) {
         my $collator = $c->i18n_collator;
@@ -23,7 +25,6 @@ around render => sub {
             my ($hash) = @_;
             return [ $collator->sort(keys %$hash) ];
         };
-        
         $Template::Stash::LIST_OPS->{'lsort'}  = sub { 
             my ($list) = @_;
             return $list 

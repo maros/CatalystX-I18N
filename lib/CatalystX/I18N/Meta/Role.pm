@@ -24,9 +24,9 @@ before 'apply' => sub {
         
         # Build anon class with our roles
         my $meta = Moose::Meta::Class->create_anon_class(
-          superclasses => [$super_class],
-          roles        => [$role_class],
-          cache        => 1,
+            superclasses => [$super_class],
+            roles        => [$role_class],
+            cache        => 1,
         );
         
         $class->$accessor_method($meta->name);

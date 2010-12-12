@@ -118,6 +118,8 @@ CatalystX::I18N::TraitFor::ViewTT - Adds I18N filters and vmethods to a TT view
  [% 22 | number('number') %]
  
  [% mylist.lsort().join(', ') %]
+ 
+ [% 'Hello %1!' | maketext(name) %]
 
 =head1 DESCRIPTION
 
@@ -144,18 +146,24 @@ The following formats are available
 
 =back
 
-=head3 VMethods
+=head3 maketext
+
+Returns the translation for the given string.
+
+You need to have the L<CatalystX::I18N::Role::Maketext> role loaded in 
+Catalyst.
+
+=head2 VMethods
 
 =head3 lsort
 
 Locale aware collation. You need to have
 the L<CatalystX::I18N::Role::Collate> role loaded in Catalyst.
 
-
 =head1 SEE ALSO
 
 L<CatalystX::I18N::Role::NumberFormat>, L<CatalystX::I18N::Role::Collate>, 
-L<Catalyst::View::TT>
+L<CatalystX::I18N::Role::Maketext> and L<Catalyst::View::TT>
 
 =head1 AUTHOR
 

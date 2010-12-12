@@ -66,6 +66,7 @@ Is same as
      +CatalystX::I18N::Role::GetLocale
      +CatalystX::I18N::Role::DateTime
      +CatalystX::I18N::Role::Maketext
+     +CatalystX::I18N::Role::Collate
  /;
  
  use CatalystX::RoleApplicator;

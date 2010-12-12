@@ -8,3 +8,5 @@
 <div>[% -12.2 | number('number',3,3) %]</div>
 <div>[% 'string4' | maketext(4) %]</div>
 <div>[% 'string4' | maketext(1) %]</div>
+<div>[% sortlist.lsort().join(',') %]</div>
+<div>[% sortlist.sort().join(',') %]</div>

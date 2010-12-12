@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>53+1;
+use Test::Most tests=>52+1;
 use Test::NoWarnings;
 
 use lib qw(t/);

@@ -67,6 +67,7 @@ Is same as
      +CatalystX::I18N::Role::DateTime
      +CatalystX::I18N::Role::Maketext
      +CatalystX::I18N::Role::Collate
+     +CatalystX::I18N::Role::NumberFormat
  /;
  
  use CatalystX::RoleApplicator;

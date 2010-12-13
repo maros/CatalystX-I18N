@@ -115,10 +115,11 @@ CatalystX::I18N::TraitFor::ViewTT - Adds I18N filters and vmethods to a TT view
  
  
  # In your TT template
+ # Localized number format
  [% 22 | number('number') %]
- 
+ # Localized collation
  [% mylist.lsort().join(', ') %]
- 
+ # Maketext
  [% 'Hello %1!' | maketext(name) %]
 
 =head1 DESCRIPTION

@@ -78,7 +78,7 @@ SYNOPSIS
 
 DESCRIPTION
     CatalystX::I18N provides a comprehensive toolset for
-    internationalisation (I18N) and localisation (L10N) of catalyst
+    internationalisation (I18N) and localisation ( N) of catalyst
     applications. This distribution consists of several modules that are
     designed to integrate seamlessly, but can be run idependently or
     replaced easily if necessarry.
@@ -112,11 +112,11 @@ DESCRIPTION
 
         Tries best to determine the request locale.
 
-    *   CatalystX::I18N::Model::L10N
+    *   CatalystX::I18N::Model::Maketext
 
         Provides access to Locale::Maketext classes via Catalyst models.
 
-    *   CatalystX::I18N::L10N
+    *   CatalystX::I18N::Maketext
 
         Wrapper arround Locale::Maketext. Can also be used outside of
         Catalyst.
@@ -153,8 +153,8 @@ CONFIGURATION
 
     Locales can inherit from other locales ("inherits"). All configuration
     values from inherited locales will be copied, and add if you use
-    CatalystX::I18N::Model::L10N together with CatalystX::I18N::L10N the
-    generated lexicons will also inherit in the given order.
+    CatalystX::I18N::Model::Maketext together with CatalystX::I18N::Maketext
+    the generated lexicons will also inherit in the given order.
 
     Additional configuration values are defined by the various
     CatalystX::I18N::Role::Maketext::* plugins.

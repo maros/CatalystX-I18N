@@ -1,5 +1,10 @@
 Revision history for Perl module CatalystX::I18N
 
+1.05 Sun Dec 12 2010
+    - Add CatalystX::I18N::TraitFor::ViewTT
+    - Add CatalystX::I18N::Role::Colate
+    - Rename Model::L10N an Role::L10N to *::Maketext (Incompatible change!)
+
 1.04 Sat Oct 16 2010
     - Added more missing dependencies
     - Add support for fail_with method in L10N model

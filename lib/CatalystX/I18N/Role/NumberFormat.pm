@@ -10,6 +10,9 @@ use namespace::autoclean;
 use Number::Format;
 use CatalystX::I18N::TypeConstraints;
 
+use POSIX qw(LC_ALL setlocale localeconv);
+
+
 has 'i18n_numberformat' => (
     is          => 'rw',
     isa         => 'Number::Format',
@@ -26,9 +29,9 @@ sub _build_i18n_numberformat {
     
     my $lconv = {};
     # Only load localeconv if locale is installed/correctly loaded
-    my @current_locale = map { s/\.UTF-8$//i; $_ } split(/\//,POSIX::setlocale(POSIX::LC_ALL));
+    my @current_locale = map { s/\.UTF-8$//i; $_ } split(/\//,setlocale(LC_ALL));
     if (grep { $locale eq $_ } @current_locale) {
-        $lconv = POSIX::localeconv();
+        $lconv = localeconv();
     }
     
     # Build custom defined for 5.8

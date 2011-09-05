@@ -89,7 +89,7 @@ sub get_locale_from_browser  {
     if ($c->request->can('browser_territory')) {
         my $territory = $c->request->browser_territory;
         unshift(@$territories,uc($territory))
-            if $territory;
+            if ($territory);
     }
     
     my $locale_config = $c->config->{I18N}{locales};

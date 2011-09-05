@@ -9,11 +9,8 @@ use Moose::Util::TypeConstraints;
 use DateTime::TimeZone;
 use DateTime::Locale;
 use MooseX::Types::Path::Class;
-#use Params::Coerce;
 
 our $LOCALE_RE = qr/^([a-z]{2})(?:_([A-Z]{2}))?$/;
-
-enum 'Lexicon' => qw(auto gettext msgcat tie);
 
 subtype 'CatalystX::I18N::Type::Territory'
     => as 'Str'

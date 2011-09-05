@@ -78,10 +78,10 @@ SYNOPSIS
 
 DESCRIPTION
     CatalystX::I18N provides a comprehensive toolset for
-    internationalisation (I18N) and localisation ( N) of catalyst
+    internationalisation (I18N) and localisation (L10N) of catalyst
     applications. This distribution consists of several modules that are
     designed to integrate seamlessly, but can be run idependently or
-    replaced easily if necessarry.
+    replaced easily if necessary.
 
     *   CatalystX::I18N::Role::Base
 
@@ -110,7 +110,8 @@ DESCRIPTION
 
     *   CatalystX::I18N::Role::GetLocale
 
-        Tries best to determine the request locale.
+        Tries best to determine the appropriate locale for the current
+        request.
 
     *   CatalystX::I18N::Model::Maketext
 
@@ -122,8 +123,8 @@ DESCRIPTION
         Catalyst.
 
 CONFIGURATION
-    In order to work properly, CatalystX::I18N will need find some values in
-    your Catalyst configuration
+    In order to work properly, CatalystX::I18N will need some values in your
+    Catalyst configuration
 
      __PACKAGE__->config( 
          name    => 'MyApp', 
@@ -132,7 +133,7 @@ CONFIGURATION
              locales            => {
                  'de'               => {
                      inactive           => 1,
-                     # Mark this locale as inactive. 
+                     # Mark this locale as inactive (sort of abstract locale)
                      ...
                      # Arbitrary configuration parameters
                  },
@@ -152,7 +153,7 @@ CONFIGURATION
     selected by the "get_locale" in CatalystX::I18N::Role::GetLocale method.
 
     Locales can inherit from other locales ("inherits"). All configuration
-    values from inherited locales will be copied, and add if you use
+    values from inherited locales will be copied. If you use
     CatalystX::I18N::Model::Maketext together with CatalystX::I18N::Maketext
     the generated lexicons will also inherit in the given order.
 
@@ -167,13 +168,13 @@ EXTENDING
 
      package CatalystX::MyI18N::Plugin;
      use Moose::Role;
+     use namespace::autoclean;
  
      after 'set_locale' => sub {
          my ($c,$locale) = @_;
-         $c->do_someting($locale);
+         $c->do_someting($c->locale);
      };
  
-     no Moose::Role;
      1;
 
 SEE ALSO

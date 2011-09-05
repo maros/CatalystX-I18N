@@ -96,10 +96,9 @@ L<CatalystX::I18N::Role::All> as a shortcut.
 =head1 DESCRIPTION
 
 CatalystX::I18N provides a comprehensive toolset for internationalisation 
-(I18N) and localisation (
-N) of catalyst applications. This distribution 
+(I18N) and localisation (L10N) of catalyst applications. This distribution 
 consists of several modules that are designed to integrate seamlessly, but
-can be run idependently or replaced easily if necessarry.
+can be run idependently or replaced easily if necessary.
 
 =over
 
@@ -130,7 +129,7 @@ Adds a C<Content-Language> header to the response.
 
 =item * L<CatalystX::I18N::Role::GetLocale> 
 
-Tries best to determine the request locale.
+Tries best to determine the appropriate locale for the current request.
 
 =item * L<CatalystX::I18N::Model::Maketext>
 
@@ -144,7 +143,7 @@ Wrapper arround L<Locale::Maketext>. Can also be used outside of Catalyst.
 
 =head1 CONFIGURATION
 
-In order to work properly, CatalystX::I18N will need find some values in your
+In order to work properly, CatalystX::I18N will need some values in your
 Catalyst configuration
 
  __PACKAGE__->config( 
@@ -154,7 +153,7 @@ Catalyst configuration
          locales            => {
              'de'               => {
                  inactive           => 1,
-                 # Mark this locale as inactive. 
+                 # Mark this locale as inactive (sort of abstract locale)
                  ...
                  # Arbitrary configuration parameters
              },
@@ -174,7 +173,7 @@ Locales can be marked as C<inactive>. Inactive locales will not be selected
 by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
 
 Locales can inherit from other locales (C<inherits>). All configuration values
-from inherited locales will be copied, and add if you use 
+from inherited locales will be copied. If you use 
 L<CatalystX::I18N::Model::Maketext> together with L<CatalystX::I18N::Maketext>
 the generated lexicons will also inherit in the given order.
 
@@ -189,13 +188,13 @@ E.g. writing a new plugin that does some processing when the locale changes
 
  package CatalystX::MyI18N::Plugin;
  use Moose::Role;
+ use namespace::autoclean;
  
  after 'set_locale' => sub {
      my ($c,$locale) = @_;
-     $c->do_someting($locale);
+     $c->do_someting($c->locale);
  };
  
- no Moose::Role;
  1;
 
 =head1 SEE ALSO

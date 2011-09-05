@@ -88,51 +88,50 @@ If you want to load all available roles and traits you can use
 # DESCRIPTION
 
 CatalystX::I18N provides a comprehensive toolset for internationalisation 
-(I18N) and localisation (
-N) of catalyst applications. This distribution 
+(I18N) and localisation (L10N) of catalyst applications. This distribution 
 consists of several modules that are designed to integrate seamlessly, but
-can be run idependently or replaced easily if necessarry.
+can be run idependently or replaced easily if necessary.
 
-- * [CatalystX::I18N::Role::Base](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Base) 
+- [CatalystX::I18N::Role::Base](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Base) 
 
 Basic I18N role that glues everything toghether.
 
-- * [CatalystX::I18N::Role::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Maketext) 
+- [CatalystX::I18N::Role::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Maketext) 
 
 Adds a maketext capability to a Catalyst application.
 
-- * [CatalystX::I18N::Role::DateTime](http://search.cpan.org/perldoc?CatalystX::I18N::Role::DateTime)
+- [CatalystX::I18N::Role::DateTime](http://search.cpan.org/perldoc?CatalystX::I18N::Role::DateTime)
 
 Methods for localizing date and time informations.
 
-- * [CatalystX::I18N::Role::NumberFormat](http://search.cpan.org/perldoc?CatalystX::I18N::Role::NumberFormat)
+- [CatalystX::I18N::Role::NumberFormat](http://search.cpan.org/perldoc?CatalystX::I18N::Role::NumberFormat)
 
 Methods for localizing numbers.
 
-- * [CatalystX::I18N::TraitFor::Request](http://search.cpan.org/perldoc?CatalystX::I18N::TraitFor::Request)
+- [CatalystX::I18N::TraitFor::Request](http://search.cpan.org/perldoc?CatalystX::I18N::TraitFor::Request)
 
 Extends a [Catalyst::Request](http://search.cpan.org/perldoc?Catalyst::Request) with usefull methods to help dealing with
 various I18N related information in HTTP requests.
 
-- * [CatalystX::I18N::TraitFor::Response](http://search.cpan.org/perldoc?CatalystX::I18N::TraitFor::Response)
+- [CatalystX::I18N::TraitFor::Response](http://search.cpan.org/perldoc?CatalystX::I18N::TraitFor::Response)
 
 Adds a `Content-Language` header to the response.
 
-- * [CatalystX::I18N::Role::GetLocale](http://search.cpan.org/perldoc?CatalystX::I18N::Role::GetLocale) 
+- [CatalystX::I18N::Role::GetLocale](http://search.cpan.org/perldoc?CatalystX::I18N::Role::GetLocale) 
 
-Tries best to determine the request locale.
+Tries best to determine the appropriate locale for the current request.
 
-- * [CatalystX::I18N::Model::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Model::Maketext)
+- [CatalystX::I18N::Model::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Model::Maketext)
 
 Provides access to [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext) classes via Catalyst models.
 
-- * [CatalystX::I18N::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Maketext)
+- [CatalystX::I18N::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Maketext)
 
 Wrapper arround [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext). Can also be used outside of Catalyst.
 
 # CONFIGURATION
 
-In order to work properly, CatalystX::I18N will need find some values in your
+In order to work properly, CatalystX::I18N will need some values in your
 Catalyst configuration
 
  __PACKAGE__->config( 
@@ -142,7 +141,7 @@ Catalyst configuration
          locales            => {
              'de'               => {
                  inactive           => 1,
-                 # Mark this locale as inactive. 
+                 # Mark this locale as inactive (sort of abstract locale)
                  ...
                  # Arbitrary configuration parameters
              },
@@ -162,7 +161,7 @@ Locales can be marked as `inactive`. Inactive locales will not be selected
 by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
 
 Locales can inherit from other locales (`inherits`). All configuration values
-from inherited locales will be copied, and add if you use 
+from inherited locales will be copied. If you use 
 [CatalystX::I18N::Model::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Model::Maketext) together with [CatalystX::I18N::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Maketext)
 the generated lexicons will also inherit in the given order.
 
@@ -177,15 +176,15 @@ E.g. writing a new plugin that does some processing when the locale changes
 
  package CatalystX::MyI18N::Plugin;
  use Moose::Role;
+ use namespace::autoclean;
  
 
  after 'set_locale' => sub {
      my ($c,$locale) = @_;
-     $c->do_someting($locale);
+     $c->do_someting($c->locale);
  };
  
 
- no Moose::Role;
  1;
 
 # SEE ALSO
@@ -198,7 +197,7 @@ E.g. writing a new plugin that does some processing when the locale changes
 
 Please report any bugs or feature requests to 
 `catalystx-i18n@rt.cpan.org`, or through the web interface at
-<http://rt.cpan.org/Public/Bug/Report.html?Queue=CatalystX::I18N>.
+[http://rt.cpan.org/Public/Bug/Report.html?Queue=CatalystX::I18N](http://rt.cpan.org/Public/Bug/Report.html?Queue=CatalystX::I18N).
 I will be notified and then you'll automatically be notified of the progress 
 on your report as I make changes.
 
@@ -214,7 +213,7 @@ on your report as I make changes.
 # COPYRIGHT
 
 CatalystX::I18N is Copyright (c) 2010 Maroš Kollár 
-- <http://www.k-1.com>
+- [http://www.k-1.com](http://www.k-1.com)
 
 # LICENSE
 

@@ -101,6 +101,7 @@ sub _i18n_maketext_factory {
 no Moose::Role;
 1;
 
+=encoding utf8
 
 =head1 NAME
 

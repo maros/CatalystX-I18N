@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>52+1;
+use Test::Most tests=>56+1;
 use Test::NoWarnings;
 
 use lib qw(t/);
@@ -29,7 +29,7 @@ $mech->{catalyst_debug} = 1;
     is($response->{user},undef,'User locale');
 }
 
-# Test 3 - get locale again
+# Test 3a - get locale again
 {
     $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
     my $response = request($mech,'/base/test3');
@@ -39,6 +39,16 @@ $mech->{catalyst_debug} = 1;
     is($response->{locale_from_c},'de_AT','Locale from $c');
     is($response->{request}{browser_language},'fr','Browser language');
     like($response->{number_format},qr/^\+\+EUR\s+27,03$/,'Browser language');
+}
+
+
+# Test 3b - get with strange user-agent
+{
+    $mech->add_header( 'user-agent' => "hidden-agent" );
+    my $response = request($mech,'/base/test3');
+    is($response->{request}{browser_territory},undef,'Browser territory');
+    is($response->{request}{browser_language},undef,'Browser language');
+
 }
 
 # Test 4a - maketext inheritance
@@ -109,4 +119,5 @@ $mech->{catalyst_debug} = 1;
     is($response->{sort_collate},'Afghanistan,Ägypten,Albanien,Algerien,Andorra,Äquatorialguinea,Äthiopien,Bahamas,Zypern');
     is($response->{sort_perl},'Afghanistan,Albanien,Algerien,Andorra,Bahamas,Zypern,Ägypten,Äquatorialguinea,Äthiopien');
 }
+
 

@@ -2,6 +2,7 @@
 package CatalystX::I18N::Role::DateTime;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;

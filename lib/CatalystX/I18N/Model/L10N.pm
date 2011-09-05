@@ -2,6 +2,7 @@
 package CatalystX::I18N::Model::L10N;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose;
 extends 'CatalystX::I18N::Model::Maketext';
 

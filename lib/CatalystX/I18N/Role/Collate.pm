@@ -4,6 +4,7 @@ package CatalystX::I18N::Role::Collate;
 
 use utf8;
 
+use namespace::autoclean;
 use Moose::Role;
 use namespace::autoclean;
 

@@ -2,15 +2,15 @@
 package CatalystX::I18N::Role::NumberFormat;
 # ============================================================================
 
+use namespace::autoclean;
 use utf8;
 
 use Moose::Role;
-use namespace::autoclean;
 
 use Number::Format;
 use CatalystX::I18N::TypeConstraints;
 
-use POSIX qw(LC_ALL setlocale localeconv);
+use POSIX qw();
 
 
 has 'i18n_numberformat' => (
@@ -29,9 +29,9 @@ sub _build_i18n_numberformat {
     
     my $lconv = {};
     # Only load localeconv if locale is installed/correctly loaded
-    my @current_locale = map { s/\.UTF-8$//i; $_ } split(/\//,setlocale(LC_ALL));
+    my @current_locale = map { s/\.UTF-8$//i; $_ } split(/\//,POSIX::setlocale(POSIX::LC_ALL));
     if (grep { $locale eq $_ } @current_locale) {
-        $lconv = localeconv();
+        $lconv = POSIX::localeconv();
     }
     
     # Build custom defined for 5.8

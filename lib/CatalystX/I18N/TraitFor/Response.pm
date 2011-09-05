@@ -2,6 +2,7 @@
 package CatalystX::I18N::TraitFor::Response;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose::Role;
 requires qw(headers);
 

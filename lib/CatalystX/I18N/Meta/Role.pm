@@ -2,6 +2,7 @@
 package CatalystX::I18N::Meta::Role;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose;
 extends 'Moose::Meta::Role';
 

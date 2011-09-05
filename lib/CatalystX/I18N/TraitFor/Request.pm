@@ -2,6 +2,7 @@
 package CatalystX::I18N::TraitFor::Request;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose::Role;
 requires qw(headers user_agent address);
 

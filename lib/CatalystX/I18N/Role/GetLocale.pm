@@ -2,10 +2,10 @@
 package CatalystX::I18N::Role::GetLocale;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
-
 
 sub check_locale {
     my ($c,$locale) = @_;

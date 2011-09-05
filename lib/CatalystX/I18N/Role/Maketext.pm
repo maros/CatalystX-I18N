@@ -2,6 +2,7 @@
 package CatalystX::I18N::Role::Maketext;
 # ============================================================================
 
+use namespace::autoclean;
 use Moose::Role;
 
 sub maketext {

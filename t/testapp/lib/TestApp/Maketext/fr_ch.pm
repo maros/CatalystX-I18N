@@ -9,3 +9,5 @@ our %Lexicon = (
     string3     => "string3 fr_CH",
     string4     => 'string4 fr_CH [quant,_1,lapin,lapins]',
 );
+
+1;

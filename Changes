@@ -1,5 +1,10 @@
 Revision history for Perl module CatalystX::I18N
 
+1.06 Thu Sep 8 2011
+    - Fix conflicting role method names error with latest Moose
+    - Check againgst invalid browser languages
+    - Dist cleanup
+
 1.05 Sun Dec 12 2010
     - Add CatalystX::I18N::TraitFor::ViewTT
     - Add CatalystX::I18N::Role::Colate
@@ -10,7 +15,6 @@ Revision history for Perl module CatalystX::I18N
     - Add support for fail_with method in L10N model
     - Better posix setlocale support (check for return value)
     - Extend documentation
-    - 
 
 1.03 Tue Oct 12 2010
     - Added missing dependencies

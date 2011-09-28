@@ -6,6 +6,7 @@ use namespace::autoclean;
 use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
+use List::Util qw(first shuffle);
 
 sub check_locale {
     my ($c,$locale) = @_;
@@ -155,8 +156,8 @@ sub get_locale {
     # Default locale
     $locale ||= $c->config->{I18N}{default_locale};
     
-    # Any locale
-    ($locale) ||= keys %$locale_config;
+    # Random locale
+    $locale ||= first { $locale_config->{$_}{inactive} == 0 } shuffle keys %$locale_config;
     
     if ($c->can('locale')) {
         $c->locale($locale);

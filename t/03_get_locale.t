@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>7;
+use Test::Most tests=>8;
 #use Test::NoWarnings; 
 # Cannot run with NoWarnings since we get a warning from HTTP::BrowserDetect
 # wen running under make test
@@ -61,4 +61,11 @@ use Catalyst::Test 'TestApp';
     $request->header('Accept-Language','zh, sk, cz');
     $request->address('84.20.181.0');
     is($c->get_locale_from_browser,'de_AT','Locale from IP');
+}
+
+{
+    my($res, $c) = ctx_request('/base/test6');
+    delete $c->config->{I18N}{default_locale};
+    my $request = $c->request;
+    isnt($c->get_locale,'de','Locale from fallback');
 }

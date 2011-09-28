@@ -20,7 +20,7 @@ sub mk_compclass {
     my $file = pop @path;
     
     my $maketext_dir = $basedir->subdir( join '/', @path );
-    my $maketext_file = $maketext_dir->file($file.'pm');
+    my $maketext_file = $maketext_dir->file($file.'.pm');
     $maketext_dir->mkpath();
     
     $helper->render_file('maketextclass', $maketext_file->stringify, \%args);

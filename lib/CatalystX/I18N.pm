@@ -137,7 +137,7 @@ Provides access to L<Locale::Maketext> classes via Catalyst models.
 
 =item * L<CatalystX::I18N::Maketext>
 
-Wrapper arround L<Locale::Maketext>. Can also be used outside of Catalyst.
+Wrapper around L<Locale::Maketext>. Can also be used outside of Catalyst.
 
 =back
 

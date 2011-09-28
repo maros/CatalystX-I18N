@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use version;
-our $VERSION = version->new('1.06');
+our $VERSION = version->new('1.07');
 our $AUTHORITY = 'cpan:MAROS';
 
 1;

@@ -1,8 +1,12 @@
 Revision history for Perl module CatalystX::I18N
 
+1.07 Wed Sep 28 2011
+    - Fix broken fallback random locale (RT71098, Alexander Hosfeld)
+    - Fix wrong helper filenames (RT71098, Alexander Hosfeld)
+
 1.06 Thu Sep 8 2011
     - Fix conflicting role method names error with latest Moose
-    - Check againgst invalid browser languages
+    - Check against invalid browser languages
     - Dist cleanup
 
 1.05 Sun Dec 12 2010

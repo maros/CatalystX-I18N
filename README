@@ -119,7 +119,7 @@ DESCRIPTION
 
     *   CatalystX::I18N::Maketext
 
-        Wrapper arround Locale::Maketext. Can also be used outside of
+        Wrapper around Locale::Maketext. Can also be used outside of
         Catalyst.
 
 CONFIGURATION

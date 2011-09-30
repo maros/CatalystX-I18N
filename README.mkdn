@@ -127,7 +127,7 @@ Provides access to [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Mak
 
 - [CatalystX::I18N::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Maketext)
 
-Wrapper arround [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext). Can also be used outside of Catalyst.
+Wrapper around [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext). Can also be used outside of Catalyst.
 
 # CONFIGURATION
 

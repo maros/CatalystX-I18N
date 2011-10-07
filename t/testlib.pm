@@ -23,7 +23,10 @@ sub import {
 }
 
 sub init {
-    return Test::WWW::Mechanize::Catalyst->new(catalyst_app => 'TestApp');
+    return Test::WWW::Mechanize::Catalyst->new(
+        catalyst_app => 'TestApp',
+        cookie_jar => {},
+    );
 }
 
 sub request {

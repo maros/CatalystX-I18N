@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>56+1;
+use Test::Most tests=>59+1;
 use Test::NoWarnings;
 
 use lib qw(t/);
@@ -90,6 +90,13 @@ $mech->{catalyst_debug} = 1;
     is($response->{translation}{5},'string5','String 5 for fr ok');
     is($response->{translation}{6},'string6','String 6 for fr ok');
 }
+
+# Test 4e - invalid locale
+{
+    my $response = request($mech,'/base/test4/xx');
+    is($response->{locale},'de_AT','Locale');
+}
+
 
 # Test 5 - locale set
 {

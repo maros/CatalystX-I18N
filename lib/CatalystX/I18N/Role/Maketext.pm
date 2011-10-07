@@ -39,9 +39,6 @@ sub maketext {
     return $msgstr;
 }
 
-#no warnings 'once';
-#*localize = \&maketext;
-
 no Moose::Role;
 1;
 

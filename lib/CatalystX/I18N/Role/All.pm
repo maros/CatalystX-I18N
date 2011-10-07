@@ -25,6 +25,7 @@ around 'setup_component' => sub {
     
     Class::MOP::load_class($component);
     
+    # Load View::TT role
     if ($component->isa('Catalyst::View::TT')
         && $component->can('meta')) {
         my $component_meta = $component->meta;

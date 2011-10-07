@@ -10,7 +10,8 @@ use DateTime::TimeZone;
 use DateTime::Locale;
 use MooseX::Types::Path::Class;
 
-our $LOCALE_RE = qr/^([a-z]{2})(?:_([A-Z]{2}))?$/;
+our $LOCALE_RE = qr/^([a-z]{2,3})(?:_([A-Z]{2}))?$/;
+our $LANGUAGE_RE = qr/^[a-z]{2,3}$/;
 
 subtype 'CatalystX::I18N::Type::Territory'
     => as 'Str'
@@ -22,7 +23,7 @@ subtype 'CatalystX::I18N::Type::Locale'
 
 subtype 'CatalystX::I18N::Type::Language'
     => as 'Str'
-    => where { m/^[a-z]{2}$/ };
+    => where { $_ =~ $LANGUAGE_RE };
 
 subtype 'CatalystX::I18N::Type::Locales'
     => as 'ArrayRef[CatalystX::I18N::Type::Locale]';

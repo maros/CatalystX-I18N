@@ -79,8 +79,10 @@ sub territory {
 sub set_locale {
     my ($c,$value) = @_;
     
-    return 
+    return
         unless $value =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE;
+    
+    my $meta_attribute = $c->meta->get_attribute('locale');
     
     my $language = $1;
     my $territory = $2;
@@ -89,8 +91,11 @@ sub set_locale {
         if defined $territory && $territory ne '';
     
     # Check for valid locale
-    return 
-        unless exists $c->config->{I18N}{locales}{$locale};
+    if (! exists $c->config->{I18N}{locales}{$locale}
+        || $c->config->{I18N}{locales}{$locale}{inactive} == 1) {
+        $meta_attribute->clear_value($c);
+        return;
+    }
     
     # Save original locale
     $ORIGINAL_LOCALE ||= POSIX::setlocale(POSIX::LC_ALL);
@@ -117,7 +122,6 @@ sub set_locale {
     }
     
     # Set locale
-    my $meta_attribute = $c->meta->get_attribute('locale');
     $meta_attribute->set_raw_value($c,$locale)
         if ! $meta_attribute->has_value($c)
         || $meta_attribute->get_raw_value($c) ne $locale;

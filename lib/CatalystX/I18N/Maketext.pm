@@ -8,6 +8,7 @@ use warnings;
 use parent qw(Locale::Maketext);
 
 use Locale::Maketext::Lexicon;
+use CatalystX::I18N::TypeConstraints;
 #use Locale::Maketext::Lexicon::Gettext;
 use Path::Class;
 
@@ -29,7 +30,7 @@ sub load_lexicon {
     die "Invalid locales"
         unless defined $locales
         && scalar @$locales > 0
-        && ! grep {  $_ !~ /^([a-z]{2})(_[A-Z]{2})?$/ } @$locales;
+        && ! grep {  $_ !~ $CatalystX::I18N::TypeConstraints::LOCALE_RE } @$locales;
     
     {
         no strict 'refs';

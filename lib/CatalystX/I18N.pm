@@ -108,7 +108,11 @@ Basic I18N role that glues everything toghether.
 
 =item * L<CatalystX::I18N::Role::Maketext> 
 
-Adds a maketext capability to a Catalyst application.
+Localize text via L<Locale::Maketext>
+
+=item * L<CatalystX::I18N::Role::DataLocalize> 
+
+Localize text via L<Data::Localize>
 
 =item * L<CatalystX::I18N::Role::DateTime>
 
@@ -120,7 +124,7 @@ Methods for localizing numbers.
 
 =item * L<CatalystX::I18N::TraitFor::Request>
 
-Extends a L<Catalyst::Request> with usefull methods to help dealing with
+Extends L<Catalyst::Request> with usefull methods to help dealing with
 various I18N related information in HTTP requests.
 
 =item * L<CatalystX::I18N::TraitFor::Response>
@@ -129,15 +133,25 @@ Adds a C<Content-Language> header to the response.
 
 =item * L<CatalystX::I18N::Role::GetLocale> 
 
-Tries best to determine the appropriate locale for the current request.
+Tries to determine the most appropriate locale for the current request.
 
 =item * L<CatalystX::I18N::Model::Maketext>
 
-Provides access to L<Locale::Maketext> classes via Catalyst models.
+Provides access to L<Locale::Maketext> classes via a Catalyst model.
+
+=item * L<CatalystX::I18N::Model::DataLocalize>
+
+Provides access to a L<Data::Localize> class via a Catalyst model.
 
 =item * L<CatalystX::I18N::Maketext>
 
-Wrapper around L<Locale::Maketext>. Can also be used outside of Catalyst.
+Helpful wrapper around L<Locale::Maketext>. Can also be used outside of 
+Catalyst.
+
+=item * L<CatalystX::I18N::DataLocalize>
+
+Helpful wrapper around L<Data::Localize>. Can also be used outside of 
+Catalyst.
 
 =back
 
@@ -178,7 +192,7 @@ L<CatalystX::I18N::Model::Maketext> together with L<CatalystX::I18N::Maketext>
 the generated lexicons will also inherit in the given order.
 
 Additional configuration values are defined by the various 
-CatalystX::I18N::Role::Maketext::* plugins.
+CatalystX::I18N::Role::* plugins.
 
 =head1 EXTENDING
 
@@ -186,7 +200,7 @@ Extending the functionality of the CatalystX::I18N distribution is easy.
 
 E.g. writing a new plugin that does some processing when the locale changes
 
- package CatalystX::MyI18N::Plugin;
+ package CatalystX::MyI18N::Role::MyPlugin;
  use Moose::Role;
  use namespace::autoclean;
  
@@ -199,7 +213,7 @@ E.g. writing a new plugin that does some processing when the locale changes
 
 =head1 SEE ALSO
 
-L<Locale::Maketext>, <Locale::Maketext::Lexicon>,
+L<Locale::Maketext>, <Locale::Maketext::Lexicon>, L<Data::Localize>, 
 L<Number::Format>, L<DateTime::Locale>, L<DateTime::Format::CLDR>, 
 L<DateTime::TimeZone>, L<HTTP::BrowserDetect> and L<Locale::Geocode>
 

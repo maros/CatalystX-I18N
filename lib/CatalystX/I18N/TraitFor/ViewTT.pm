@@ -105,7 +105,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::TraitFor::ViewTT - Adds I18N filters and vmethods to a TT view
+CatalystX::I18N::TraitFor::ViewTT - Adds I18N filters and VMethods to a TT view
 
 =head1 SYNOPSIS
 
@@ -156,6 +156,13 @@ Returns the translation for the given string.
 You need to have the L<CatalystX::I18N::Role::Maketext> role loaded in 
 Catalyst.
 
+=head3 localite
+
+Returns the translation for the given string.
+
+You need to have the L<CatalystX::I18N::Role::DataLocalize> role loaded in 
+Catalyst.
+
 =head2 VMethods
 
 =head3 lsort
@@ -166,7 +173,8 @@ the L<CatalystX::I18N::Role::Collate> role loaded in Catalyst.
 =head1 SEE ALSO
 
 L<CatalystX::I18N::Role::NumberFormat>, L<CatalystX::I18N::Role::Collate>, 
-L<CatalystX::I18N::Role::Maketext> and L<Catalyst::View::TT>
+L<CatalystX::I18N::Role::Maketext>, L<CatalystX::I18N::Role::DataLocalize>
+and L<Catalyst::View::TT>
 
 =head1 AUTHOR
 

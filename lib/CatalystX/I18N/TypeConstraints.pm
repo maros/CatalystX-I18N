@@ -65,3 +65,47 @@ subtype 'CatalystX::I18N::Type::MaketextHandle'
 no Moose::Util::TypeConstraints;
 
 1;
+
+=encoding utf8
+
+=head1 NAME
+
+CatalystX::I18N::TypeConstraints - Defines I18N Moose type constraints
+
+=head1 SYNOPSIS
+
+ use Moose;
+ use CatalystX::I18N::TypeConstraints;
+ 
+ has 'locale' => (
+    is      => 'rw',
+    isa     => 'CatalystX::I18N::Type::Locale',
+ );
+
+=head1 TYPE CONSTRAINTS
+
+=over
+
+=item * CatalystX::I18N::Type::Territory
+
+=item * CatalystX::I18N::Type::Locale
+
+=item * CatalystX::I18N::Type::Language
+
+=item * CatalystX::I18N::Type::DateTimeTimezone
+
+=item * CatalystX::I18N::Type::DateTimeLocale
+
+=item * CatalystX::I18N::Type::MaketextHandle
+
+=item * CatalystX::I18N::Type::DirList
+
+=back
+
+=head1 AUTHOR
+
+    Maroš Kollár
+    CPAN ID: MAROS
+    maros [at] k-1.com
+    
+    L<http://www.revdev.at>

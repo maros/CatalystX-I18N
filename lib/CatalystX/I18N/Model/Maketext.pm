@@ -132,7 +132,7 @@ no Moose;
 
 =head1 NAME
 
-CatalystX::I18N::Model::Maketext - Glues CatalystX::I18N::Maketext into Catalyst
+CatalystX::I18N::Model::Maketext - Glues Locale::Maketext into Catalyst
 
 =head1 SYNOPSIS
 
@@ -142,6 +142,7 @@ CatalystX::I18N::Model::Maketext - Glues CatalystX::I18N::Maketext into Catalyst
  
  __PACKAGE__->config( 
     'Model::Maketext' => {
+        class           => 'MyApp::Maketext', # optional
         directory       => '/path/to/maketext/files', # optional
     },
  );
@@ -171,8 +172,8 @@ CatalystX::I18N::Model::Maketext - Glues CatalystX::I18N::Maketext into Catalyst
 
 =head1 DESCRIPTION
 
-This model glues a L<CatalystX::I18N::Maketext> class (or any other 
-L<Locale::Maketext> class) with Catalyst. 
+This model glues a L<Locale::Maketext> class 
+(eg. L<CatalystX::I18N::Maketext>) into you Catalyst application. 
 
 The method C<fail_with> will be called for each missing msgid if present
 in your model class. 

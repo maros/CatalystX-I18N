@@ -24,7 +24,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::TraitFor::Response - Adds the Content-Language header to the http header
+CatalystX::I18N::TraitFor::Response - Adds the Content-Language header to the Catalyst::Response object
 
 =head1 SYNOPSIS
 

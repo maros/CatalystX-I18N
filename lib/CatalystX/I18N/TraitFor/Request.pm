@@ -171,11 +171,11 @@ CatalystX::I18N::TraitFor::Request - Adds various I18N methods to a Catalyst::Re
 
 =head1 DESCRIPTION
 
-Adds several methods to a L<Catalyst::Request> object that help you determine
-a users language and locale.
+Adds several attributes to a L<Catalyst::Request> object that help you 
+determine a users language and locale.
 
-All methods are lazy. This means that the values will be only calculated
-upon the first call of the method.
+All attributes are lazy. This means that the values will be only calculated
+when the attributes is read/called the first time.
 
 =head1 METHODS
 
@@ -184,7 +184,7 @@ upon the first call of the method.
  my @languages = $c->request->accept_language();
 
 Returns an ordered list of accepted languages (from the 'Accept-Language'
-header)
+header). Inavlid entries in the language headers are filtered.
 
 =head3 browser_language
 

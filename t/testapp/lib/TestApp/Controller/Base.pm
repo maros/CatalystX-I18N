@@ -137,5 +137,23 @@ sub test8 : Local Args(0) {
     ]);
 }
 
+sub test9 : Local Args(1) {
+    my ($self,$c,$locale) = @_;
+    
+    $c->locale($locale);
+    
+    $c->detach('TestApp::View::Test',[
+        {
+            locale          => $c->locale,
+            translation     => {
+                (map 
+                    { $_ => $c->localize('string'.$_,$_) } (1..6),
+                ),
+            }
+        }
+    ]);
+}
+
+
 1;
 

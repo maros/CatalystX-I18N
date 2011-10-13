@@ -8,7 +8,9 @@ use Catalyst qw/
     Session::State::Cookie
     
     +CatalystX::I18N::Role::All
+    +CatalystX::I18N::Role::DataLocalize
 /;
+#    +CatalystX::I18N::Role::DataLocalize
 #    +CatalystX::I18N::Role::Base
 #    +CatalystX::I18N::Role::DateTime
 #    +CatalystX::I18N::Role::Maketext
@@ -66,6 +68,6 @@ __PACKAGE__->config(
     },
 );
 
-TestApp->setup;
+__PACKAGE__->setup;
 
 1;

@@ -34,6 +34,7 @@ requires        'IP::Country::Fast'                     => 0;
 requires        'HTTP::BrowserDetect'                   => '1.09';
 requires        'Number::Format'                        => 0;
 requires        'Unicode::Collate'                      => 0;
+requires        'Unicode::Collate::Locale'              => 0;
 
 build_requires  'Test::Most'                            => 0;
 build_requires  'Test::NoWarnings'                      => 0;

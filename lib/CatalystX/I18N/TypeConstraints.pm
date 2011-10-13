@@ -39,6 +39,16 @@ coerce 'CatalystX::I18N::Type::DirList'
     => from 'Path::Class::Dir'
     => via { 
         [ $_ ]
+    }
+    => from 'Str'
+    => via { 
+        [ Path::Class::Dir->new($_) ]
+    }
+    => from 'ArrayRef[Str]'
+    => via { 
+        [ 
+            map { Path::Class::Dir->new($_) } @{$_}
+        ]
     };
 
 subtype 'CatalystX::I18N::Type::DateTimeTimezone' 

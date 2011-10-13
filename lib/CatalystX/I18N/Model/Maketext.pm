@@ -4,66 +4,17 @@ package CatalystX::I18N::Model::Maketext;
 
 use namespace::autoclean;
 use Moose;
-extends 'Catalyst::Model';
+extends 'CatalystX::I18N::Model::Base';
 
 use CatalystX::I18N::TypeConstraints;
 use Path::Class;
 
-has 'class' => (
-    is          => 'rw', 
-    isa         => 'Str',
-);
 
 has 'gettext_style' => (
     is          => 'rw', 
     isa         => 'Bool',
     default     => 1,
 );
-
-has 'directories' => (
-    is          => 'rw', 
-    isa         => 'CatalystX::I18N::Type::DirList',
-    coerce      => 1,
-    default     => sub { [] },
-);
-
-has '_app' => (
-    is          => 'rw', 
-    isa         => 'Str',
-    required    => 1,
-);
-
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my ( $self,$app,$config ) = @_;
-    
-    if (defined $config->{directories}
-        && ref($config->{directories}) ne 'ARRAY') {
-        $config->{directories} = [ $config->{directories} ];
-    }
-    
-    my $class = $self->isa('CatalystX::I18N::Model::L10N') ? 'L10N':'Maketext';
-    
-    # Build default directory path unless configured
-    unless (defined $config->{directories}
-        && scalar @{$config->{directories}} > 0) {
-        my $calldir = $app;
-        $calldir =~ s{::}{/}g;
-        my $file = "$calldir.pm";
-        my $path = $INC{$file};
-        $path =~ s{\.pm$}{/$class};
-        $config->{directories} = [ Path::Class::Dir->new($path) ];
-    }
-    
-    # Get Maketext class
-    $config->{class} ||= $app .'::'.$class;
-    
-    # Set _app class
-    $config->{_app} = $app;
-    
-    # Call original BUILDARGS
-    return $self->$orig($app,$config);
-};
 
 sub BUILD {
     my ($self) = @_;
@@ -92,6 +43,7 @@ sub BUILD {
         }
         $app->log->debug(sprintf("Loading maketext lexicons for locales %s",join(',',@locales)))
             if $app->debug;
+            
         $class->load_lexicon( 
             locales             => \@locales, 
             directories         => $self->directories,

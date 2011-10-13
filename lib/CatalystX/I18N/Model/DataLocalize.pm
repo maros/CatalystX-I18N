@@ -4,70 +4,31 @@ package CatalystX::I18N::Model::DataLocalize;
 
 use namespace::autoclean;
 use Moose;
-extends 'Catalyst::Model';
+extends 'CatalystX::I18N::Model::Base';
 
 has 'data_localize' => (
     is          => 'rw', 
     isa         => 'Data::Localize',
-    required    => 1,
+    lazy_build  => 1,
 );
 
-has 'directories' => (
-    is          => 'rw', 
-    isa         => 'CatalystX::I18N::Type::DirList',
-    coerce      => 1,
-    default     => sub { [] },
-);
-
-has '_app' => (
-    is          => 'rw', 
-    isa         => 'Str',
-    required    => 1,
-);
-
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my ( $self,$app,$config ) = @_;
+sub _build_data_localize {
+    my ($self) = @_;
     
-    if (defined $config->{directories}
-        && ref($config->{directories}) ne 'ARRAY') {
-        $config->{directories} = [ $config->{directories} ];
-    }
+    # Get DataLocalize class
+    my $class = $self->class || $self->_app .'::DataLocalize';
     
-    # Build default directory path unless configured
-    unless (defined $config->{directories}
-        && scalar @{$config->{directories}} > 0) {
-        my $calldir = $app;
-        $calldir =~ s{::}{/}g;
-        my $file = "$calldir.pm";
-        my $path = $INC{$file};
-        $path =~ s{\.pm$}{/DataLocalize};
-        $config->{directories} = [ Path::Class::Dir->new($path) ];
-    }
+    # Load DataLocalize class
+    eval {
+        Class::MOP::load_class($class);
+        return 1;
+    } or Catalyst::Exception->throw(sprintf("Could not load '%s' : %s",$class,$@));
     
-    # No DataLocalize object supplied
-    unless (defined $config->{data_localize}) {
-        # Get DataLocalize class
-        my $class = delete($config->{class}) || $app .'::DataLocalize';
-        
-        # Load DataLocalize class
-        eval {
-            Class::MOP::load_class($class);
-            return 1;
-        } or Catalyst::Exception->throw(sprintf("Could not load '%s' : %s",$class,$@));
-        
-        Catalyst::Exception->throw(sprintf("Could initialize '%s' because is is not a 'Data::Localize' class",$class))
-            unless $class->isa('Data::Localize');
-        
-        $config->{data_localize} = $class->new();
-    }
+    Catalyst::Exception->throw(sprintf("Could initialize '%s' because is is not a 'Data::Localize' class",$class))
+        unless $class->isa('Data::Localize');
     
-    # Set _app class
-    $config->{_app} = $app;
-    
-    # Call original BUILDARGS
-    return $self->$orig($app,$config);
-};
+    return $class->new();
+}
 
 sub BUILD {
     my ($self) = @_;
@@ -90,16 +51,19 @@ sub BUILD {
         $app->log->warn(sprintf("'%s' does not implement a 'add_localizers' method",ref($loc)))
     }
     
-    $self->_data_localize($loc);
+    $self->data_localize($loc);
 }
 
 sub ACCEPT_CONTEXT {
     my ( $self, $c ) = @_;
     
-    # set locale and inheritance
-    $self->_data_localize->set_languages($c->locale,$c->i18n_config->{_inherits});
+    my @languages = ($c->locale);
+    push(@languages,@{$c->i18n_config->{_inherits}});
     
-    return $self->_data_localize;
+    # set locale and inheritance
+    $self->data_localize->set_languages(@languages);
+    
+    return $self->data_localize;
 }
 
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );

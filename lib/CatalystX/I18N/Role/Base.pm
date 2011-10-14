@@ -214,8 +214,7 @@ CatalystX::I18N::Role::Base - Basic catalyst I18N support
  
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base/;
- 
- 
+
  package MyApp::Catalyst::Controller::Main;
  use strict;
  use warnings;

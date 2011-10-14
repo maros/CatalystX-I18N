@@ -56,18 +56,15 @@ CatalystX::I18N::Role::Maketext - Support for maketext
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::Maketext/;
- 
- 
+
  # Maketext model class
  package MyApp::Model::Maketext;
  use parent qw/CatalystX::I18N::Model::Maketext/;
- 
- 
+
  # Create a Maketext class (must be a Locale::Maketext class)
  package MyApp::Maketext;
  use parent qw/CatalystX::I18N::Maketext/;
- 
- 
+
  # In your controller class(es)
  package MyApp::Catalyst::Controller::Main;
  use strict;

@@ -63,8 +63,7 @@ CatalystX::I18N::Role::Collate - Support for localized collation
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::Collate/;
- 
- 
+
  package MyApp::Catalyst::Controller::Main;
  use strict;
  use warnings;

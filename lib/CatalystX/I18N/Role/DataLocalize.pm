@@ -14,7 +14,7 @@ sub localize {
             (ref $arg eq 'ARRAY') ? @$arg : $arg;
     }
     
-    # TODO: Check if Maketext model is available
+    # TODO: Check if DataLocalize model is available
     my $loc = $c->model('DataLocalize');
     my $msgstr = $loc->localize( $msgid, @args_expand );
     
@@ -38,18 +38,15 @@ CatalystX::I18N::Role::DataLocalize - Support for localize
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::DataLocalize/;
- 
- 
+
  # Maketext model class
  package MyApp::Model::DataLocalize;
  use parent qw/CatalystX::I18N::Model::DataLocalize/;
- 
- 
+
  # Create a Maketext class (must be a Data::Localize class)
  package MyApp::Maketext;
  use parent qw/CatalystX::I18N::DataLocalize/;
- 
- 
+
  # In your controller class(es)
  package MyApp::Catalyst::Controller::Main;
  use strict;
@@ -70,7 +67,7 @@ L<CatalystX::I18N::Model::DataLocalize> model.
 In order to work properly this role needs a model called C<DataLocalize>. A 
 call to C<$c-E<gt>model('DataLocalize')> should return a L<Data::Localize> 
 object. You can either write your own Model and use L<Data::Localize> directly
-or use L<CatalystX::I18N::Model::DataLocalize> and 
+or use L<CatalystX::I18N::Model::DataLocalize> togheter with  
 L<CatalystX::I18N::DataLocalize>.
 
 =head1 METHODS

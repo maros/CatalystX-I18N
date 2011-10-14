@@ -143,8 +143,7 @@ CatalystX::I18N::Role::DateTime - Support for I18N datetime
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::DateTime/;
- 
- 
+
  package MyApp::Catalyst::Controller::Main;
  use strict;
  use warnings;
@@ -231,7 +230,6 @@ localized datetime data.
 The format for each locale can either be set via the
 C<format_datetime> coniguration key, or will be taken from the 
 C<datetime_format_medium> method in the current L<DateTime::Locale> object.
-
 
 =head1 SEE ALSO
 

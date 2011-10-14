@@ -93,9 +93,9 @@ CatalystX::I18N::Role::NumberFormat - Support for I18N number formating
  use Catalyst qw/MyPlugins 
     CatalystX::I18N::Role::Base
     CatalystX::I18N::Role::NumberFormat/;
- 
- 
+
  package MyApp::Catalyst::Controller::Main;
+ 
  use strict;
  use warnings;
  use parent qw/Catalyst::Controller/;

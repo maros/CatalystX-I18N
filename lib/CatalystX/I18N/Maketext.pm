@@ -63,7 +63,7 @@ sub load_lexicon {
         
         my @directory_content =  $directory->children();
         
-        # Load all avaliable po files
+        # Load all avaliable message files
         foreach my $locale (@$locales) {
             my $lc_locale = lc($locale);
             $lc_locale =~ s/-/_/g;

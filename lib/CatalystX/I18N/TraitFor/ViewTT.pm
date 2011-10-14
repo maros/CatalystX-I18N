@@ -4,7 +4,7 @@ package CatalystX::I18N::TraitFor::ViewTT;
 
 use namespace::autoclean;
 use Moose::Role;
-requires qw(template);
+requires qw(template render);
 
 use Template::Stash;
 

@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Most tests=>59+1;
+use Test::Most tests=>87+1;
 use Test::NoWarnings;
 
 use lib qw(t/);
@@ -24,9 +24,9 @@ $mech->{catalyst_debug} = 1;
 {
     $mech->add_header( 'user-agent' => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; fr; rv:1.9.2) Gecko/20100115 Firefox/3.6" );
     my $response = request($mech,'/base/test2');
-    is($response->{browser},'fr','Browser locale');
     is($response->{session},'de_CH','Session locale');
     is($response->{user},undef,'User locale');
+    is($response->{browser},'fr','Browser language');
 }
 
 # Test 3a - get locale again
@@ -127,4 +127,42 @@ $mech->{catalyst_debug} = 1;
     is($response->{sort_perl},'Afghanistan,Albanien,Algerien,Andorra,Bahamas,Zypern,Ägypten,Äquatorialguinea,Äthiopien');
 }
 
+# Test 6a - data localize inheritance
+{
+    my $response = request($mech,'/base/test9/de_AT');
+    is($response->{locale},'de_AT','Locale');
+    is($response->{translation}{1},'string1 de_AT','String 1 for de_AT ok');
+    is($response->{translation}{4},'string4 de_AT 4 hasen','String 4 for de_AT ok');
+    is($response->{translation}{5},'string5 de','String 5 for de_AT ok');
+    is($response->{translation}{6},'string6','String 6 for de_AT ok');
+}
 
+# Test 6b - data localize inheritance
+{
+    my $response = request($mech,'/base/test9/de_CH');
+    is($response->{locale},'de_CH','Locale');
+    is($response->{translation}{1},'string1 de','String 1 for de_CH ok');
+    is($response->{translation}{4},'string4 de 4 hasen','String 4 for de_CH ok');
+    is($response->{translation}{5},'string5 de','String 5 for de_CH ok');
+    is($response->{translation}{6},'string6','String 6 for de_CH ok');
+}
+
+# Test 6c - data localize inheritance
+{
+    my $response = request($mech,'/base/test9/fr_CH');
+    is($response->{locale},'fr_CH','Locale');
+    is($response->{translation}{1},'string1 fr_CH','String 1 for fr_CH ok');
+    is($response->{translation}{4},'string4 fr_CH 4 lapins','String 4 for fr_CH ok');
+    is($response->{translation}{5},'string5','String 5 for fr_CH ok');
+    is($response->{translation}{6},'string6','String 6 for fr_CH ok');
+}
+
+# Test 6d - data localize inheritance
+{
+    my $response = request($mech,'/base/test9/fr');
+    is($response->{locale},'fr','Locale');
+    is($response->{translation}{1},'string1','String 1 for fr ok');
+    is($response->{translation}{4},'string4','String 4 for fr ok');
+    is($response->{translation}{5},'string5','String 5 for fr ok');
+    is($response->{translation}{6},'string6','String 6 for fr ok');
+}

@@ -27,7 +27,9 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
      +CatalystX::I18N::Role::GetLocale
      +CatalystX::I18N::Role::DateTime
      +CatalystX::I18N::Role::Maketext
- /; # Choose only the roles you need
+ /; 
+ # Choose only the roles you need 
+ # CatalystX::I18N::Role::All is a convinient shortcut to load all available roles
  
  # Optionally also load request and response roles
  use CatalystX::RoleApplicator;
@@ -56,8 +58,7 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
          }
      },
  );
- 
- 
+
  package MyApp::Catalyst::Controller::Main;
  use strict;
  use warnings;
@@ -108,11 +109,13 @@ Basic I18N role that glues everything toghether.
 
 =item * L<CatalystX::I18N::Role::Maketext> 
 
-Localize text via L<Locale::Maketext>
+Localize text via L<Locale::Maketext>. Prefered over 
+L<CatalystX::I18N::Role::DataLocalize>
 
 =item * L<CatalystX::I18N::Role::DataLocalize> 
 
-Localize text via L<Data::Localize>
+Localize text via L<Data::Localize>. Alternative to 
+L<CatalystX::I18N::Role::Maketext>
 
 =item * L<CatalystX::I18N::Role::DateTime>
 
@@ -181,7 +184,7 @@ Catalyst configuration
  );
 
 The configuration must be stored under the key C<I18N>. It should contain
-a hash of C<locales> and optionally a default locale (C<default_locale>).
+a hashref of C<locales> and optionally a default locale (C<default_locale>).
 
 Locales can be marked as C<inactive>. Inactive locales will not be selected
 by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
@@ -196,7 +199,7 @@ CatalystX::I18N::Role::* plugins.
 
 =head1 EXTENDING
 
-Extending the functionality of the CatalystX::I18N distribution is easy.
+Extending the functionality of CatalystX::I18N distribution is easy.
 
 E.g. writing a new plugin that does some processing when the locale changes
 

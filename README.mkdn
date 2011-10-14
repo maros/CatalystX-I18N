@@ -12,7 +12,9 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
      +CatalystX::I18N::Role::GetLocale
      +CatalystX::I18N::Role::DateTime
      +CatalystX::I18N::Role::Maketext
- /; # Choose only the roles you need
+ /; 
+ # Choose only the roles you need 
+ # CatalystX::I18N::Role::All is a convinient shortcut to load all available roles
  
 
  # Optionally also load request and response roles
@@ -43,9 +45,6 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
          }
      },
  );
- 
-
- 
 
  package MyApp::Catalyst::Controller::Main;
  use strict;
@@ -98,7 +97,13 @@ Basic I18N role that glues everything toghether.
 
 - [CatalystX::I18N::Role::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Maketext) 
 
-Adds a maketext capability to a Catalyst application.
+Localize text via [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext). Prefered over 
+[CatalystX::I18N::Role::DataLocalize](http://search.cpan.org/perldoc?CatalystX::I18N::Role::DataLocalize)
+
+- [CatalystX::I18N::Role::DataLocalize](http://search.cpan.org/perldoc?CatalystX::I18N::Role::DataLocalize) 
+
+Localize text via [Data::Localize](http://search.cpan.org/perldoc?Data::Localize). Alternative to 
+[CatalystX::I18N::Role::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Maketext)
 
 - [CatalystX::I18N::Role::DateTime](http://search.cpan.org/perldoc?CatalystX::I18N::Role::DateTime)
 
@@ -110,7 +115,7 @@ Methods for localizing numbers.
 
 - [CatalystX::I18N::TraitFor::Request](http://search.cpan.org/perldoc?CatalystX::I18N::TraitFor::Request)
 
-Extends a [Catalyst::Request](http://search.cpan.org/perldoc?Catalyst::Request) with usefull methods to help dealing with
+Extends [Catalyst::Request](http://search.cpan.org/perldoc?Catalyst::Request) with usefull methods to help dealing with
 various I18N related information in HTTP requests.
 
 - [CatalystX::I18N::TraitFor::Response](http://search.cpan.org/perldoc?CatalystX::I18N::TraitFor::Response)
@@ -119,15 +124,25 @@ Adds a `Content-Language` header to the response.
 
 - [CatalystX::I18N::Role::GetLocale](http://search.cpan.org/perldoc?CatalystX::I18N::Role::GetLocale) 
 
-Tries best to determine the appropriate locale for the current request.
+Tries to determine the most appropriate locale for the current request.
 
 - [CatalystX::I18N::Model::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Model::Maketext)
 
-Provides access to [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext) classes via Catalyst models.
+Provides access to [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext) classes via a Catalyst model.
+
+- [CatalystX::I18N::Model::DataLocalize](http://search.cpan.org/perldoc?CatalystX::I18N::Model::DataLocalize)
+
+Provides access to a [Data::Localize](http://search.cpan.org/perldoc?Data::Localize) class via a Catalyst model.
 
 - [CatalystX::I18N::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Maketext)
 
-Wrapper around [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext). Can also be used outside of Catalyst.
+Helpful wrapper around [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext). Can also be used outside of 
+Catalyst.
+
+- [CatalystX::I18N::DataLocalize](http://search.cpan.org/perldoc?CatalystX::I18N::DataLocalize)
+
+Helpful wrapper around [Data::Localize](http://search.cpan.org/perldoc?Data::Localize). Can also be used outside of 
+Catalyst.
 
 # CONFIGURATION
 
@@ -155,7 +170,7 @@ Catalyst configuration
  );
 
 The configuration must be stored under the key `I18N`. It should contain
-a hash of `locales` and optionally a default locale (`default_locale`).
+a hashref of `locales` and optionally a default locale (`default_locale`).
 
 Locales can be marked as `inactive`. Inactive locales will not be selected
 by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
@@ -166,15 +181,15 @@ from inherited locales will be copied. If you use
 the generated lexicons will also inherit in the given order.
 
 Additional configuration values are defined by the various 
-CatalystX::I18N::Role::Maketext::* plugins.
+CatalystX::I18N::Role::* plugins.
 
 # EXTENDING
 
-Extending the functionality of the CatalystX::I18N distribution is easy.
+Extending the functionality of CatalystX::I18N distribution is easy.
 
 E.g. writing a new plugin that does some processing when the locale changes
 
- package CatalystX::MyI18N::Plugin;
+ package CatalystX::MyI18N::Role::MyPlugin;
  use Moose::Role;
  use namespace::autoclean;
  
@@ -189,7 +204,7 @@ E.g. writing a new plugin that does some processing when the locale changes
 
 # SEE ALSO
 
-[Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext), <Locale::Maketext::Lexicon>,
+[Locale::Maketext](http://search.cpan.org/perldoc?Locale::Maketext), <Locale::Maketext::Lexicon>, [Data::Localize](http://search.cpan.org/perldoc?Data::Localize), 
 [Number::Format](http://search.cpan.org/perldoc?Number::Format), [DateTime::Locale](http://search.cpan.org/perldoc?DateTime::Locale), [DateTime::Format::CLDR](http://search.cpan.org/perldoc?DateTime::Format::CLDR), 
 [DateTime::TimeZone](http://search.cpan.org/perldoc?DateTime::TimeZone), [HTTP::BrowserDetect](http://search.cpan.org/perldoc?HTTP::BrowserDetect) and [Locale::Geocode](http://search.cpan.org/perldoc?Locale::Geocode)
 

@@ -1,5 +1,10 @@
 Revision history for Perl module CatalystX::I18N
 
+1.08 Fri Oct 14 2011
+    - Add support for Data::Localize localization
+    - Better checks for valid locales
+    - Refactoring and code cleanup
+
 1.07 Wed Sep 28 2011
     - Fix broken fallback random locale (RT71098, Alexander Hosfeld)
     - Fix wrong helper filenames (RT71098, Alexander Hosfeld)

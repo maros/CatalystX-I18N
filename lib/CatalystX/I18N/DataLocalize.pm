@@ -7,9 +7,71 @@ extends qw(Data::Localize);
 
 use Path::Class;
 use CatalystX::I18N::TypeConstraints;
+use Data::Localize::Format::Gettext;
+
+sub gettext_formatter {
+    my ($self) = @_;
+    
+    # Taken from Locale::Maketext
+    my $numf = sub {
+        my ($lang, $args) = @_;
+        my $num = shift(@$args);
+        
+        if($num < 10_000_000_000 and $num > -10_000_000_000 and $num == int($num)) {
+            $num += 0;  # Just use normal integer stringification.
+            # Specifically, don't let %G turn ten million into 1E+007
+        }
+        else {
+            $num = CORE::sprintf('%G', $num);
+            # "CORE::" is there to avoid confusion with the above sub sprintf.
+        }
+        while( $num =~ s/^([-+]?\d+)(\d{3})/$1,$2/s ) {1}  # right from perlfaq5
+        # The initial \d+ gobbles as many digits as it can, and then we
+        #  backtrack so it un-eats the rightmost three, and then we
+        #  insert the comma there.
+        
+        # This is just a lame hack instead of using Number::Format
+        return $num;
+    };
+    
+    my $numerate = sub {
+        my ($lang, $args) = @_;
+        my $num = shift(@$args);
+        
+        # return this lexical item in a form appropriate to this number
+        my $s = ($num == 1);
+        
+        return '' 
+            unless scalar(@$args);
+        
+        if(scalar(@$args) == 1) { # only the headword form specified
+            return $s ? $args->[0] : ($args->[0] . 's'); # very cheap hack.
+        }
+        else { # sing and plural were specified
+            return $s ? $args->[0] : $args->[1];
+        }
+    };
+    
+    my $formatter = Data::Localize::Format::Gettext->new(
+        functions => {
+            quant => sub {
+                my ($lang, $args) = @_;
+                my $num = shift(@$args);
+                
+                return $num if scalar(@$args) == 0; # what should this mean?
+                return $args->[2] if scalar(@$args) > 2 and $num == 0; # special zeroth case
+                return $numf->($lang,[$num]) . ' ' . $numerate->($lang,[$num,@$args]);
+            },
+            numerate => $numerate,
+            numf => $numf,
+        }
+    );
+    
+    return $formatter;
+}
 
 sub add_localizers {
-    my ( $class, %params ) = @_;
+    my ( $self, %params ) = @_;
     
     my $locales = $params{locales} || [];
     my $directories = $params{directories};
@@ -25,8 +87,10 @@ sub add_localizers {
         unless defined $locales
         && scalar @$locales > 0
         && ! grep {  $_ !~ $CatalystX::I18N::TypeConstraints::LOCALE_RE } @$locales;
-        
-
+    
+    
+    my $formatter;
+    
     # Loop all directories
     foreach my $directory (@$directories) {
         next 
@@ -38,33 +102,14 @@ sub add_localizers {
         next
             unless -d $directory->stringify && -e _ && -r _;
         
-        my @directory_content =  $directory->children();
+        $formatter ||= $self->gettext_formatter;
         
-#        # Load all avaliable message files
-#        foreach my $locale (@$locales) {
-#            my $lc_locale = lc($locale);
-#            $lc_locale =~ s/-/_/g;
-#            my @locale_lexicon;
-#            foreach my $content (@directory_content) {
-#                my $filename = $content->basename;
-#                if ($filename =~ m/^$locale\.(mo|po)$/i) {
-#                    push(@locale_lexicon,'Gettext',$content->stringify);
-#                } elsif ($filename =~ m/^$locale\.m$/i) {
-#                    push(@locale_lexicon,'Msgcat',$content->stringify);
-#                } elsif($filename =~ m/^$locale\.db$/i) {
-#                    push(@locale_lexicon,'Tie',[ $class, $content->stringify ]);
-#                } elsif ($filename =~ m/^$lc_locale\.pm$/) {
-#                    $locale_loaded{$locale} = 1;
-#                    require $content->stringify;
-#                    # TODO transform maketext -> gettext syntax if flag is set
-#                    # Locale::Maketext::Lexicon::Gettext::_gettext_to_maketext
-#                }
-#            }
-#            $lexicondata->{$locale} = \@locale_lexicon
-#                if scalar @locale_lexicon;
-#        }
+        $self->add_localizer(
+            class       => "Gettext",
+            path        => $directory.'/*.po',
+            formatter   => $formatter,
+        );
     }
-    
     
     return;
 }
@@ -75,18 +120,19 @@ sub add_localizers {
 
 =head1 NAME
 
-CatalystX::I18N::Maketext - Wrapper around Locale::Maketext
+CatalystX::I18N::DataLocalize - Wrapper around Data::Localize
 
 =head1 SYNOPSIS
 
- package MyApp::Maketext;
- use parent qw(CatalystX::I18N::Maketext);
+ package MyApp::DataLocalize;
+ use Moose;
+ extends qw(CatalystX::I18N::DataLocalize);
 
 =head1 DESCRIPTION
 
-This class can be used as your Maketext base-class. It is a wrapper around
-L<Locale::Maketext> and provides methods for auto-loading lexicon files.
-It is designed to work toghether with L<CatalystX::Model::Maketext>.
+This class can be used as your Data Localize base-class. It is a wrapper around
+L<Data::Localizet> and provides methods for auto-loading po files.
+It is designed to work toghether with L<CatalystX::Model::DataLocalize>.
 
 You need to subclass this package in your project in order to use it.
 
@@ -94,82 +140,20 @@ You need to subclass this package in your project in order to use it.
 
 =head3 load_lexicon
 
- MyApp::Maketext->load_lexicon(
+ MyApp::DataLocalize->add_localizer(
      locales        => ['de','de_AT'],              # Required
      directories    => ['/path/to/your/maketext/files'], # Required
-     gettext_style  => 0,                           # Optional, Default 1
-     inheritance    => {                            # Optional
-         de_AT          => 'de',
-     },
  );
 
-This method will search the given directories and load all available maketext
-files for the requested locales
+This method will search the given directories and load all available *.po
+files.
 
-=over
-
-=item * *.mo, *.po
-
-via L<Locale::Maketext::Lexicon::Gettext>
-
-=item * *.db
-
-via L<Locale::Maketext::Lexicon::Tie> The files will be tied to you Maketext 
-class, thus you need to implement the necessary tie methods in your class.
-
-=item * *.m
-
-via L<Locale::Maketext::Lexicon::Msgcat>
-
-=item * Directories
-
-via L<Locale::Maketext::Lexicon::Slurp>
-
-=item * Perl Packages
-
-Will be loaded (only lowercase locale names e.g. locale 'de_AT' will only 
-load 'de_at.pm'). The packages must have a C<%Lexion> variable. 
-
-=back
-
-If no translation files can be found for a given locale then 
-L<Locale::Maketext::Lexicon::Auto> will be loaded.
-
-The following parameters are recognized/required
-
-=over
-
-=item * locales
-
-Array reference of locales.
-
-Required
-
-=item * directories
-
-Array reference of directories. Also accepts L<Path::Class::Dir> objects
-and single values.
-
-Required
-
-=item * gettext_style
-
-Enable gettext style. C<%quant(%1,document,documents)> instead of 
-C<[quant,_1,document,documents]>
-
-Optional, Default TRUE
-
-=item * inheritance
-
-Set inheritance as as HashRef (e.g. 'en_US' inherits from 'en')
-
-Optional
-
-=back
+This class provides only the most basic functionality and probably needs
+to be re-implemented according to your specific requirements. 
 
 =head1 SEE ALSO
 
-L<Locale::Maketext> and L<Locale::Maketext::Lexicon>
+L<Data::Localize>
 
 =head1 AUTHOR
 

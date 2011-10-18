@@ -24,14 +24,24 @@ has 'i18n_numberformat' => (
 sub _build_i18n_numberformat {
     my ($c) = @_;
     
-    my $locale = $c->locale;
+    my $locale = $c->locale.'.UTF-8';
     my $config = $c->i18n_config;
-    
     my $lconv = {};
-    # Only load localeconv if locale is installed/correctly loaded
-    my @current_locale = map { s/\.UTF-8$//i; $_ } split(/\//,POSIX::setlocale(POSIX::LC_ALL));
-    if (grep { $locale eq $_ } @current_locale) {
-        $lconv = POSIX::localeconv();
+    
+    {
+        use locale;
+        my $original_numeric_locale = POSIX::setlocale(POSIX::LC_NUMERIC);
+        my $original_monetary_locale = POSIX::setlocale(POSIX::LC_MONETARY);
+        POSIX::setlocale(POSIX::LC_NUMERIC,$locale);
+        POSIX::setlocale(POSIX::LC_MONETARY,$locale);
+        
+        # Only load localeconv if locale is installed/correctly loaded
+        my @current_locale = split(/\//,POSIX::setlocale(POSIX::LC_NUMERIC));
+        if (grep { $locale eq $_ } @current_locale) {
+            $lconv = POSIX::localeconv();
+        }
+        POSIX::setlocale(POSIX::LC_NUMERIC,$original_numeric_locale);
+        POSIX::setlocale(POSIX::LC_MONETARY,$original_monetary_locale);
     }
     
     # Build custom defined for 5.8

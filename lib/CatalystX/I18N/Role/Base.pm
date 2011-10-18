@@ -8,9 +8,7 @@ requires qw(config response log);
 
 use CatalystX::I18N::TypeConstraints;
 use Clone qw();
-use POSIX qw();
 
-our $ORIGINAL_LOCALE;
 
 has 'locale' => (
     is          => 'rw',
@@ -97,21 +95,6 @@ sub set_locale {
         return;
     }
     
-    # Save original locale
-    $ORIGINAL_LOCALE ||= POSIX::setlocale(POSIX::LC_ALL);
-    
-    # Set locale
-    my $set_locale = $locale.'.UTF-8';
-    my $set_locale_result = POSIX::setlocale( POSIX::LC_ALL, $set_locale);
-    unless (defined $set_locale_result
-        && $set_locale eq $set_locale_result) {
-        $set_locale_result = POSIX::setlocale( POSIX::LC_ALL, $locale);
-        unless (defined $set_locale_result) {
-            $c->log->warn(sprintf("Could not setlocale '%s' or '%s' (do you have this locale installed?)",$set_locale,$locale))
-                if $c->debug;
-        }
-    }
-    
     # Set content language header
     $c->response->content_language($language)
         if $c->response->can('content_language');
@@ -127,12 +110,6 @@ sub set_locale {
         || $meta_attribute->get_raw_value($c) ne $locale;
 }
 
-after finalize => sub {
-    my ($c) = @_;
-    # Restore original locale
-    POSIX::setlocale( POSIX::LC_ALL, $ORIGINAL_LOCALE )
-        if defined $ORIGINAL_LOCALE;
-};
 
 after setup_finalize => sub {
     my ($app) = @_;

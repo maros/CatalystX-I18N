@@ -227,8 +227,10 @@ L<CatalystX::I18N::Role::Base> is loaded.
 
 =head3 get_locale_from_browser
 
-Tries to fetch the locale from the user object (via 
-L<$c-E<gt>user-E<gt>locale>)
+Tries to fetch the locale from the browser (via 
+L<$c-E<gt>request-E<gt>accept_language> and 
+L<$c-E<gt>request-E<gt>browser_language>). L<CatalystX::I18N::TraitFor::Request>
+must be loaded.
 
 =head3 get_locale_from_session
 
@@ -241,10 +243,7 @@ L<$c-E<gt>user-E<gt>locale>).
 
 =head3 check_locale
 
-=head1 SEE ALSO
-
-L<Locale::Maketext>, L<CatalystX::I18N::Model::Maketext> 
-and L<CatalystX::I18N::Maketext>
+Helper method to check for a valid locale
 
 =head1 AUTHOR
 

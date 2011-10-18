@@ -50,6 +50,7 @@ author_requires 'Test::Pod::Coverage'                   => '1.04';
 author_requires 'Test::Perl::Critic'                    => 0;
 author_requires 'Module::Install::ReadmeMarkdownFromPod'=> 0;
 author_requires 'Module::Install::ReadmeFromPod'        => 0;
+author_requires 'Module::Install::AuthorRequires'       => 0;
 
 repository 'git://github.com/maros/CatalystX-I18N.git';
 

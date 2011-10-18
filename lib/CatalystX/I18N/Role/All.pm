@@ -2,8 +2,6 @@
 package CatalystX::I18N::Role::All;
 # ============================================================================
 
-use CatalystX::I18N::Meta::Role;
-
 use namespace::autoclean;
 use Moose::Role;
 requires qw(response_class request_class);

@@ -35,8 +35,8 @@ after 'set_locale' => sub {
 sub i18n_posix_category {
     my ($c,$category_string) = @_;
     
-    $category_string ||= $c->config->{I18N}{posix};
-    $category_string ||= 'LC_COLLATE';
+    $category_string ||= $c->config->{I18N}{posix_category};
+    $category_string ||= 'LC_ALL';
     $category_string = uc($category_string);
     
     return 0

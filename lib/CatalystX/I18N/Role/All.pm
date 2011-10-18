@@ -94,6 +94,7 @@ Is same as
      +CatalystX::I18N::Role::Maketext
      +CatalystX::I18N::Role::Collate
      +CatalystX::I18N::Role::NumberFormat
+     +CatalystX::I18N::Role::PosixLocale
  /;
  
  use CatalystX::RoleApplicator;

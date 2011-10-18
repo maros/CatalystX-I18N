@@ -220,8 +220,6 @@ Get/set the current locale. Changing this value has some side-effects:
 
 =over
 
-=item * Sets program locale via L<POSIX::setlocale>
-
 =item * Stores the locale in the current session (if any)
 
 =item * Sets the 'Content-Language' response header (if L<CatalystX::I18N::TraitFor::Response> has been loaded)

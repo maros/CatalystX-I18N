@@ -61,7 +61,7 @@ after finalize => sub {
 
 =head1 NAME
 
-CatalystX::I18N::Role::PosixLocale - Set POSIX locale
+CatalystX::I18N::Role::PosixLocale - Sets the POSIX locale
 
 =head1 SYNOPSIS
 
@@ -81,10 +81,23 @@ CatalystX::I18N::Role::PosixLocale - Set POSIX locale
 
 =head1 DESCRIPTION
 
-This role sets the POSIX LC_COLLATE locales for each request.
+This role sets the POSIX locales for each request.
 
 =head1 METHODS
 
+=head3 i18n_posix_category 
+
+Helper method that returns the value of the requested POSIX locale category
+(LC_ALL, LC_COLLATE, LC_NUMERIC, LC_MONETARY). The POSIX category that should 
+be used can be set in the I18N config. 
+
+ __PACKAGE__->config( 
+     I18N    => {
+         posix_category     => 'LC_COLLATE',
+     }
+ );
+
+Default is LC_ALL
 
 =head1 SEE ALSO
 

@@ -117,6 +117,10 @@ L<CatalystX::I18N::Role::DataLocalize>
 Localize text via L<Data::Localize>. Alternative to 
 L<CatalystX::I18N::Role::Maketext>
 
+=item * L<CatalystX::I18N::Role::PosixLocale> 
+
+Sets the POSIX locale
+
 =item * L<CatalystX::I18N::Role::DateTime>
 
 Methods for localizing date and time informations.

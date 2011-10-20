@@ -12,7 +12,6 @@ use CatalystX::I18N::TypeConstraints;
 
 use POSIX qw();
 
-
 has 'i18n_numberformat' => (
     is          => 'rw',
     isa         => 'Number::Format',
@@ -28,20 +27,28 @@ sub _build_i18n_numberformat {
     my $config = $c->i18n_config;
     my $lconv = {};
     
+    # Get lconv from POSIX
+    # TODO: Get lconv setting only once at Catalyst startup
     {
         use locale;
-        my $original_numeric_locale = POSIX::setlocale(POSIX::LC_NUMERIC);
-        my $original_monetary_locale = POSIX::setlocale(POSIX::LC_MONETARY);
-        POSIX::setlocale(POSIX::LC_NUMERIC,$locale);
-        POSIX::setlocale(POSIX::LC_MONETARY,$locale);
+        no strict 'refs';
+        my %original;
         
-        # Only load localeconv if locale is installed/correctly loaded
-        my @current_locale = split(/\//,POSIX::setlocale(POSIX::LC_NUMERIC));
-        if (grep { $locale eq $_ } @current_locale) {
-            $lconv = POSIX::localeconv();
+        # Set locale 
+        foreach my $category (qw(LC_NUMERIC LC_MONETARY)) {
+            my $current_locale = POSIX::setlocale(&{"POSIX::".uc($category)});
+            if ($current_locale ne $locale) {
+                $original{$category} = $current_locale;
+                POSIX::setlocale(&{"POSIX::".uc($category)},$locale);
+            }
         }
-        POSIX::setlocale(POSIX::LC_NUMERIC,$original_numeric_locale);
-        POSIX::setlocale(POSIX::LC_MONETARY,$original_monetary_locale);
+        
+        $lconv = POSIX::localeconv();
+        
+        # Reset locale to original state
+        while (my ($category,$locale) = each %original) {
+            POSIX::setlocale(&{"POSIX::".uc($category)},$locale);
+        }
     }
     
     # Build custom defined for 5.8

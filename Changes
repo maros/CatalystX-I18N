@@ -1,6 +1,6 @@
 Revision history for Perl module CatalystX::I18N
 
-1.09 ? Oct ? 2011
+1.09 Wed Oct 26 2011
     - Fix failing tests
     - Refactor POSIX locale handling into a separate role
 

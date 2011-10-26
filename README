@@ -98,6 +98,10 @@ DESCRIPTION
         Localize text via Data::Localize. Alternative to
         CatalystX::I18N::Role::Maketext
 
+    *   CatalystX::I18N::Role::PosixLocale
+
+        Sets the POSIX locale
+
     *   CatalystX::I18N::Role::DateTime
 
         Methods for localizing date and time informations.

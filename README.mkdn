@@ -105,6 +105,10 @@ Localize text via [Locale::Maketext](http://search.cpan.org/perldoc?Locale::Make
 Localize text via [Data::Localize](http://search.cpan.org/perldoc?Data::Localize). Alternative to 
 [CatalystX::I18N::Role::Maketext](http://search.cpan.org/perldoc?CatalystX::I18N::Role::Maketext)
 
+- [CatalystX::I18N::Role::PosixLocale](http://search.cpan.org/perldoc?CatalystX::I18N::Role::PosixLocale) 
+
+Sets the POSIX locale
+
 - [CatalystX::I18N::Role::DateTime](http://search.cpan.org/perldoc?CatalystX::I18N::Role::DateTime)
 
 Methods for localizing date and time informations.

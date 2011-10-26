@@ -5,8 +5,7 @@ package CatalystX::I18N;
 use strict;
 use warnings;
 
-use version;
-our $VERSION = version->new('1.08');
+our $VERSION = "1.09";
 our $AUTHORITY = 'cpan:MAROS';
 
 1;

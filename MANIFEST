@@ -28,6 +28,7 @@ lib/CatalystX/I18N/Role/DateTime.pm
 lib/CatalystX/I18N/Role/GetLocale.pm
 lib/CatalystX/I18N/Role/Maketext.pm
 lib/CatalystX/I18N/Role/NumberFormat.pm
+lib/CatalystX/I18N/Role/PosixLocale.pm
 lib/CatalystX/I18N/TraitFor/Request.pm
 lib/CatalystX/I18N/TraitFor/Response.pm
 lib/CatalystX/I18N/TraitFor/ViewTT.pm

@@ -134,13 +134,15 @@ CatalystX::I18N::TraitFor::ViewTT - Adds I18N filters and VMethods to a TT view
  use Moose;
  extends qw(Catalyst::View::TT);
  with qw(CatalystX::I18N::TraitFor::ViewTT);
- 
- 
+
  # In your TT template
  # Localized number format
  [% 22 | number('number') %]
+ [% 22 | number %]
+ 
  # Localized collation
  [% mylist.lsort().join(', ') %]
+ 
  # Maketext
  [% 'Hello %1!' | maketext(name) %]
 
@@ -159,7 +161,7 @@ The following formats are available
 
 =item * price
 
-=item * number
+=item * number (default)
 
 =item * bytes
 

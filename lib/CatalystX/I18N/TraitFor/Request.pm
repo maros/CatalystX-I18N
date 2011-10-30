@@ -82,7 +82,7 @@ sub _build_accept_language {
     # Add super languages to locales
     foreach my $lanuage (@super_languages) {
         next
-            if $lanuage ~~ \@sorted_locales;
+            if grep { $lanuage eq $_ } @sorted_locales;
         next
             unless $lanuage =~ $CatalystX::I18N::TypeConstraints::LANGUAGE_RE;
         push(@sorted_locales,$lanuage);

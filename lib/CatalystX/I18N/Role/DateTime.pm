@@ -113,7 +113,7 @@ sub _build_i18n_datetime_format_datetime {
     my $config = $c->i18n_config;
     
     my $datetime_locale = $c->i18n_datetime_locale;
-    my $datetime_timezone = $c->i18n_datetime_timezone;
+    my $datetime_timezone = $c->i18n_timezone;
     
     # Set datetime_format_date
     my $datetime_format_datetime =

@@ -7,13 +7,14 @@ use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
 
+use Carp qw(carp);
 use DateTime;
 use DateTime::Format::CLDR;
 use DateTime::TimeZone;
 use DateTime::Locale;
 
 
-has 'i18n_timezone' => (
+has 'i18n_datetime_timezone' => (
     is      => 'rw', 
     isa     => 'CatalystX::I18N::Type::DateTimeTimezone',
     lazy_build=> 1,
@@ -45,11 +46,16 @@ has 'i18n_datetime_format_datetime' => (
     clearer => '_clear_i18n_datetime_format_datetime',
 );
 
+sub i18n_timezone {
+    carp "Method 'i18n_timezone' is deprecated: Use i18n_datetime_timezone instead";
+    return shift->i18n_datetime_timezone(@_);
+}
+
 sub i18n_datetime_now {
     my ($c) = @_;
     return DateTime->from_epoch(
         epoch     => time(),
-        time_zone => $c->i18n_timezone,
+        time_zone => $c->i18n_datetime_timezone,
         locale    => $c->i18n_datetime_locale,
     );
 }
@@ -113,7 +119,7 @@ sub _build_i18n_datetime_format_datetime {
     my $config = $c->i18n_config;
     
     my $datetime_locale = $c->i18n_datetime_locale;
-    my $datetime_timezone = $c->i18n_timezone;
+    my $datetime_timezone = $c->i18n_datetime_timezone;
     
     # Set datetime_format_date
     my $datetime_format_datetime =
@@ -198,7 +204,7 @@ timezone and locale set.
 Returns the current timestamp as a L<DateTime> object with the current 
 timezone and locale set.
 
-=head3 i18n_timezone
+=head3 i18n_datetime_timezone
 
 Returns/sets the current timezone as a L<DateTime::TimeZone> object. The
 timezone for each locale can be defined in the I18N configuration.

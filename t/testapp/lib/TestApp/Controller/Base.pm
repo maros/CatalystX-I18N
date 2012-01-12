@@ -54,7 +54,7 @@ sub test3 : Local Args(0) {
                 date            => $c->i18n_datetime_now->dmy,
                 locale          => $c->i18n_datetime_now->locale->name,
                 time            => $c->i18n_datetime_now->hms,
-                timezone        => $c->i18n_timezone->name,
+                timezone        => $c->i18n_datetime_timezone->name,
             },
             request         => {
                 accept_language     => $request->accept_language,
@@ -95,7 +95,7 @@ sub test5 : Local Args(0) {
             if $config->{inactive} == 1;
         $c->locale($locale);
         $response->{$locale} = {
-            timezone    => $c->i18n_timezone->name,
+            timezone    => $c->i18n_datetime_timezone->name,
         };
     }
     

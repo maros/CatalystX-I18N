@@ -237,14 +237,14 @@ on your report as I make changes.
     CPAN ID: MAROS
     maros [at] k-1.com
     
-    L<http://www.revdev.at>
+    http://www.k-1.com
 
 =head1 COPYRIGHT
 
-CatalystX::I18N is Copyright (c) 2010 Maroš Kollár 
+CatalystX::I18N is Copyright (c) 2012 Maroš Kollár 
 - L<http://www.k-1.com>
 
-=head1 LICENSE
+=head1 LICENCE
 
 This library is free software, you can redistribute it and/or modify
 it under the same terms as Perl itself.

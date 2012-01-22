@@ -215,13 +215,13 @@ AUTHOR
         CPAN ID: MAROS
         maros [at] k-1.com
     
-        L<http://www.revdev.at>
+        http://www.k-1.com
 
 COPYRIGHT
-    CatalystX::I18N is Copyright (c) 2010 Maroš Kollár -
+    CatalystX::I18N is Copyright (c) 2012 Maroš Kollár -
     <http://www.k-1.com>
 
-LICENSE
+LICENCE
     This library is free software, you can redistribute it and/or modify it
     under the same terms as Perl itself.
 

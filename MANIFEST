@@ -40,7 +40,6 @@ META.yml
 MYMETA.json
 MYMETA.yml
 README
-README.mkdn
 t/01_load.t
 t/02_base.t
 t/03_get_locale.t

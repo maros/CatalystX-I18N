@@ -1,5 +1,9 @@
 Revision history for Perl module CatalystX::I18N
 
+1.10 Sun Jan 22 2012
+    - Fix test failures on perl < 5.010
+    - Renamed i18n_timezone to i18n_datetime_timezone (moltar via github)
+
 1.09 Wed Oct 26 2011
     - Fix failing tests
     - Refactor POSIX locale handling into a separate role

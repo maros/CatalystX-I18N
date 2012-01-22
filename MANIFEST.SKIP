@@ -46,3 +46,6 @@ CatalystX-I18N-*.*.tar.gz
 \B\.DS_Store
 #   Mac OSX SMB mount metadata files
 \B\._
+
+CatalystX-I18N-\d\.\d\d/
+CatalystX-I18N-\d\.\d\d\.tar\.gz

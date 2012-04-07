@@ -19,10 +19,9 @@ sub _build_data_localize {
     my $class = $self->class || $self->_app .'::DataLocalize';
     
     # Load DataLocalize class
-    eval {
-        Class::MOP::load_class($class);
-        return 1;
-    } or Catalyst::Exception->throw(sprintf("Could not load '%s' : %s",$class,$@));
+    my ($ok,$error) = Class::Load::try_load_class($class);
+    Catalyst::Exception->throw(sprintf("Could not load '%s' : %s",$class,$error))
+        unless $ok;
     
     Catalyst::Exception->throw(sprintf("Could initialize '%s' because is is not a 'Data::Localize' class",$class))
         unless $class->isa('Data::Localize');

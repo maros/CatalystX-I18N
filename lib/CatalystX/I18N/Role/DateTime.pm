@@ -6,6 +6,7 @@ use namespace::autoclean;
 use Moose::Role;
 
 use CatalystX::I18N::TypeConstraints;
+use MooseX::Types::DateTime;
 
 use Carp qw(carp);
 use DateTime;
@@ -16,7 +17,7 @@ use DateTime::Locale;
 
 has 'i18n_datetime_timezone' => (
     is      => 'rw', 
-    isa     => 'CatalystX::I18N::Type::DateTimeTimezone',
+    isa     => 'DateTime::TimeZone',
     lazy_build=> 1,
     builder => '_build_i18n_datetime_timezone',
     clearer => '_clear_i18n_datetime_timezone',
@@ -24,7 +25,7 @@ has 'i18n_datetime_timezone' => (
 
 has 'i18n_datetime_locale' => (
     is      => 'rw',
-    isa     => 'CatalystX::I18N::Type::DateTimeLocale',
+    isa     => 'DateTime::Locale',
     lazy_build=> 1,
     builder => '_build_i18n_datetime_locale',
     clearer => '_clear_i18n_datetime_locale',

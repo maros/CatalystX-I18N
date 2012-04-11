@@ -11,7 +11,7 @@ use Catalyst::Test 'TestApp';
 
 {
     my($response) = get('/base/test7');
-    my @lines = grep { s/<div>(.+)<\/div>/$1/ }split(/\n/,$response);
+    my @lines = grep { s/<div>(.+)<\/div>/$1/ }split(/[\n\r]/,$response);
     is($lines[0],'1K','Format 1 ok');
     is($lines[1],'12','Format 2 ok');
     is($lines[2],'-12,2','Format 3 ok');

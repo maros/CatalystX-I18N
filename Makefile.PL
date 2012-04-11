@@ -29,6 +29,7 @@ requires        'DateTime'                              => 0;
 requires        'DateTime::Locale'                      => '0.40';
 requires        'DateTime::Format::CLDR'                => 0;
 requires        'DateTime::TimeZone'                    => 0;
+requires        'MooseX::Types::DateTime'               => 0;
 
 requires        'IP::Country::Fast'                     => 0;
 requires        'HTTP::BrowserDetect'                   => '1.09';

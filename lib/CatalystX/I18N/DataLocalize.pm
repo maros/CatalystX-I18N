@@ -131,7 +131,7 @@ CatalystX::I18N::DataLocalize - Wrapper around Data::Localize
 =head1 DESCRIPTION
 
 This class can be used as your Data Localize base-class. It is a wrapper around
-L<Data::Localizet> and provides methods for auto-loading po files.
+L<Data::Localize> and provides methods for auto-loading po files.
 It is designed to work toghether with L<CatalystX::Model::DataLocalize>.
 
 You need to subclass this package in your project in order to use it.

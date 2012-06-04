@@ -58,6 +58,8 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
      },
  );
 
+Then in your controller classes
+
  package MyApp::Catalyst::Controller::Main;
  use strict;
  use warnings;
@@ -122,11 +124,11 @@ Sets the POSIX locale
 
 =item * L<CatalystX::I18N::Role::DateTime>
 
-Methods for localizing date and time informations.
+Methods for localising date and time informations.
 
 =item * L<CatalystX::I18N::Role::NumberFormat>
 
-Methods for localizing numbers.
+Methods for localising numbers.
 
 =item * L<CatalystX::I18N::TraitFor::Request>
 
@@ -169,7 +171,7 @@ Catalyst configuration
  __PACKAGE__->config( 
      name    => 'MyApp', 
      I18N    => {
-         default_locale     => 'de_AT',
+         default_locale     => 'de_AT', # Fallback locale
          locales            => {
              'de'               => {
                  inactive           => 1,
@@ -179,7 +181,7 @@ Catalyst configuration
              },
              'de_AT'            => {
                  inherits           => 'de',
-                 # Inherit all settings form locale 'de'
+                 # Inherit all settings form the 'de' locale
                  ...
              },
          }
@@ -195,7 +197,7 @@ by the L<CatalystX::I18N::Role::GetLocale/get_locale> method.
 Locales can inherit from other locales (C<inherits>). All configuration values
 from inherited locales will be copied. If you use 
 L<CatalystX::I18N::Model::Maketext> together with L<CatalystX::I18N::Maketext>
-the generated lexicons will also inherit in the given order.
+the generated lexicons will also inherit in the selected order.
 
 Additional configuration values are defined by the various 
 CatalystX::I18N::Role::* plugins.

@@ -14,7 +14,7 @@ SYNOPSIS
      # Choose only the roles you need 
      # CatalystX::I18N::Role::All is a convinient shortcut to load all available roles
  
-     # Optionally also load request and response roles
+     # Optionally also load request and response roles (also loaded by CatalystX::I18N::Role::All)
      use CatalystX::RoleApplicator;
      __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
      __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
@@ -41,6 +41,8 @@ SYNOPSIS
              }
          },
      );
+
+    Then in your controller classes
 
      package MyApp::Catalyst::Controller::Main;
      use strict;
@@ -104,11 +106,11 @@ DESCRIPTION
 
     *   CatalystX::I18N::Role::DateTime
 
-        Methods for localizing date and time informations.
+        Methods for localising date and time informations.
 
     *   CatalystX::I18N::Role::NumberFormat
 
-        Methods for localizing numbers.
+        Methods for localising numbers.
 
     *   CatalystX::I18N::TraitFor::Request
 
@@ -149,7 +151,7 @@ CONFIGURATION
      __PACKAGE__->config( 
          name    => 'MyApp', 
          I18N    => {
-             default_locale     => 'de_AT',
+             default_locale     => 'de_AT', # Fallback locale
              locales            => {
                  'de'               => {
                      inactive           => 1,
@@ -159,7 +161,7 @@ CONFIGURATION
                  },
                  'de_AT'            => {
                      inherits           => 'de',
-                     # Inherit all settings form locale 'de'
+                     # Inherit all settings form the 'de' locale
                      ...
                  },
              }
@@ -176,7 +178,7 @@ CONFIGURATION
     Locales can inherit from other locales ("inherits"). All configuration
     values from inherited locales will be copied. If you use
     CatalystX::I18N::Model::Maketext together with CatalystX::I18N::Maketext
-    the generated lexicons will also inherit in the given order.
+    the generated lexicons will also inherit in the selected order.
 
     Additional configuration values are defined by the various
     CatalystX::I18N::Role::* plugins.
@@ -184,8 +186,8 @@ CONFIGURATION
 EXTENDING
     Extending the functionality of CatalystX::I18N distribution is easy.
 
-    E.g. writing a new plugin that does some processing when the locale
-    changes
+    E.g. writing a new plugin that does some processing when the locale is
+    set
 
      package CatalystX::MyI18N::Role::MyPlugin;
      use Moose::Role;

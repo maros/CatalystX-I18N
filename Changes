@@ -1,5 +1,12 @@
 Revision history for Perl module CatalystX::I18N
 
+1.12 Sat Apr 07 2012
+    - Removed built in DateTime related type constraints in favour of global 
+      type constraints (MooseX::Types::DateTime) (moltar via github)
+    - Fixed failing tests (moltar via github)
+    - Fix dependencies
+    - Improve documentation
+
 1.11 Sat Apr 07 2012
     - Maintenance release
 

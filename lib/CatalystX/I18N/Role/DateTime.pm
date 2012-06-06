@@ -164,7 +164,7 @@ CatalystX::I18N::Role::DateTime - Support for I18N datetime
 
 =head1 DESCRIPTION
 
-This role add support for localized datetime to your Catalyst application.
+This role add support for localised datetime to your Catalyst application.
 
 Most methods are lazy. This means that the values will be only calculated
 upon the first call of the method.
@@ -172,7 +172,7 @@ upon the first call of the method.
 Most settings will be taken from L<DateTime::Locale> but 
 can be overdriven in your Catalyst I18N configuration:
 
- # Add some I18N configuration
+ # Add I18N configuration
  __PACKAGE__->config( 
      name    => 'MyApp', 
      I18N    => {
@@ -221,7 +221,7 @@ Returns/sets the current datetime locale as a L<DateTime::Locale> object.
  my $date = $c->i18n_datetime_format_date->format_datetime($date);
 
 Returns a L<DateTime::Format::CLDR> object for parsing and printig 
-localized date data.
+localised date data.
 
 The format for each locale can either be set via the
 C<format_date> coniguration key, or will be taken from the 
@@ -232,7 +232,7 @@ C<date_format_medium> method in the current L<DateTime::Locale> object.
  my $datetime = $c->i18n_datetime_format_datetime->format_datetime($datetime);
 
 Returns a L<DateTime::Format::CLDR> object for parsing and printig 
-localized datetime data.
+localised datetime data.
 
 The format for each locale can either be set via the
 C<format_datetime> coniguration key, or will be taken from the 

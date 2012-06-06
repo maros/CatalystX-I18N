@@ -54,7 +54,7 @@ no Moose::Role;
 
 =head1 NAME
 
-CatalystX::I18N::Role::Collate - Support for localized collation
+CatalystX::I18N::Role::Collate - Support for localised collation
 
 =head1 SYNOPSIS
 
@@ -73,21 +73,21 @@ CatalystX::I18N::Role::Collate - Support for localized collation
      my ($self,$c) = @_;
      
      $c->locale('de');
-     @sorted_names = $c->i18n_sort(qw/Buthan Armenien Argentinien Bolivien Äthiopien Afganistan/);
+     @sorted_names = $c->i18n_sort(qw/Algerien Ägypten Armenien Argentinien Äthiopien Afganistan Aserbaidschan/);
      
      $c->stash->{names} = \@sorted_names;
  }
 
 =head1 DESCRIPTION
 
-This role adds support for localized collation your Catalyst application.
+This role adds support for localised collation your Catalyst application.
 
  my @german_alphabeth = (A..Z,a..z,'ä','Ä','ü','Ü','ö','Ö','ß');
  
  $sort = join(',',sort @german_alphabeth);
  # $sort_no_collate is 'A,B,C,[...],Z,a,b,c,[...],z,Ä,Ö,Ü,ß,ä,ö,ü'
  
- $sort_localized = join(',',$c->i18n_sort(@german_alphabeth));
+ $sort_localised = join(',',$c->i18n_sort(@german_alphabeth));
  # $sort_no_collate is 'a,A,ä,Ä,b,B,c,C,[...],s,S,ß,t,T,u,U,ü,Ü,v,V,w,[...],z,Z'
 
 All methods are lazy. This means that the values will be only calculated

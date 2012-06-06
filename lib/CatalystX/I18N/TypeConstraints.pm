@@ -62,7 +62,7 @@ no Moose::Util::TypeConstraints;
 
 =head1 NAME
 
-CatalystX::I18N::TypeConstraints - Defines I18N Moose type constraints
+CatalystX::I18N::TypeConstraints - I18N Moose type constraints
 
 =head1 SYNOPSIS
 

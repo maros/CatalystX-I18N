@@ -125,7 +125,7 @@ CatalystX::I18N::Role::NumberFormat - Support for I18N number formating
 
 =head1 DESCRIPTION
 
-This role add support for localized numbers to your Catalyst application.
+This role add support for localised numbers to your Catalyst application.
 
 All methods are lazy. This means that the values will be only calculated
 upon the first call of the method.

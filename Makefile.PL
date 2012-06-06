@@ -1,6 +1,6 @@
 # Load the Module::Install bundled in ./inc/
 use strict;
-use inc::Module::Install;
+use inc::Module::Install 1.05;
 
 my $from = 'lib/CatalystX/I18N.pm';
 
@@ -38,7 +38,7 @@ requires        'Unicode::Collate'                      => 0;
 requires        'Unicode::Collate::Locale'              => 0;
 
 requires        'Data::Localize'                        => 0;
-requires        'Data::Localize'                        => 0;
+requires        'Data::Localize::Format::Gettext'       => 0;
 
 build_requires  'Test::Most'                            => 0;
 build_requires  'Test::NoWarnings'                      => 0;
@@ -48,7 +48,7 @@ build_requires  'Catalyst::Plugin::Session'             => 0;
 build_requires  'Catalyst::Plugin::Session::State::Cookie'=> 0;
 build_requires  'Catalyst::Plugin::Session::Store::File'=> 0;
 build_requires  'Catalyst::View::TT'                    => 0;
-build_requires  'Template::Toolkit'                     => 0;
+build_requires  'Template'                              => 0;
 
 author_requires 'Test::Pod'                             => '1.14';
 author_requires 'Test::Pod::Coverage'                   => '1.04';

@@ -60,7 +60,7 @@ sub _build_i18n_numberformat {
     };
     
     # Set number format
-    my $numberformat = new Number::Format(
+    my $numberformat = Number::Format->new(
         -int_curr_symbol    => $defined_or->($config->{int_curr_symbol},$lconv->{int_curr_symbol},'EUR'),
         -currency_symbol    => $defined_or->($config->{currency_symbol},$lconv->{currency_symbol},'€'),
         -mon_decimal_point  => $defined_or->($config->{mon_decimal_point},$lconv->{mon_decimal_point},'.'),

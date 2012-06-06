@@ -14,8 +14,6 @@ around render => sub {
     my $orig  = shift;
     my ( $self,$c,$template,$args ) = @_;
     
-    no warnings 'once';
-    
 #    local $Template::Stash::HASH_OPS;
 #    local $Template::Stash::LIST_OPS;
     

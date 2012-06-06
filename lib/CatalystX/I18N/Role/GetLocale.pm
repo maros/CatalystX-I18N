@@ -61,7 +61,6 @@ sub get_locale_from_browser  {
             my $checked_locale = $c->check_locale($locale);
             return $checked_locale
                 if $checked_locale;
-            no warnings 'once';
             if ($locale =~ $CatalystX::I18N::TypeConstraints::LOCALE_RE) {
                 push(@$languages,$1);
                 push(@$territories,$2)

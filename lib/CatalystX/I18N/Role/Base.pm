@@ -49,7 +49,7 @@ sub i18n_geocode {
     
     Class::MOP::load_class('Locale::Geocode');
     
-    my $lc = new Locale::Geocode;
+    my $lc = Locale::Geocode->new();
     return $lc->lookup($territory);
 } 
 
@@ -108,6 +108,8 @@ sub set_locale {
     $meta_attribute->set_raw_value($c,$locale)
         if ! $meta_attribute->has_value($c)
         || $meta_attribute->get_raw_value($c) ne $locale;
+    
+    return $locale;
 }
 
 

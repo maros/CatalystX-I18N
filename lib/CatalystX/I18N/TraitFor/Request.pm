@@ -65,7 +65,6 @@ sub _build_accept_language {
     my @sorted_locales;
     my @super_languages;
     
-    no warnings 'once';
     # Convert language tags to locales
     foreach my $element (sort { $b->[1] <=> $a->[1] } @accepted_languages) {
         my ($language,$dialect) = split /[_-]/,$element->[0];
@@ -129,7 +128,7 @@ sub _build_browser_territory {
 sub _build_browser_detect {
     my ($self) = @_;
     
-    return new HTTP::BrowserDetect($self->user_agent);
+    return HTTP::BrowserDetect->new($self->user_agent);
 }
 
 sub _build_client_country {

@@ -32,7 +32,7 @@ sub mk_compclass {
 sub mk_comptest {
     my ($self, $helper) = @_;
 
-    $helper->render_file('modeltest', $helper->{test});
+    return $helper->render_file('modeltest', $helper->{test});
 }
 
 =encoding utf8

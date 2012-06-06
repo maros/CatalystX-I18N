@@ -51,6 +51,7 @@ sub BUILD {
     }
     
     $self->data_localize($loc);
+    return;
 }
 
 sub ACCEPT_CONTEXT {

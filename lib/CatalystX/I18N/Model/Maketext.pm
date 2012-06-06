@@ -52,6 +52,8 @@ sub BUILD {
     } else {
         $app->log->warn(sprintf("'%s' does not implement a 'load_lexicon' method",$class))
     }
+    
+    return;
 }
 
 sub ACCEPT_CONTEXT {

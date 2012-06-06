@@ -30,7 +30,7 @@ CatalystX::I18N - Catalyst internationalisation (I18N) framework
  # Choose only the roles you need 
  # CatalystX::I18N::Role::All is a convinient shortcut to load all available roles
  
- # Optionally also load request and response roles
+ # Optionally also load request and response roles (also loaded by CatalystX::I18N::Role::All)
  use CatalystX::RoleApplicator;
  __PACKAGE__->apply_request_class_roles(qw/CatalystX::I18N::TraitFor::Request/);
  __PACKAGE__->apply_response_class_roles(qw/CatalystX::I18N::TraitFor::Response/);
@@ -204,7 +204,7 @@ CatalystX::I18N::Role::* plugins.
 
 Extending the functionality of CatalystX::I18N distribution is easy.
 
-E.g. writing a new plugin that does some processing when the locale changes
+E.g. writing a new plugin that does some processing when the locale is set
 
  package CatalystX::MyI18N::Role::MyPlugin;
  use Moose::Role;

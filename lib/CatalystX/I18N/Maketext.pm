@@ -242,5 +242,5 @@ L<Locale::Maketext> and L<Locale::Maketext::Lexicon>
     CPAN ID: MAROS
     maros [at] k-1.com
     
-    L<http://www.revdev.at>
+    L<http://www.k-1.com>
 

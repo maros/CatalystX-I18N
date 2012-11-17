@@ -219,4 +219,4 @@ L<Catalyst::Request>, L<IP::Country::Fast>, L<HTTP::BrowserDetect>
     CPAN ID: MAROS
     maros [at] k-1.com
     
-    L<http://www.revdev.at>
+    L<http://www.k-1.com>

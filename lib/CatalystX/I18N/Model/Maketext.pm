@@ -176,4 +176,4 @@ L<Locale::Maketext::Lexicon> and L<CatalystX::I18N::Role::Maketext>
     CPAN ID: MAROS
     maros [at] k-1.com
     
-    L<http://www.revdev.at>
+    L<http://www.k-1.com>

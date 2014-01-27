@@ -52,7 +52,7 @@ coerce 'CatalystX::I18N::Type::DirList'
     };
 
 subtype 'CatalystX::I18N::Type::MaketextHandle'
-    => as duck_type(qw(maketext));
+    => as duck_type([qw(maketext)]);
 
 no Moose::Util::TypeConstraints;
 

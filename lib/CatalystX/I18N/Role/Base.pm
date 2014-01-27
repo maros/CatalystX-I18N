@@ -47,7 +47,7 @@ sub i18n_geocode {
     return 
         unless $territory;
     
-    Class::MOP::load_class('Locale::Geocode');
+    Class::Load::load_class('Locale::Geocode');
     
     my $lc = Locale::Geocode->new();
     return $lc->lookup($territory);

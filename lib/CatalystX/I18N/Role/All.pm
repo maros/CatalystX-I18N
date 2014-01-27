@@ -25,7 +25,7 @@ before 'setup' => sub {
         
         # Get role
         my $role_class = 'CatalystX::I18N::TraitFor::'.$type;
-        Class::MOP::load_class($role_class);
+        Class::Load::load_class($role_class);
         
         # Check if role has already been applied
         next
@@ -46,7 +46,7 @@ around 'setup_component' => sub {
     my $orig  = shift;
     my ($class,$component) = @_;
     
-    Class::MOP::load_class($component);
+    Class::Load::load_class($component);
     
     # Load View::TT role
     if ($component->isa('Catalyst::View::TT')

@@ -13,8 +13,8 @@ with qw(
     CatalystX::I18N::Role::GetLocale
     CatalystX::I18N::Role::NumberFormat
     CatalystX::I18N::Role::Collate
-    CatalystX::I18N::Role::PosixLocale
 );
+# CatalystX::I18N::Role::PosixLocale
 
 before 'setup' => sub {
     my ($class) = @_;
@@ -80,7 +80,7 @@ CatalystX::I18N::Role::All - Load all available roles
 
 =head1 DESCRIPTION
 
-This role is just a shortcut for loading every I18N role and trait 
+This role is just a shortcut for loading every I18N role and trait (except POSIX)
 individually.
 
  use Catalyst qw/CatalystX::I18N::Role::All/;
@@ -94,7 +94,6 @@ Is same as
      +CatalystX::I18N::Role::Maketext
      +CatalystX::I18N::Role::Collate
      +CatalystX::I18N::Role::NumberFormat
-     +CatalystX::I18N::Role::PosixLocale
  /;
  
  use CatalystX::RoleApplicator;

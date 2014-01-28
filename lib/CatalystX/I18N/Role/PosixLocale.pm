@@ -99,6 +99,12 @@ be used can be set in the I18N config.
 
 Default is LC_ALL
 
+=head CAVEATS
+
+POSIX locale is set for the whole process, and might affect other modules
+outside of Catalyst' scope. This role is also known to cause problems if
+used in conjunction with the L<CatalystX::I18N::TraitFor::ViewTT> role
+
 =head1 SEE ALSO
 
 L<POSIX>, L<perllocale>

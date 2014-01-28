@@ -15,6 +15,7 @@ perl_version    '5.008';
 requires        'Catalyst::Runtime'                     => '5.80004';
 requires        'Moose'                                 => 0;
 requires        'parent'                                => 0;
+requires        'POSIX'                                 => 0;
 requires        'namespace::autoclean'                  => 0;
 
 requires        'Path::Class'                           => 0;
@@ -31,11 +32,10 @@ requires        'DateTime::Format::CLDR'                => 0;
 requires        'DateTime::TimeZone'                    => 0;
 requires        'MooseX::Types::DateTime'               => 0;
 
-requires        'IP::Country::Fast'                     => 0;
+requires        'IP::Country'                           => 0;
 requires        'HTTP::BrowserDetect'                   => '1.09';
 requires        'Number::Format'                        => 0;
 requires        'Unicode::Collate'                      => 0;
-requires        'Unicode::Collate::Locale'              => 0;
 
 requires        'Data::Localize'                        => 0;
 requires        'Data::Localize::Format::Gettext'       => 0;

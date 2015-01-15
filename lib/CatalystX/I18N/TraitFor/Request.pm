@@ -93,6 +93,9 @@ sub _build_accept_language {
 sub _build_browser_language {
     my ($self) = @_;
     
+    # browser_detect->language warns unless user_agent
+    return unless $self->user_agent;
+
     my $language = $self->browser_detect()->language();
     
     return
@@ -111,7 +114,10 @@ sub _build_browser_language {
 
 sub _build_browser_territory {
     my ($self) = @_;
-    
+
+    # browser_detect->country warns unless user_agent
+    return unless $self->user_agent;
+
     my $territory = $self->browser_detect()->country();
     
     return

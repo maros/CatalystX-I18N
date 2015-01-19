@@ -70,7 +70,7 @@ sub get_locale_from_browser  {
     }
     
     # Get browser language
-    if ($c->request->can('browser_language')) {
+    if ( $c->request->user_agent && $c->request->can('browser_language')) {
         my $language = $c->request->browser_language;
         if ($language) {
             unshift(@$languages,$language)

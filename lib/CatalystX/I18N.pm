@@ -132,7 +132,7 @@ Methods for localising numbers.
 
 =item * L<CatalystX::I18N::TraitFor::Request>
 
-Extends L<Catalyst::Request> with usefull methods to help dealing with
+Extends L<Catalyst::Request> with useful methods to help dealing with
 various I18N related information in HTTP requests.
 
 =item * L<CatalystX::I18N::TraitFor::Response>

@@ -150,7 +150,7 @@ detailed documentation):
 
 =item * level
 
-=item * normalization
+=item * normalisation
 
 =item * overrideCJK
 

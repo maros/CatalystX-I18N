@@ -99,7 +99,7 @@ be used can be set in the I18N config.
 
 Default is LC_ALL
 
-=head CAVEATS
+=head1 CAVEATS
 
 POSIX locale is set for the whole process, and might affect other modules
 outside of Catalyst' scope. This role is also known to cause problems if

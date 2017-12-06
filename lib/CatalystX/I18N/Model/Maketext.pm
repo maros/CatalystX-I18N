@@ -96,7 +96,7 @@ CatalystX::I18N::Model::Maketext - Glues Locale::Maketext into Catalyst
  __PACKAGE__->config( 
     'Model::Maketext' => {
         class           => 'MyApp::Maketext', # optional
-        directory       => '/path/to/maketext/files', # optional
+        directories     => '/path/to/maketext/files', # optional
     },
  );
  
@@ -158,9 +158,9 @@ C<[quant,_1,document,documents]>
 
 Default TRUE
 
-=head3 directory
+=head3 directories
 
-List of directories to be searched for maketext files.
+Array reference of directories to be searched for maketext files.
 
 See L<CatalystX::I18N::Maketext> for more details on the C<directory> 
 parameter

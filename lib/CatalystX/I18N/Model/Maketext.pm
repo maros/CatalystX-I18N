@@ -8,7 +8,7 @@ extends 'CatalystX::I18N::Model::Base';
 
 use CatalystX::I18N::TypeConstraints;
 use Path::Class;
-
+use Scalar::Util qw(weaken);
 
 has 'gettext_style' => (
     is          => 'rw',
@@ -67,6 +67,7 @@ sub ACCEPT_CONTEXT {
         unless ( scalar $handle );
 
     if ($self->can('fail_with')) {
+        weaken($c);
         $handle->fail_with( sub {
             $self->fail_with($c,@_);
         } );

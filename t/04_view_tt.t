@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::Most tests=>12+1;
-use Test::NoWarnings; 
+use Test::NoWarnings;
 
 use lib qw(t/testapp/lib);
 
